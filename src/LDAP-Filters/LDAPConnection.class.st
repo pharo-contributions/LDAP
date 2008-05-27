@@ -133,6 +133,12 @@ LDAPConnection >> initializeWithHost: aHostname port: aPort [
 ]
 
 { #category : #'as yet unclassified' }
+LDAPConnection >> isValid [
+	"Answers whether the connection looks still valid"
+	^worker running
+]
+
+{ #category : #'as yet unclassified' }
 LDAPConnection >> modify: aDN with: someLDAPAttrModifiers [
 	^ LDAPModifyRequest new initializeWith: worker dn: aDN ops: someLDAPAttrModifiers
 ]
