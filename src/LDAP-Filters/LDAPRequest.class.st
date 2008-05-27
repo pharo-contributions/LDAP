@@ -9,7 +9,7 @@ Class {
 		'result',
 		'isAbandoned'
 	],
-	#category : #LDAP
+	#category : #'LDAP-Core'
 }
 
 { #category : #'as yet unclassified' }

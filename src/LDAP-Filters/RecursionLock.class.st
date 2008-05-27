@@ -16,7 +16,7 @@ Class {
 		'lockedByProcess',
 		'semaphore'
 	],
-	#category : #LDAP
+	#category : #'LDAP-Core'
 }
 
 { #category : #'instance creation' }

@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPCompareRequest,
 	#superclass : #LDAPRequest,
-	#category : #LDAP
+	#category : #'LDAP-Core'
 }
 
 { #category : #'as yet unclassified' }

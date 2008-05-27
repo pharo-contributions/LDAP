@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPCompareResult,
 	#superclass : #LDAPResult,
-	#category : #LDAP
+	#category : #'LDAP-Core'
 }
 
 { #category : #'as yet unclassified' }

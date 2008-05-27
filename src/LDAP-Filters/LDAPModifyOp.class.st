@@ -5,7 +5,7 @@ Class {
 		'attr',
 		'values'
 	],
-	#category : #LDAP
+	#category : #'LDAP-Core'
 }
 
 { #category : #'as yet unclassified' }

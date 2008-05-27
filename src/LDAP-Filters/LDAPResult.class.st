@@ -7,7 +7,7 @@ Class {
 		'matchedDN',
 		'referral'
 	],
-	#category : #LDAP
+	#category : #'LDAP-Core'
 }
 
 { #category : #'as yet unclassified' }

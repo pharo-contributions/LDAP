@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPModifyDelOp,
 	#superclass : #LDAPModifyOp,
-	#category : #LDAP
+	#category : #'LDAP-Core'
 }
 
 { #category : #'as yet unclassified' }

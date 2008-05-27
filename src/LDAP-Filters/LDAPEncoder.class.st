@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPEncoder,
 	#superclass : #Object,
-	#category : #LDAP
+	#category : #'LDAP-Core'
 }
 
 { #category : #'as yet unclassified' }

@@ -6,7 +6,7 @@ Class {
 		'iterator',
 		'gotNewResultSemaphore'
 	],
-	#category : #LDAP
+	#category : #'LDAP-Core'
 }
 
 { #category : #'as yet unclassified' }

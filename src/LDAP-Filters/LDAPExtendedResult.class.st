@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPExtendedResult,
 	#superclass : #LDAPResult,
-	#category : #LDAP
+	#category : #'LDAP-Core'
 }
 
 { #category : #'as yet unclassified' }

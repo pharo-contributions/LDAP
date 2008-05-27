@@ -5,7 +5,7 @@ Class {
 		'worker',
 		'workerThread'
 	],
-	#category : #LDAP
+	#category : #'LDAP-Core'
 }
 
 { #category : #'search scope constants' }

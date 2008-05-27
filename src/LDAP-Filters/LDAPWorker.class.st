@@ -10,7 +10,7 @@ Class {
 		'targets',
 		'running'
 	],
-	#category : #LDAP
+	#category : #'LDAP-Core'
 }
 
 { #category : #'as yet unclassified' }
