@@ -44,13 +44,13 @@ LDAPSearchResultEntry >> decode: aStream [
 		
 		values := OrderedCollection new.
 		((eachBerAttr value) elements at: 2) value elements do: [ :eachBerValue |	
-			values add: (eachBerValue value value) ].
+			values add: (eachBerValue value value) asString].
 		
 		attrs
-			at: (((eachBerAttr value) elements at: 1) value value)
+			at: (((eachBerAttr value) elements at: 1) value value) asString
 			put: values ].
 
-	dn := berDN value.
+	dn := berDN value asString.
 
 ]
 

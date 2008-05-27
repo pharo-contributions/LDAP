@@ -21,7 +21,7 @@ LDAPResult >> checkForExceptions [
 		ifFalse: [
 			| ex |
 			ex := LDAPException newWithCode: resultCode.
-			ex signal: errorMessage ]
+			ex signal: (errorMessage ifEmpty:[ex messageText]) ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -44,9 +44,10 @@ LDAPResult >> decode: aStream [
 		referral :=  berReferral value.
 		self notYetImplemented. 
 	  ].
-	
-	self checkForExceptions.
 
+"XXXX: Commented out so that we do not raise errors in the response handling of the worker but rather once the response has been passed on to the sender.	
+	self checkForExceptions.
+"
 ]
 
 { #category : #'as yet unclassified' }

@@ -14,6 +14,7 @@ LDAPCompareRequest >> initializeWith: anLDAPWorker dn: aDN comparing: anEquality
 
 { #category : #'as yet unclassified' }
 LDAPCompareRequest >> processResponse: aMessage [
+	isDone := true.
 	aMessage resultCode = 5 ifTrue: [ result := false ].
 	aMessage resultCode = 6 ifTrue: [ result := true ].
 	"we save nil for execptions"

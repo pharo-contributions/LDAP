@@ -132,7 +132,7 @@ LDAPWorker >> start [
 		[running] whileTrue: [
 			|  element  |
 			element := LDAPMessage newFrom: sockStream.
-			Transcript show: '********* READ ONE OF:  ', element asString; cr.
+			"Transcript show: '********* READ ONE OF:  ', element asString; cr."
 			self dispatchMessage: element.
 		]
 	] fork.

@@ -42,7 +42,7 @@ BERElement class >> new [
 BERElement class >> newFrom: aStream [
 	| firstByte element elementClass |
 	firstByte := aStream next.
-	Transcript show: '*** Next byte is: ', firstByte asString; cr.
+	"Transcript show: '*** Next byte is: ', firstByte asString; cr."
 	elementClass := self identifyIncomingElement: firstByte.
 	elementClass ifNil: [
 		LDAPException new messageText: 'invalid tag -- make sure class is in identifyIncomingElements'; signal ].

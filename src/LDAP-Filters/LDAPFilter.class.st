@@ -62,3 +62,8 @@ LDAPFilter class >> with: anAttrType greaterOrEqualThan: anAttrValue [
 LDAPFilter class >> with: anAttrType lessOrEqualThan: anAttrValue [
 	^ LDAPFilterLessOrEqual new setType: anAttrType value: anAttrValue
 ]
+
+{ #category : #'as yet unclassified' }
+LDAPFilter class >> with: anAttrType notEqualTo: anAttrValue [
+	^self not: (self with: anAttrType equalTo: anAttrValue)
+]

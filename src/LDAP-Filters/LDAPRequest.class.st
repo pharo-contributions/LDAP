@@ -47,6 +47,7 @@ LDAPRequest >> isDone [
 
 { #category : #'as yet unclassified' }
 LDAPRequest >> processResponse: aMessage [
+	isDone := true. 
 	result := aMessage.
 	waitingSemaphore signal.
 ]
