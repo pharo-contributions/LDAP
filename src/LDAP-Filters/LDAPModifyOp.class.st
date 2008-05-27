@@ -5,13 +5,13 @@ Class {
 		'attr',
 		'values'
 	],
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }
 LDAPModifyOp class >> affecting: anAttr values: someValues [
 	| obj |
-	obj _ self basicNew initializeWithAttr: anAttr values: someValues.
+	obj := self basicNew initializeWithAttr: anAttr values: someValues.
 	^ obj
 ]
 
@@ -23,7 +23,7 @@ LDAPModifyOp class >> tagValue [
 { #category : #'as yet unclassified' }
 LDAPModifyOp >> asBERElement [
 	| ber |
-	ber _ BERSequence new.
+	ber := BERSequence new.
 	ber addElement: (BEREnumerated new value: self class tagValue).
 	ber addElement: (LDAPEncoder attrAsBERElement: (Association key: attr value: values)).
 	^ ber
@@ -31,6 +31,6 @@ LDAPModifyOp >> asBERElement [
 
 { #category : #'as yet unclassified' }
 LDAPModifyOp >> initializeWithAttr: anAttr values: someValues [
-	attr _ anAttr.
-	values _ someValues
+	attr := anAttr.
+	values := someValues
 ]

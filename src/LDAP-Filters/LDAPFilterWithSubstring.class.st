@@ -6,16 +6,16 @@ Class {
 		'choiceTag',
 		'substring'
 	],
-	#category : 'LDAP-Filters'
+	#category : #'LDAP-Filters'
 }
 
 { #category : #'as yet unclassified' }
 LDAPFilterWithSubstring >> asBERElement [
 	| ber substrSeq |
-	ber _ BERSequence new.
+	ber := BERSequence new.
 	ber addElement: (BEROctetString new value: type).
 	
-	substrSeq _ BERSequence new.
+	substrSeq := BERSequence new.
 	substrSeq addElement: (BEROctetString new value: substring) tagSetContext withTag: choiceTag.
 	
 	ber addElement: substrSeq.
@@ -24,8 +24,8 @@ LDAPFilterWithSubstring >> asBERElement [
 
 { #category : #'as yet unclassified' }
 LDAPFilterWithSubstring >> setSubstring: aSubstring type: anAttrType choiceTag: aChoiceTag [
-	substring _ aSubstring.
-	type _ anAttrType.
-	choiceTag _ aChoiceTag
+	substring := aSubstring.
+	type := anAttrType.
+	choiceTag := aChoiceTag
 
 ]

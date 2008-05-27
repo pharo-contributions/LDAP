@@ -4,25 +4,25 @@ Class {
 	#instVars : [
 		'resultCode'
 	],
-	#category : 'LDAP-Exceptions'
+	#category : #'LDAP-Exceptions'
 }
 
 { #category : #'as yet unclassified' }
 LDAPException class >> newWithCode: aResultCode [
 	| ex newClass |
-	newClass _ self.
+	newClass := self.
 	(aResultCode >= 16 and: [aResultCode <= 21])
-		 ifTrue: [ newClass _ LDAPAttrProblemException ].
+		 ifTrue: [ newClass := LDAPAttrProblemException ].
 	(aResultCode >= 32 and: [aResultCode <= 36] and: [aResultCode ~= 35])
-		ifTrue: [ newClass _ LDAPNameProblemException ].
+		ifTrue: [ newClass := LDAPNameProblemException ].
 	(aResultCode >= 48 and: [aResultCode <= 50])
-		ifTrue: [ newClass _ LDAPSecurityProblemException ].
+		ifTrue: [ newClass := LDAPSecurityProblemException ].
 	(aResultCode >= 51 and: [aResultCode <= 54])
-		ifTrue: [ newClass _ LDAPServiceProblemException ].
+		ifTrue: [ newClass := LDAPServiceProblemException ].
 	((aResultCode >= 64 and: [aResultCode <= 69]) or: [aResultCode = 71])
-		ifTrue: [ newClass _ LDAPUpdateProblemException ].
+		ifTrue: [ newClass := LDAPUpdateProblemException ].
 		
-	ex _ newClass new initializeWithCode: aResultCode.
+	ex := newClass new initializeWithCode: aResultCode.
 	^ ex
 ]
 
@@ -94,6 +94,6 @@ LDAPException >> asSymbol [
 
 { #category : #'as yet unclassified' }
 LDAPException >> initializeWithCode: aResultCode [
-	resultCode _ aResultCode.
+	resultCode := aResultCode.
 	self messageText: self asSymbol
 ]

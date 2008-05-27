@@ -3,7 +3,7 @@ I work as Semaphore forMutualExclusion but I won't block in critical: if I was a
 
 	|lock|
 
-	lock _ RecursionLock new.
+	lock := RecursionLock new.
 	lock critical:[
 		Transcript show: 'Locked.';cr.
 		lock critical:[
@@ -16,7 +16,7 @@ Class {
 		'lockedByProcess',
 		'semaphore'
 	],
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'instance creation' }
@@ -31,17 +31,17 @@ RecursionLock >> critical: protectedBlock [
 		ifTrue: [
 			"If lockedByProcess matches, its obvously not nil and thereforey we were already locked.
 			So skip the semaphore."
-			blockValue _ protectedBlock value ]
+			blockValue := protectedBlock value ]
 		ifFalse: [ 
 			"Otherwise lock and proceed as usual making sure we reset the lock once its over"
 			semaphore critical: [
-				lockedByProcess _ Processor activeProcess.
-				blockValue _  [protectedBlock value] ensure: [lockedByProcess _ nil] ] ].
+				lockedByProcess := Processor activeProcess.
+				blockValue :=  [protectedBlock value] ensure: [lockedByProcess := nil] ] ].
 	^ blockValue
 
 ]
 
 { #category : #'initialize-release' }
 RecursionLock >> initialize [
-	semaphore _ Semaphore forMutualExclusion
+	semaphore := Semaphore forMutualExclusion
 ]

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'elements'
 	],
-	#category : 'LDAP-BER'
+	#category : #'LDAP-BER'
 }
 
 { #category : #'as yet unclassified' }
@@ -20,7 +20,7 @@ BERConstruct >> addElement: anElement [
 { #category : #'as yet unclassified' }
 BERConstruct >> addElement: anElement withTag: aContextTag [
 	| taggedElement |
-	taggedElement _ Association new;
+	taggedElement := Association new;
 		key: aContextTag value: anElement.
 	elements addLast: taggedElement
 ]
@@ -29,11 +29,11 @@ BERConstruct >> addElement: anElement withTag: aContextTag [
 BERConstruct >> decode: aStream [
 	| elementLen part |
 	
-	elementLen _ self length.
+	elementLen := self length.
 	[elementLen > 0]
 		whileTrue: [
-			part _ self class newFrom: aStream.
-			elementLen _ elementLen - part totalLength.
+			part := self class newFrom: aStream.
+			elementLen := elementLen - part totalLength.
 			self addElement: part ]
 ]
 
@@ -45,14 +45,14 @@ BERConstruct >> elements [
 { #category : #'as yet unclassified' }
 BERConstruct >> initialize [
 	super initialize.
-	elements _ OrderedCollection new
+	elements := OrderedCollection new
 ]
 
 { #category : #'as yet unclassified' }
 BERConstruct >> writeBodyOn: aStream [
 	| data dataStream |
-	data _ Array new.
-	dataStream _ WriteStream on: data.
+	data := Array new.
+	dataStream := WriteStream on: data.
 	
 	elements do: [:taggedElement |
 		taggedElement value writeOn: dataStream withTag: (taggedElement key) ].

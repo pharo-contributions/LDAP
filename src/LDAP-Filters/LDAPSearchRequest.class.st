@@ -6,7 +6,7 @@ Class {
 		'iterator',
 		'gotNewResultSemaphore'
 	],
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }
@@ -23,11 +23,11 @@ LDAPSearchRequest >> hasMoreEntries [
 { #category : #'as yet unclassified' }
 LDAPSearchRequest >> initializeWith: anLDAPWorker base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
 	| encoded |
-	partialResults _ OrderedCollection new.
-	iterator _  0.
-	gotNewResultSemaphore _ Semaphore new.
+	partialResults := OrderedCollection new.
+	iterator :=  0.
+	gotNewResultSemaphore := Semaphore new.
 	self initializeWith: anLDAPWorker.
-	encoded _ LDAPEncoder searchRequest: messageId  base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly.
+	encoded := LDAPEncoder searchRequest: messageId  base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly.
 	anLDAPWorker send: encoded.
 
 ]
@@ -42,7 +42,7 @@ LDAPSearchRequest >> isIteratorAtEnd [
 LDAPSearchRequest >> next [
 	self hasMoreEntries
 		ifTrue: [
-			iterator _ iterator + 1.
+			iterator := iterator + 1.
 			^ (partialResults at: iterator) ].
 	^ nil
 
@@ -51,7 +51,7 @@ LDAPSearchRequest >> next [
 { #category : #'as yet unclassified' }
 LDAPSearchRequest >> processResponse: aSearchResultEntry [
 	aSearchResultEntry class isEndMarker
-		ifTrue: [ isDone _ true. result _ partialResults. waitingSemaphore signal. ]
+		ifTrue: [ isDone := true. result := partialResults. waitingSemaphore signal. ]
 		ifFalse: [ partialResults addLast: aSearchResultEntry ].
 		
 	gotNewResultSemaphore signal

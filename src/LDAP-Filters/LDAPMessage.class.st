@@ -4,14 +4,14 @@ Class {
 	#instVars : [
 		'id'
 	],
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }
 LDAPMessage class >> newFrom: aStream [
 	| ber mesg |
-	ber _ BERElement newFrom: aStream.
-	mesg _( (ber elements at: 2) value).
+	ber := BERElement newFrom: aStream.
+	mesg :=( (ber elements at: 2) value).
 	mesg id: ((ber elements at: 1) value value).
 	^ mesg
 ]
@@ -23,5 +23,5 @@ LDAPMessage >> id [
 
 { #category : #'as yet unclassified' }
 LDAPMessage >> id: aMessageId [
-	id _ aMessageId
+	id := aMessageId
 ]

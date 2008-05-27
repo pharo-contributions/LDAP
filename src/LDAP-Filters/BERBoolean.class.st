@@ -1,7 +1,7 @@
 Class {
 	#name : #BERBoolean,
 	#superclass : #BERElement,
-	#category : 'LDAP-BER'
+	#category : #'LDAP-BER'
 }
 
 { #category : #'as yet unclassified' }
@@ -11,8 +11,8 @@ BERBoolean class >> tagValue [
 
 { #category : #'as yet unclassified' }
 BERBoolean >> decode: aStream [
-	value _ aStream next.
-	value _ value > 0.
+	value := aStream next.
+	value := value > 0.
 
 ]
 

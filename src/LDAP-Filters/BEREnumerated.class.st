@@ -1,7 +1,7 @@
 Class {
 	#name : #BEREnumerated,
 	#superclass : #BERInteger,
-	#category : 'LDAP-BER'
+	#category : #'LDAP-BER'
 }
 
 { #category : #'as yet unclassified' }

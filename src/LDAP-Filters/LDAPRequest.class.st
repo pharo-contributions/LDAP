@@ -9,7 +9,7 @@ Class {
 		'result',
 		'isAbandoned'
 	],
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }
@@ -18,7 +18,7 @@ LDAPRequest >> abandon [
 	isAbandoned ifFalse: [
 		LDAPAbandonRequest new initializeWith: worker abandonId: messageId.
 		worker delTargetFor: messageId.
-		isAbandoned _ true ]
+		isAbandoned := true ]
 	
 ]
 
@@ -29,11 +29,11 @@ LDAPRequest >> hasResult [
 
 { #category : #'as yet unclassified' }
 LDAPRequest >> initializeWith: anLDAPWorker [
-	worker _ anLDAPWorker.
-	messageId _ worker nextMessageId.
-	waitingSemaphore _ Semaphore new.
-	isAbandoned _ false.
-	isDone _ false.
+	worker := anLDAPWorker.
+	messageId := worker nextMessageId.
+	waitingSemaphore := Semaphore new.
+	isAbandoned := false.
+	isDone := false.
 
 	worker addTarget: self for: messageId.
 
@@ -47,7 +47,7 @@ LDAPRequest >> isDone [
 
 { #category : #'as yet unclassified' }
 LDAPRequest >> processResponse: aMessage [
-	result _ aMessage.
+	result := aMessage.
 	waitingSemaphore signal.
 ]
 

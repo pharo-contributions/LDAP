@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPBindResult,
 	#superclass : #LDAPResult,
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }

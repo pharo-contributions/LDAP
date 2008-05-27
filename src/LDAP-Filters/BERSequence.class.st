@@ -1,7 +1,7 @@
 Class {
 	#name : #BERSequence,
 	#superclass : #BERConstruct,
-	#category : 'LDAP-BER'
+	#category : #'LDAP-BER'
 }
 
 { #category : #'as yet unclassified' }

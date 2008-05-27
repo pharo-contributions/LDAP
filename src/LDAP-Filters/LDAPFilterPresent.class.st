@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPFilterPresent,
 	#superclass : #LDAPFilterWithType,
-	#category : 'LDAP-Filters'
+	#category : #'LDAP-Filters'
 }
 
 { #category : #'as yet unclassified' }

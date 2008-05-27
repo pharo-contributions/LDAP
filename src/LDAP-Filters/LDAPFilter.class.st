@@ -1,13 +1,13 @@
 Class {
 	#name : #LDAPFilter,
 	#superclass : #Object,
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }
 LDAPFilter class >> andOf: someFilters [
 	| set |
-	set _ LDAPFilterAnd new.
+	set := LDAPFilterAnd new.
 	someFilters do: [ :each | set add: each ].
 	^ set
 
@@ -36,7 +36,7 @@ LDAPFilter class >> not: aFilter [
 { #category : #'as yet unclassified' }
 LDAPFilter class >> orOf: someFilters [
 	| set |
-	set _ LDAPFilterOr new.
+	set := LDAPFilterOr new.
 	someFilters do: [ :each | set add: each ].
 	^ set
 

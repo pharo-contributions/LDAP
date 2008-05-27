@@ -5,7 +5,7 @@ Class {
 		'dn',
 		'attrs'
 	],
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }
@@ -21,7 +21,7 @@ LDAPSearchResultEntry class >> tagValue [
 { #category : #'as yet unclassified' }
 LDAPSearchResultEntry >> attrAt: aKey [
 	| selected |
-	selected _ attrs at: (aKey asByteArray) ifAbsent: [ ^ nil ].
+	selected := attrs at: (aKey asByteArray) ifAbsent: [ ^ nil ].
 	^ selected first asString.
 
 ]
@@ -36,13 +36,13 @@ LDAPSearchResultEntry >> attrs [
 LDAPSearchResultEntry >> decode: aStream [
 	| berDN berAttrs |
 
-	berDN _ BERElement newFrom: aStream.
-	berAttrs _ BERElement newFrom: aStream.
+	berDN := BERElement newFrom: aStream.
+	berAttrs := BERElement newFrom: aStream.
 
-	attrs _ Dictionary new.
+	attrs := Dictionary new.
 	berAttrs elements do: [ :eachBerAttr | | values |
 		
-		values _ OrderedCollection new.
+		values := OrderedCollection new.
 		((eachBerAttr value) elements at: 2) value elements do: [ :eachBerValue |	
 			values add: (eachBerValue value value) ].
 		
@@ -50,7 +50,7 @@ LDAPSearchResultEntry >> decode: aStream [
 			at: (((eachBerAttr value) elements at: 1) value value)
 			put: values ].
 
-	dn _ berDN value.
+	dn := berDN value.
 
 ]
 

@@ -1,18 +1,18 @@
 Class {
 	#name : #LDAPEncoder,
 	#superclass : #Object,
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }
 LDAPEncoder class >> abandonRequest: aMessageId abandonId: abandonId [
 	| stream mesg req |
-	stream _ ReadWriteStream on: (String new).
+	stream := ReadWriteStream on: (String new).
 
-	mesg _ BERSequence new.
+	mesg := BERSequence new.
 	mesg addElement: (BERInteger new value: aMessageId).
 
-	req _ BERInteger new value: abandonId.
+	req := BERInteger new value: abandonId.
 	
 	mesg addElement: (req tagSetApplication) withTag: 16.
 	mesg writeOn: stream.
@@ -23,12 +23,12 @@ LDAPEncoder class >> abandonRequest: aMessageId abandonId: abandonId [
 { #category : #'as yet unclassified' }
 LDAPEncoder class >> addRequest: aMessageId dn: aDN attrs: someAttrs [
 	| stream mesg req |
-	stream _ ReadWriteStream on: (String new).
+	stream := ReadWriteStream on: (String new).
 
-	mesg _ BERSequence new.
+	mesg := BERSequence new.
 	mesg addElement: (BERInteger new value: aMessageId).
 
-	req _ BERSequence new.
+	req := BERSequence new.
 	req addElement: (BEROctetString new value: aDN).
 	req addElement: (self attrsAsBERElement: someAttrs).
 	
@@ -41,10 +41,10 @@ LDAPEncoder class >> addRequest: aMessageId dn: aDN attrs: someAttrs [
 { #category : #'as yet unclassified' }
 LDAPEncoder class >> attrAsBERElement: anAttrAsAssociation [
 	| ber berAttrVals key |
-	ber _ BERSequence new.
-	key _ anAttrAsAssociation key.
+	ber := BERSequence new.
+	key := anAttrAsAssociation key.
 	ber addElement: (BEROctetString new value: key).
-	berAttrVals _ BERSet new.
+	berAttrVals := BERSet new.
 	(anAttrAsAssociation value) do: [ :eachVal |
 		berAttrVals addElement: (BEROctetString new value: eachVal) ].
 	ber addElement: berAttrVals.
@@ -54,7 +54,7 @@ LDAPEncoder class >> attrAsBERElement: anAttrAsAssociation [
 { #category : #'as yet unclassified' }
 LDAPEncoder class >> attrsAsBERElement: someAttrs [
 	| ber |
-	ber _ BERSequence new.
+	ber := BERSequence new.
 	someAttrs associationsDo: [ :eachAttr |
 		ber addElement: (self attrAsBERElement: eachAttr) ].
 	^ ber
@@ -64,12 +64,12 @@ LDAPEncoder class >> attrsAsBERElement: someAttrs [
 { #category : #'as yet unclassified' }
 LDAPEncoder class >> bindRequest: aMessageId username: aUsername credentials: aPassword method: anAuthMethod [
 	| stream mesg req |
-	stream _ ReadWriteStream on: (String new).
+	stream := ReadWriteStream on: (String new).
 
-	mesg _ BERSequence new.
+	mesg := BERSequence new.
 	mesg addElement: (BERInteger new value: aMessageId).
 
-	req _ BERSequence new tagSetApplication.
+	req := BERSequence new tagSetApplication.
 	req addElement: (BERInteger new value: 3).
 	req addElement: (BEROctetString new value: aUsername).
 	req addElement: (BEROctetString new tagSetContext;  value: aPassword) withTag: 0.
@@ -83,12 +83,12 @@ LDAPEncoder class >> bindRequest: aMessageId username: aUsername credentials: aP
 { #category : #'as yet unclassified' }
 LDAPEncoder class >> compareRequest: aMessageId dn: aDN comparing: anEqualityFilter [
 	| stream mesg req |
-	stream _ ReadWriteStream on: (String new).
+	stream := ReadWriteStream on: (String new).
 
-	mesg _ BERSequence new.
+	mesg := BERSequence new.
 	mesg addElement: (BERInteger new value: aMessageId).
 
-	req _ BERSequence new.
+	req := BERSequence new.
 	req 
 		addElement: (BEROctetString new value: aDN);
 		addElement: (anEqualityFilter asBERElement).
@@ -102,12 +102,12 @@ LDAPEncoder class >> compareRequest: aMessageId dn: aDN comparing: anEqualityFil
 { #category : #'as yet unclassified' }
 LDAPEncoder class >> delRequest: aMessageId dn: aDN [
 	| stream mesg req |
-	stream _ ReadWriteStream on: (String new).
+	stream := ReadWriteStream on: (String new).
 
-	mesg _ BERSequence new.
+	mesg := BERSequence new.
 	mesg addElement: (BERInteger new value: aMessageId).
 
-	req _ BEROctetString new value: aDN.
+	req := BEROctetString new value: aDN.
 	
 	mesg addElement: (req tagSetApplication) withTag: 10.
 	mesg writeOn: stream.
@@ -118,12 +118,12 @@ LDAPEncoder class >> delRequest: aMessageId dn: aDN [
 { #category : #'as yet unclassified' }
 LDAPEncoder class >> modifyDNRequest: aMessageId dn: aDN toRDN: aRDN underDN: aUnderDN wantToClearAttrs: aWantsToClearAttrs [ 
 	| stream mesg req |
-	stream _ ReadWriteStream on: (String new).
+	stream := ReadWriteStream on: (String new).
 
-	mesg _ BERSequence new.
+	mesg := BERSequence new.
 	mesg addElement: (BERInteger new value: aMessageId).
 
-	req _ BERSequence new.
+	req := BERSequence new.
 	req 
 		addElement: (BEROctetString new value: aDN);
 		addElement: (BEROctetString new value: aRDN);
@@ -140,14 +140,14 @@ LDAPEncoder class >> modifyDNRequest: aMessageId dn: aDN toRDN: aRDN underDN: aU
 { #category : #'as yet unclassified' }
 LDAPEncoder class >> modifyRequest: aMessageId dn: aDN ops: someModifyingOps [
 	| stream mesg req ops |
-	stream _ ReadWriteStream on: (String new).
+	stream := ReadWriteStream on: (String new).
 
-	mesg _ BERSequence new.
+	mesg := BERSequence new.
 	mesg addElement: (BERInteger new value: aMessageId).
 
-	req _ BERSequence new.
+	req := BERSequence new.
 	req addElement: (BEROctetString new value: aDN).
-	ops _ BERSequence new.
+	ops := BERSequence new.
 	someModifyingOps do: [ :each | ops addElement: each asBERElement ].
 	req addElement: ops.
 	
@@ -160,11 +160,11 @@ LDAPEncoder class >> modifyRequest: aMessageId dn: aDN ops: someModifyingOps [
 { #category : #'as yet unclassified' }
 LDAPEncoder class >> newFrom: aStream [
 	| firstByte element elementClass |
-	firstByte _ aStream next.
-	elementClass _ self identifyIncomingElement: firstByte.
+	firstByte := aStream next.
+	elementClass := self identifyIncomingElement: firstByte.
 	elementClass ifNil: [
 		LDAPException new messageText: 'invalid tag -- make sure class is in identifyIncomingElements'; signal ].
-	element _ elementClass new setTag: firstByte.
+	element := elementClass new setTag: firstByte.
 	element decode: aStream.
 	^ element
 
@@ -173,12 +173,12 @@ LDAPEncoder class >> newFrom: aStream [
 { #category : #'as yet unclassified' }
 LDAPEncoder class >> searchRequest: aMessageId base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
 	| stream mesg req attrsSeq |
-	stream _ ReadWriteStream on: (String new).
+	stream := ReadWriteStream on: (String new).
 
-	mesg _ BERSequence new.
+	mesg := BERSequence new.
 	mesg addElement: (BERInteger new value: aMessageId).
 
-	req _ BERSequence new tagSetApplication.
+	req := BERSequence new tagSetApplication.
 	
 	req
 		addElement: (BEROctetString new value: aBase);
@@ -190,7 +190,7 @@ LDAPEncoder class >> searchRequest: aMessageId base: aBase scope: aSearchScope d
 		addElement: 
 			(aFilter asBERElement) tagSetContext withTag: (aFilter class tagValue).
 
-	attrsSeq _ BERSequence new.
+	attrsSeq := BERSequence new.
 	someAttrs do: [ :each |
 		attrsSeq addElement: (BEROctetString new value: each) ].
 	req addElement: attrsSeq.
@@ -205,9 +205,9 @@ LDAPEncoder class >> searchRequest: aMessageId base: aBase scope: aSearchScope d
 { #category : #'as yet unclassified' }
 LDAPEncoder class >> unbindRequest: aMessageId [
 	| stream mesg |
-	stream _ ReadWriteStream on: (String new).
+	stream := ReadWriteStream on: (String new).
 
-	mesg _ BERSequence new.
+	mesg := BERSequence new.
 	mesg addElement: (BERInteger new value: aMessageId).
 
 	mesg addElement: (BERNull new tagSetApplication) withTag: 2.

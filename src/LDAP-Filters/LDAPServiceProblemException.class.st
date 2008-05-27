@@ -1,5 +1,5 @@
 Class {
 	#name : #LDAPServiceProblemException,
 	#superclass : #LDAPException,
-	#category : 'LDAP-Exceptions'
+	#category : #'LDAP-Exceptions'
 }

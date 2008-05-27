@@ -5,7 +5,7 @@ Class {
 		'worker',
 		'workerThread'
 	],
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'search scope constants' }
@@ -16,9 +16,9 @@ LDAPConnection class >> baseObject [
 { #category : #'as yet unclassified' }
 LDAPConnection class >> collectionizeAttrs: someAttrs [
 	| collectionized |
-	collectionized _ someAttrs clone.
+	collectionized := someAttrs clone.
 	collectionized keys do: [:eachKey | | val |
-		val _ someAttrs at: eachKey.
+		val := someAttrs at: eachKey.
 		(val isKindOf: String)
 			ifTrue: [
 				someAttrs at: eachKey put: (OrderedCollection new add: val; yourself) ] ].
@@ -82,7 +82,7 @@ LDAPConnection class >> to: aHostname [
 { #category : #'as yet unclassified' }
 LDAPConnection class >> to: aHostname port: aPort [
 	| obj |
-	obj _ self basicNew initializeWithHost: aHostname port: aPort.
+	obj := self basicNew initializeWithHost: aHostname port: aPort.
 	^ obj
 ]
 
@@ -126,9 +126,9 @@ LDAPConnection >> disconnect [
 
 { #category : #'as yet unclassified' }
 LDAPConnection >> initializeWithHost: aHostname port: aPort [
-	worker _ LDAPWorker newTo: aHostname port: aPort.
+	worker := LDAPWorker newTo: aHostname port: aPort.
 	worker connect.
-	workerThread _ worker start.
+	workerThread := worker start.
 
 ]
 
@@ -150,12 +150,12 @@ LDAPConnection >> modifyDN: aDN toRDN: aRDN wantToClearAttrs: aWantsToClearAttrs
 { #category : #'as yet unclassified' }
 LDAPConnection >> newSearch: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
 	| nonNilFilter nonNilAttrs |
-	nonNilFilter _ aFilter
-		ifNil: [ nonNilFilter _ LDAPFilter with: 'objectclass' ]
+	nonNilFilter := aFilter
+		ifNil: [ nonNilFilter := LDAPFilter with: 'objectclass' ]
 		ifNotNil: [ aFilter ].
 	
-	nonNilAttrs _ someAttrs
-		ifNil: [ nonNilAttrs _ OrderedCollection new ]
+	nonNilAttrs := someAttrs
+		ifNil: [ nonNilAttrs := OrderedCollection new ]
 		ifNotNil: [ someAttrs ].
 	
 	^ LDAPSearchRequest new initializeWith: worker base: aBase scope: aSearchScope deref: aDerefBehaviour filter: nonNilFilter attrs: nonNilAttrs wantAttrsOnly: wantsAttrsOnly

@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPCompareRequest,
 	#superclass : #LDAPRequest,
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }
@@ -14,8 +14,8 @@ LDAPCompareRequest >> initializeWith: anLDAPWorker dn: aDN comparing: anEquality
 
 { #category : #'as yet unclassified' }
 LDAPCompareRequest >> processResponse: aMessage [
-	aMessage resultCode = 5 ifTrue: [ result _ false ].
-	aMessage resultCode = 6 ifTrue: [ result _ true ].
+	aMessage resultCode = 5 ifTrue: [ result := false ].
+	aMessage resultCode = 6 ifTrue: [ result := true ].
 	"we save nil for execptions"
 	waitingSemaphore signal.
 ]

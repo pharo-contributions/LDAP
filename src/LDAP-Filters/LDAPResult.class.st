@@ -7,7 +7,7 @@ Class {
 		'matchedDN',
 		'referral'
 	],
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }
@@ -20,7 +20,7 @@ LDAPResult >> checkForExceptions [
 	(resultCode = 0 or: [resultCode = 5] or: [resultCode = 6])
 		ifFalse: [
 			| ex |
-			ex _ LDAPException newWithCode: resultCode.
+			ex := LDAPException newWithCode: resultCode.
 			ex signal: errorMessage ]
 ]
 
@@ -28,20 +28,20 @@ LDAPResult >> checkForExceptions [
 LDAPResult >> decode: aStream [
 	| berResultCode berErrorMessage berMatchedDN lengthRemaining |
 		
-	berResultCode _ BERElement newFrom: aStream.
-	berMatchedDN _ BERElement newFrom: aStream.
-	berErrorMessage _ BERElement newFrom: aStream.
+	berResultCode := BERElement newFrom: aStream.
+	berMatchedDN := BERElement newFrom: aStream.
+	berErrorMessage := BERElement newFrom: aStream.
 	
-	resultCode _ berResultCode value.
-	errorMessage _ berErrorMessage value.
-	matchedDN _ berMatchedDN value.
+	resultCode := berResultCode value.
+	errorMessage := berErrorMessage value.
+	matchedDN := berMatchedDN value.
 
 	"actually its not that its not implemented, but that berReferral value is not a string but instead a sequence of them"
-	lengthRemaining _ berResultCode totalLength + berMatchedDN totalLength + berErrorMessage totalLength.	
+	lengthRemaining := berResultCode totalLength + berMatchedDN totalLength + berErrorMessage totalLength.	
 	lengthRemaining - self length ~= 0 ifTrue: [
 		| berReferral |
-		berReferral _ BERElement newFrom: aStream.
-		referral _  berReferral value.
+		berReferral := BERElement newFrom: aStream.
+		referral :=  berReferral value.
 		self notYetImplemented. 
 	  ].
 	
@@ -56,7 +56,7 @@ LDAPResult >> referral [
 
 { #category : #'as yet unclassified' }
 LDAPResult >> referral: aReferral [
-	referral _ aReferral
+	referral := aReferral
 ]
 
 { #category : #'as yet unclassified' }

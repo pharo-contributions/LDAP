@@ -1,7 +1,7 @@
 Class {
 	#name : #BERNull,
 	#superclass : #BERElement,
-	#category : 'LDAP-BER'
+	#category : #'LDAP-BER'
 }
 
 { #category : #'as yet unclassified' }
@@ -12,8 +12,8 @@ BERNull class >> tagValue [
 { #category : #'as yet unclassified' }
 BERNull >> decode: aStream [
 	"not sure about this.. should it be 0?"
-	"length _ 1."
-	value _ nil
+	"length := 1."
+	value := nil
 ]
 
 { #category : #'as yet unclassified' }

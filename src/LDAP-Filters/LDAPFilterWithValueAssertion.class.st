@@ -5,13 +5,13 @@ Class {
 		'type',
 		'value'
 	],
-	#category : 'LDAP-Filters'
+	#category : #'LDAP-Filters'
 }
 
 { #category : #'as yet unclassified' }
 LDAPFilterWithValueAssertion >> asBERElement [
 	| ber |
-	ber _ BERSequence new.
+	ber := BERSequence new.
 	ber
 		addElement: (BEROctetString new value: type);
 		addElement: (BEROctetString new value: value).
@@ -20,6 +20,6 @@ LDAPFilterWithValueAssertion >> asBERElement [
 
 { #category : #'as yet unclassified' }
 LDAPFilterWithValueAssertion >> setType: anAttrType value: anAttrValue [
-	type _ anAttrType.
-	value _ anAttrValue	
+	type := anAttrType.
+	value := anAttrValue	
 ]

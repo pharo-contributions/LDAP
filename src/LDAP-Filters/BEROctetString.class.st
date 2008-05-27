@@ -1,7 +1,7 @@
 Class {
 	#name : #BEROctetString,
 	#superclass : #BERElement,
-	#category : 'LDAP-BER'
+	#category : #'LDAP-BER'
 }
 
 { #category : #'as yet unclassified' }
@@ -11,7 +11,7 @@ BEROctetString class >> tagValue [
 
 { #category : #'as yet unclassified' }
 BEROctetString >> decode: aStream [
-	value _ (aStream next: length)
+	value := (aStream next: length)
 ]
 
 { #category : #'as yet unclassified' }

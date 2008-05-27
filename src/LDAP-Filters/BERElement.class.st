@@ -8,7 +8,7 @@ Class {
 		'tagHeader',
 		'tagLength'
 	],
-	#category : 'LDAP-BER'
+	#category : #'LDAP-BER'
 }
 
 { #category : #'as yet unclassified' }
@@ -27,7 +27,7 @@ BERElement class >> elementClasses [
 BERElement class >> identifyIncomingElement: firstByte [
 	| type |
 	"so why are we doing this in a comparision here, instead of asking the class wether it handles the element?"
-	type _ self elementClasses detect: [ :each | each tagValue = firstByte asInteger ] ifNone: [nil].
+	type := self elementClasses detect: [ :each | each tagValue = firstByte asInteger ] ifNone: [nil].
 	^ type
 	
 ]
@@ -41,12 +41,12 @@ BERElement class >> new [
 { #category : #'as yet unclassified' }
 BERElement class >> newFrom: aStream [
 	| firstByte element elementClass |
-	firstByte _ aStream next.
+	firstByte := aStream next.
 	Transcript show: '*** Next byte is: ', firstByte asString; cr.
-	elementClass _ self identifyIncomingElement: firstByte.
+	elementClass := self identifyIncomingElement: firstByte.
 	elementClass ifNil: [
 		LDAPException new messageText: 'invalid tag -- make sure class is in identifyIncomingElements'; signal ].
-	element _ elementClass new setTag: firstByte.
+	element := elementClass new setTag: firstByte.
 	"we should read the tag here, instead of just the first byte"
 	element readLengthFrom: aStream.
 	element decode: aStream.
@@ -66,7 +66,7 @@ BERElement >> decode: aStream [
 
 { #category : #'as yet unclassified' }
 BERElement >> initialize [
-	tagHeader _ 0
+	tagHeader := 0
 
 ]
 
@@ -84,17 +84,17 @@ BERElement >> lengthLength [
 BERElement >> readLengthFrom: aStream [
 	| octets  firstOctet |
 	
-	firstOctet _ aStream next asInteger.
+	firstOctet := aStream next asInteger.
 	firstOctet < 128
 		
 		"short definite length"
-		ifTrue: [ length _ firstOctet. lengthLength _ 1. ]
+		ifTrue: [ length := firstOctet. lengthLength := 1. ]
 		
 		"long definite length"
 		ifFalse: [
-			octets _ aStream next: (firstOctet bitXor: 128).
-			lengthLength _ (firstOctet bitXor: 128) + 1. "the lengthlenghlength byte.. ugh."
-			length _ octets contents inject: 0 into: [:injectedValue :each | (injectedValue bitShift: 8) + (each asInteger)]
+			octets := aStream next: (firstOctet bitXor: 128).
+			lengthLength := (firstOctet bitXor: 128) + 1. "the lengthlenghlength byte.. ugh."
+			length := octets contents inject: 0 into: [:injectedValue :each | (injectedValue bitShift: 8) + (each asInteger)]
 		].
 		
 	^ length			
@@ -102,8 +102,8 @@ BERElement >> readLengthFrom: aStream [
 
 { #category : #'as yet unclassified' }
 BERElement >> setTag: aTag [
-	tagHeader _ aTag.
-	tagLength _ 1
+	tagHeader := aTag.
+	tagLength := 1
 ]
 
 { #category : #'as yet unclassified' }
@@ -113,12 +113,12 @@ BERElement >> tagLength [
 
 { #category : #'as yet unclassified' }
 BERElement >> tagSetApplication [
-	tagHeader _ tagHeader bitOr: 16r40
+	tagHeader := tagHeader bitOr: 16r40
 ]
 
 { #category : #'as yet unclassified' }
 BERElement >> tagSetContext [
-	tagHeader _ tagHeader bitOr: 16r80
+	tagHeader := tagHeader bitOr: 16r80
 		
 ]
 
@@ -134,7 +134,7 @@ BERElement >> value [
 
 { #category : #'as yet unclassified' }
 BERElement >> value: aValue [
-	value _ aValue
+	value := aValue
 ]
 
 { #category : #'as yet unclassified' }
@@ -146,7 +146,7 @@ BERElement >> writeBodyOn: aStream [
 BERElement >> writeLength: aLength on: aStream [
 	| octets octetsIndex remainderValue netOctets |
 	
-	octetsIndex _ 1.
+	octetsIndex := 1.
 	aLength < 128
 		
 		"short definite length"
@@ -155,16 +155,16 @@ BERElement >> writeLength: aLength on: aStream [
 		"long definite length"
 		ifFalse: [
 			"why were we using value in this block, instead of aLength?"
-			octets _ ByteArray new: (aLength digitLength + 1).
-			remainderValue _ aLength.
+			octets := ByteArray new: (aLength digitLength + 1).
+			remainderValue := aLength.
 			[remainderValue > 0] whileTrue: [
 				octets at: octetsIndex  put: (remainderValue bitAnd: 16rFF).
-				octetsIndex _ octetsIndex + 1.
-				remainderValue _ remainderValue bitShift: -8 ].
+				octetsIndex := octetsIndex + 1.
+				remainderValue := remainderValue bitShift: -8 ].
 			octets at: octetsIndex put: ((octetsIndex - 1) bitOr: 128).
 			
 			"hton"
-			netOctets _ ByteArray new: octetsIndex.
+			netOctets := ByteArray new: octetsIndex.
 			(1 to: octetsIndex)
 				do: [:i | netOctets at: i put: (octets at: (octetsIndex + 1) - i) ].
 			
@@ -184,7 +184,7 @@ BERElement >> writeOn: aStream [
 { #category : #'as yet unclassified' }
 BERElement >> writeOn: aStream withTag: aTag [
 	| combinedTag |
-	combinedTag _ self class tagValue bitOr: tagHeader.
+	combinedTag := self class tagValue bitOr: tagHeader.
 
 	"here we are supposing that if we are given a tag, we dont need the universal tag value
 	 im not really sure on wether its correct or not ."
@@ -192,8 +192,8 @@ BERElement >> writeOn: aStream withTag: aTag [
 	"however, we are in .25 and its proved to be correct so far"			
 	
 	aTag ifNotNil: [
-		combinedTag _ ((combinedTag bitOr: 31)  bitXor: 31).
-		combinedTag _ combinedTag bitOr: aTag ].
+		combinedTag := ((combinedTag bitOr: 31)  bitXor: 31).
+		combinedTag := combinedTag bitOr: aTag ].
 
 	aStream nextPut: (combinedTag asCharacter).
 	self writeBodyOn: aStream

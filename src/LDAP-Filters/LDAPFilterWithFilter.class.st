@@ -4,13 +4,13 @@ Class {
 	#instVars : [
 		'filter'
 	],
-	#category : 'LDAP-Filters'
+	#category : #'LDAP-Filters'
 }
 
 { #category : #'as yet unclassified' }
 LDAPFilterWithFilter >> asBERElement [
 	| ber |
-	ber _ BERSet new.
+	ber := BERSet new.
 	ber addElement: (filter asBERElement) tagSetContext withTag: filter class tagValue.
 	
 	^ ber
@@ -18,5 +18,5 @@ LDAPFilterWithFilter >> asBERElement [
 
 { #category : #'as yet unclassified' }
 LDAPFilterWithFilter >> setFilter: aFilter [
-	filter _ aFilter
+	filter := aFilter
 ]

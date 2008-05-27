@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPModifyRequest,
 	#superclass : #LDAPRequest,
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }

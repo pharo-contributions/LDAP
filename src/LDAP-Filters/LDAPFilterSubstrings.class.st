@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPFilterSubstrings,
 	#superclass : #LDAPFilterWithSubstring,
-	#category : 'LDAP-Filters'
+	#category : #'LDAP-Filters'
 }
 
 { #category : #'as yet unclassified' }

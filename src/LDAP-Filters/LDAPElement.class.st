@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPElement,
 	#superclass : #BERElement,
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }

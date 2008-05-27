@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPBindRequest,
 	#superclass : #LDAPRequest,
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'filters'
 	],
-	#category : 'LDAP-Filters'
+	#category : #'LDAP-Filters'
 }
 
 { #category : #'as yet unclassified' }
@@ -20,13 +20,13 @@ LDAPFilterWithSet >> add: aFilter [
 { #category : #'as yet unclassified' }
 LDAPFilterWithSet >> asBERElement [
 	| ber |
-	ber _ BERSet new.
+	ber := BERSet new.
 	filters do: [ :each | ber addElement: (each asBERElement) tagSetContext withTag: each class tagValue ].
 	^ ber
 ]
 
 { #category : #'as yet unclassified' }
 LDAPFilterWithSet >> initialize [
-	filters _ OrderedCollection new
+	filters := OrderedCollection new
 	
 ]

@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPModifyReplaceOp,
 	#superclass : #LDAPModifyOp,
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }

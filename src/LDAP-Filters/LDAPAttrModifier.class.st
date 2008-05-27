@@ -1,7 +1,7 @@
 Class {
 	#name : #LDAPAttrModifier,
 	#superclass : #Object,
-	#category : 'LDAP'
+	#category : #LDAP
 }
 
 { #category : #'as yet unclassified' }
