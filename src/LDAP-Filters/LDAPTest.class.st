@@ -248,15 +248,12 @@ LDAPTest >> testSearchWithFilters [
 
 { #category : #'as yet unclassified' }
 LDAPTest >> testSearchWithNext [
-	| conn req rr |
+	| conn req rr r |
 	conn := self connect.
 	
 	req := conn newSearch: (self class baseDN) scope: (LDAPConnection wholeSubtree) deref: (LDAPConnection derefNever) filter: nil attrs: nil wantAttrsOnly: false.
 	rr := OrderedCollection new.
-	[req hasMoreEntries] whileTrue: [
-		| r |
-		 r := req next.
-		rr add: r ].
+	[(r := req next) == nil] whileFalse: [rr add: r ].
 	
 	conn disconnect.	
 ]

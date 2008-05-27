@@ -5,7 +5,8 @@ Class {
 		'partialResults',
 		'iterator',
 		'gotNewResultSemaphore',
-		'searchResult'
+		'searchResult',
+		'resultCount'
 	],
 	#category : #'LDAP-Core'
 }
@@ -21,22 +22,11 @@ LDAPSearchRequest >> checkForExceptions [
 ]
 
 { #category : #'as yet unclassified' }
-LDAPSearchRequest >> hasMoreEntries [
-	"Answer true if we have more entries to process, false otherwise.
-	Wait if necessary to determine whether more data becomes available."
-	(partialResults size = iterator and:[isDone not]) 
-		ifTrue:[gotNewResultSemaphore waitTimeoutSeconds: self defaultTimeout].
-	(partialResults size = iterator and:[isDone not]) 
-		ifTrue:[^self error: 'LDAP timeout'].
-	isDone ifTrue:[self checkForExceptions].
-	^partialResults size > iterator
-]
-
-{ #category : #'as yet unclassified' }
 LDAPSearchRequest >> initializeWith: anLDAPWorker base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
 	| encoded |
 	partialResults := OrderedCollection new.
 	iterator :=  0.
+	resultCount := 0.
 	gotNewResultSemaphore := Semaphore new.
 	self initializeWith: anLDAPWorker.
 	encoded := LDAPEncoder searchRequest: messageId  base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly.
@@ -46,22 +36,32 @@ LDAPSearchRequest >> initializeWith: anLDAPWorker base: aBase scope: aSearchScop
 
 { #category : #'as yet unclassified' }
 LDAPSearchRequest >> next [
-	self hasMoreEntries ifTrue:[
-		^(partialResults at: (iterator := iterator + 1)).
-	].
-	^ nil
+	^self nextTimeout: self defaultTimeout.
+]
 
+{ #category : #'as yet unclassified' }
+LDAPSearchRequest >> nextTimeout: seconds [
+	isDone ifFalse:[
+		"As long as the request isn't done, synchronously wait for more results"
+		gotNewResultSemaphore waitTimeoutSeconds: seconds.
+		(resultCount = iterator and:[isDone not]) ifTrue:[^self error: 'LDAP timeout'].
+	].
+	resultCount > iterator
+		ifTrue:[^partialResults at: (iterator := iterator + 1)]
+		ifFalse:[^nil]
 ]
 
 { #category : #'as yet unclassified' }
 LDAPSearchRequest >> processResponse: aSearchResultEntry [
-	aSearchResultEntry class isEndMarker
-		ifTrue: [ 
-			searchResult := aSearchResultEntry.
-			isDone := true. 
-			result := partialResults. 
-			waitingSemaphore signal. ]
-		ifFalse: [ partialResults addLast: aSearchResultEntry ].
-		
-	gotNewResultSemaphore signal
+	aSearchResultEntry class isEndMarker ifTrue:[
+		searchResult := aSearchResultEntry.
+		isDone := true. 
+		result := partialResults. 
+		waitingSemaphore signal.
+	] ifFalse:[
+		partialResults addLast: aSearchResultEntry.
+		resultCount := resultCount + 1.
+	].
+	gotNewResultSemaphore signal.
+
 ]

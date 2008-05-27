@@ -131,7 +131,9 @@ LDAPWorker >> start [
 	process := [ 
 		[running] whileTrue: [
 			|  element  |
-			element := [LDAPMessage newFrom: sockStream] on: Error do:[:ex| running := false].
+			element := [LDAPMessage newFrom: sockStream] on: Error do:[:ex| 
+				Transcript cr; show: ex description.
+				running := false].
 			"Transcript show: '********* READ ONE OF:  ', element asString; cr."
 			running ifTrue:[self dispatchMessage: element].
 		]
