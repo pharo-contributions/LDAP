@@ -10,7 +10,7 @@ Class {
 { #category : #'as yet unclassified' }
 LDAPCompareRequest >> checkForExceptions [
 	"Check to see if a response caused an exception and if so, raise it"
-	self isDone ifFalse:[^self error: 'Incomplete request (timeout?)'].
+	self isDone ifFalse:[^self error: 'LDAP timeout'].
 	searchResult checkForExceptions.
 ]
 

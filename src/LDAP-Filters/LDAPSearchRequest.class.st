@@ -13,7 +13,7 @@ Class {
 { #category : #'as yet unclassified' }
 LDAPSearchRequest >> checkForExceptions [
 	"Check to see if a response caused an exception and if so, raise it"
-	self isDone ifFalse:[^self error: 'Incomplete request (timeout?)'].
+	self isDone ifFalse:[^self error: 'LDAP timeout'].
 	searchResult resultCode = 32 ifFalse:[
 		"Do not raise object not found since it is implicit in the response"
 		searchResult checkForExceptions.
@@ -24,8 +24,10 @@ LDAPSearchRequest >> checkForExceptions [
 LDAPSearchRequest >> hasMoreEntries [
 	"Answer true if we have more entries to process, false otherwise.
 	Wait if necessary to determine whether more data becomes available."
-	[partialResults size = iterator and:[isDone not]] 
-		whileTrue:[gotNewResultSemaphore wait].
+	(partialResults size = iterator and:[isDone not]) 
+		ifTrue:[gotNewResultSemaphore waitTimeoutSeconds: self defaultTimeout].
+	(partialResults size = iterator and:[isDone not]) 
+		ifTrue:[^self error: 'LDAP timeout'].
 	isDone ifTrue:[self checkForExceptions].
 	^partialResults size > iterator
 ]

@@ -25,8 +25,14 @@ LDAPRequest >> abandon [
 { #category : #'as yet unclassified' }
 LDAPRequest >> checkForExceptions [
 	"Check to see if a response caused an exception and if so, raise it"
-	self isDone ifFalse:[^self error: 'Incomplete request (timeout?)'].
+	self isDone ifFalse:[^self error: 'LDAP timeout'].
 	result checkForExceptions.
+]
+
+{ #category : #'as yet unclassified' }
+LDAPRequest >> defaultTimeout [
+	"Answer the default timout for LDAP queries"
+	^30 "seconds"
 ]
 
 { #category : #'as yet unclassified' }
@@ -67,8 +73,8 @@ LDAPRequest >> result [
 
 { #category : #'as yet unclassified' }
 LDAPRequest >> wait [
-	result ifNil: [waitingSemaphore wait].
-	self checkForExceptions.
+	^self waitTimeoutSeconds: self defaultTimeout
+
 ]
 
 { #category : #'as yet unclassified' }
