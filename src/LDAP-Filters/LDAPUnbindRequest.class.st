@@ -10,7 +10,7 @@ LDAPUnbindRequest >> initializeWith: anLDAPWorker [
 	worker := anLDAPWorker.
 	messageId := worker nextMessageId.
 	encoded := LDAPEncoder unbindRequest: messageId.
-	Transcript show: encoded asHex; cr.
+	"Transcript show: encoded asHex; cr."
 	worker send: encoded.
 
 ]
