@@ -4,10 +4,21 @@ Class {
 	#instVars : [
 		'partialResults',
 		'iterator',
-		'gotNewResultSemaphore'
+		'gotNewResultSemaphore',
+		'searchResult'
 	],
 	#category : #'LDAP-Core'
 }
+
+{ #category : #'as yet unclassified' }
+LDAPSearchRequest >> checkForExceptions [
+	"Check to see if a response caused an exception and if so, raise it"
+	self isDone ifFalse:[^self error: 'Incomplete request (timeout?)'].
+	searchResult resultCode = 32 ifFalse:[
+		"Do not raise object not found since it is implicit in the response"
+		searchResult checkForExceptions.
+	].
+]
 
 { #category : #'as yet unclassified' }
 LDAPSearchRequest >> hasMoreEntries [
@@ -44,6 +55,7 @@ LDAPSearchRequest >> next [
 		ifTrue: [
 			iterator := iterator + 1.
 			^ (partialResults at: iterator) ].
+	self isDone ifTrue:[self checkForExceptions].
 	^ nil
 
 ]
@@ -51,7 +63,11 @@ LDAPSearchRequest >> next [
 { #category : #'as yet unclassified' }
 LDAPSearchRequest >> processResponse: aSearchResultEntry [
 	aSearchResultEntry class isEndMarker
-		ifTrue: [ isDone := true. result := partialResults. waitingSemaphore signal. ]
+		ifTrue: [ 
+			searchResult := aSearchResultEntry.
+			isDone := true. 
+			result := partialResults. 
+			waitingSemaphore signal. ]
 		ifFalse: [ partialResults addLast: aSearchResultEntry ].
 		
 	gotNewResultSemaphore signal

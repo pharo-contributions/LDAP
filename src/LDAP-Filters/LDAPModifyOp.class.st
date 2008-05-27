@@ -34,3 +34,8 @@ LDAPModifyOp >> initializeWithAttr: anAttr values: someValues [
 	attr := anAttr.
 	values := someValues
 ]
+
+{ #category : #'as yet unclassified' }
+LDAPModifyOp >> printOn: aStream [
+	aStream nextPutAll: self class name, '(', attr, ': ', values asArray, ')'. 
+]

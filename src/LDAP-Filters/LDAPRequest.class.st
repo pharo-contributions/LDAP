@@ -23,6 +23,13 @@ LDAPRequest >> abandon [
 ]
 
 { #category : #'as yet unclassified' }
+LDAPRequest >> checkForExceptions [
+	"Check to see if a response caused an exception and if so, raise it"
+	self isDone ifFalse:[^self error: 'Incomplete request (timeout?)'].
+	result checkForExceptions.
+]
+
+{ #category : #'as yet unclassified' }
 LDAPRequest >> hasResult [
 	^ isDone
 ]
@@ -60,8 +67,20 @@ LDAPRequest >> result [
 
 { #category : #'as yet unclassified' }
 LDAPRequest >> wait [
-	result ifNil: [
-		waitingSemaphore wait ]
+	result ifNil: [waitingSemaphore wait].
+	self checkForExceptions.
+]
+
+{ #category : #'as yet unclassified' }
+LDAPRequest >> waitTimeoutMSecs: msecs [
+	result ifNil: [ waitingSemaphore waitTimeoutMSecs: msecs ].
+	self checkForExceptions.
+]
+
+{ #category : #'as yet unclassified' }
+LDAPRequest >> waitTimeoutSeconds: seconds [
+	result ifNil: [ waitingSemaphore waitTimeoutSeconds: seconds ].
+	self checkForExceptions.
 ]
 
 { #category : #'as yet unclassified' }
