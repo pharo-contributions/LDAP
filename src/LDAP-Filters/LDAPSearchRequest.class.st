@@ -22,13 +22,12 @@ LDAPSearchRequest >> checkForExceptions [
 
 { #category : #'as yet unclassified' }
 LDAPSearchRequest >> hasMoreEntries [
-	 (self isIteratorAtEnd and: [isDone])
-		ifTrue: [ ^ false ].
-	partialResults size = iterator
-		 ifTrue: [ gotNewResultSemaphore wait ].
-
-	^ ( ( self isIteratorAtEnd and: [isDone]) not ) .
-	
+	"Answer true if we have more entries to process, false otherwise.
+	Wait if necessary to determine whether more data becomes available."
+	[partialResults size = iterator and:[isDone not]] 
+		whileTrue:[gotNewResultSemaphore wait].
+	isDone ifTrue:[self checkForExceptions].
+	^partialResults size > iterator
 ]
 
 { #category : #'as yet unclassified' }
@@ -44,18 +43,10 @@ LDAPSearchRequest >> initializeWith: anLDAPWorker base: aBase scope: aSearchScop
 ]
 
 { #category : #'as yet unclassified' }
-LDAPSearchRequest >> isIteratorAtEnd [
-	^ ((partialResults isNil) or: [partialResults size = iterator])  
-
-]
-
-{ #category : #'as yet unclassified' }
 LDAPSearchRequest >> next [
-	self hasMoreEntries
-		ifTrue: [
-			iterator := iterator + 1.
-			^ (partialResults at: iterator) ].
-	self isDone ifTrue:[self checkForExceptions].
+	self hasMoreEntries ifTrue:[
+		^(partialResults at: (iterator := iterator + 1)).
+	].
 	^ nil
 
 ]
