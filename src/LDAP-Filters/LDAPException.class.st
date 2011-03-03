@@ -13,7 +13,7 @@ LDAPException class >> newWithCode: aResultCode [
 	newClass := self.
 	(aResultCode >= 16 and: [aResultCode <= 21])
 		 ifTrue: [ newClass := LDAPAttrProblemException ].
-	(aResultCode >= 32 & aResultCode <= 36 & aResultCode ~= 35)
+	(aResultCode >= 32) & (aResultCode <= 36) & (aResultCode ~= 35)
 		ifTrue: [ newClass := LDAPNameProblemException ].
 	(aResultCode >= 48 and: [aResultCode <= 50])
 		ifTrue: [ newClass := LDAPSecurityProblemException ].

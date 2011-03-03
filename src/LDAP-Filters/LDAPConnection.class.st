@@ -15,16 +15,11 @@ LDAPConnection class >> baseObject [
 
 { #category : #'as yet unclassified' }
 LDAPConnection class >> collectionizeAttrs: someAttrs [
-	| collectionized |
-	"collectionized := someAttrs clone."
-	collectionized := someAttrs shallowCopy.
-	collectionized keys do: [:eachKey | | val |
-		val := someAttrs at: eachKey.
-		(val isKindOf: String)
-			ifTrue: [
-				someAttrs at: eachKey put: (OrderedCollection new add: val; yourself) ] ].
+	"Convert all strings in someAttrs to collections"
 
-	^ collectionized
+	^someAttrs collect:[:val| 
+		val isString ifTrue:[OrderedCollection with: val] ifFalse:[val]].
+
 ]
 
 { #category : #'search deref constants' }
