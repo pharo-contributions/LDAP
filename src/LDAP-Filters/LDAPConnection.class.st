@@ -16,7 +16,8 @@ LDAPConnection class >> baseObject [
 { #category : #'as yet unclassified' }
 LDAPConnection class >> collectionizeAttrs: someAttrs [
 	| collectionized |
-	collectionized := someAttrs clone.
+	"collectionized := someAttrs clone."
+	collectionized := someAttrs shallowCopy.
 	collectionized keys do: [:eachKey | | val |
 		val := someAttrs at: eachKey.
 		(val isKindOf: String)

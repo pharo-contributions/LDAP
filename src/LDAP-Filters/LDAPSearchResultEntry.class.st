@@ -21,7 +21,8 @@ LDAPSearchResultEntry class >> tagValue [
 { #category : #'as yet unclassified' }
 LDAPSearchResultEntry >> attrAt: aKey [
 	| selected |
-	selected := attrs at: (aKey asByteArray) ifAbsent: [ ^ nil ].
+	"selected := attrs at: (aKey asByteArray) ifAbsent: [ ^ nil ]."
+	selected := attrs at: aKey ifAbsent: [ ^ nil ].
 	^ selected first asString.
 
 ]

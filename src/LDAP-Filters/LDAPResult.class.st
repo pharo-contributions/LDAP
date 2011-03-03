@@ -17,7 +17,8 @@ LDAPResult class >> tagValue [
 
 { #category : #'as yet unclassified' }
 LDAPResult >> checkForExceptions [
-	(resultCode = 0 or: [resultCode = 5] or: [resultCode = 6])
+	
+	(resultCode = 0 or: [ (resultCode = 5) or: [resultCode = 6]])
 		ifFalse: [
 			| ex |
 			ex := LDAPException newWithCode: resultCode.
