@@ -14,12 +14,20 @@ LDAPConnection class >> baseObject [
 ]
 
 { #category : #'as yet unclassified' }
-LDAPConnection class >> collectionizeAttrs: someAttrs [
-	"Convert all strings in someAttrs to collections"
+LDAPConnection class >> collectionizedAttrs: someAttrs [
+	| collectionized |
+	collectionized := someAttrs class new.	
 
-	^someAttrs collect:[:val| 
-		val isString ifTrue:[OrderedCollection with: val] ifFalse:[val]].
+	someAttrs keys do: [:eachKey | | val |
+		val := someAttrs at: eachKey.
+		(val isKindOf: String)
+			ifTrue: [
+				collectionized at: eachKey put: (OrderedCollection new add: val; yourself) ]
+			ifFalse: [
+				collectionized at: eachKey put: val ] ].
 
+	^ collectionized
+	
 ]
 
 { #category : #'search deref constants' }
@@ -89,7 +97,7 @@ LDAPConnection class >> wholeSubtree [
 
 { #category : #'as yet unclassified' }
 LDAPConnection >> addEntry: aDN attrs: someAttrs [
-	^ LDAPAddRequest new initializeWith: worker dn: aDN attrs: (self class collectionizeAttrs: someAttrs).
+	^ LDAPAddRequest new initializeWith: worker dn: aDN attrs: (self class collectionizedAttrs: someAttrs).
 ]
 
 { #category : #'as yet unclassified' }

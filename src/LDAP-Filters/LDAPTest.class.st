@@ -19,7 +19,6 @@ LDAPTest class >> bindDN [
 
 { #category : #'as yet unclassified' }
 LDAPTest class >> hostname [
-"	^ '10.2.0.12'"
 	^ '127.0.0.1'
 ]
 
@@ -39,7 +38,7 @@ LDAPTest class >> password [
 
 { #category : #'as yet unclassified' }
 LDAPTest class >> port [
-	^ 12000
+	^ 389
 ]
 
 { #category : #'as yet unclassified' }
