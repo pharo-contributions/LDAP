@@ -15,19 +15,8 @@ LDAPConnection class >> baseObject [
 
 { #category : #'as yet unclassified' }
 LDAPConnection class >> collectionizedAttrs: someAttrs [
-	| collectionized |
-	collectionized := someAttrs class new.	
-
-	someAttrs keys do: [:eachKey | | val |
-		val := someAttrs at: eachKey.
-		(val isKindOf: String)
-			ifTrue: [
-				collectionized at: eachKey put: (OrderedCollection new add: val; yourself) ]
-			ifFalse: [
-				collectionized at: eachKey put: val ] ].
-
-	^ collectionized
-	
+	^someAttrs collect: [:val | 
+		val isString ifTrue: [ OrderedCollection with: val ] ifFalse: [ val ] ].
 ]
 
 { #category : #'search deref constants' }
