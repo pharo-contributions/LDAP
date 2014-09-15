@@ -169,6 +169,24 @@ ConfigurationOfLDAP >> baseline11: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfLDAP >> baseline12: spec [
+	<version: '1.2-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/PharoExtras/LDAP/main'.
+		spec 
+			package: 'LDAP';
+			package: 'LDAP-Tests' with: [
+				spec requires: #('LDAP' ). ];
+			package: 'LDAP-ActiveDirectory' with: [
+				spec requires: #('LDAP' 'LDAP-SSL' ). ];
+			package: 'LDAP-SSL' with: [
+				spec requires: #('LDAP' ). ]. ].
+
+]
+
 { #category : #accessing }
 ConfigurationOfLDAP >> customProjectAttributes [
 	 "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -181,7 +199,7 @@ ConfigurationOfLDAP >> customProjectAttributes [
 ConfigurationOfLDAP >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '1.1-baseline'.
+	spec for: #'common' version: '1.2-baseline'.
 
 ]
 
@@ -202,7 +220,7 @@ ConfigurationOfLDAP >> project [
 ConfigurationOfLDAP >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '1.1'.
+	spec for: #'common' version: '1.2'.
 
 ]
 
@@ -233,5 +251,22 @@ ConfigurationOfLDAP >> version11: spec [
 		spec 
 			package: 'LDAP' with: 'LDAP-UdoSchneider.54';
 			package: #'LDAP-Tests' with: 'LDAP-Tests-UdoSchneider.2'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfLDAP >> version12: spec [
+	<version: '1.2' imports: #('1.2-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 1.2'.
+		spec author: 'UdoSchneider'.
+		spec timestamp: '9/15/2014 18:13'.
+		spec 
+			package: 'LDAP' with: 'LDAP-UdoSchneider.54';
+			package: 'LDAP-Tests' with: 'LDAP-Tests-UdoSchneider.2';
+			package: 'LDAP-ActiveDirectory' with: 'LDAP-ActiveDirectory-UdoSchneider.5';
+			package: 'LDAP-SSL' with: 'LDAP-SSL-UdoSchneider.3'. ].
 
 ]
