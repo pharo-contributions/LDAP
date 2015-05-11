@@ -68,34 +68,49 @@ BERTest class >> testAll [
 		testSearchRequest
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tools }
+BERTest >> formatWithHex: aString [
+	| encodedString pos |
+	
+	encodedString := WriteStream on: (String new).
+	(aString size >= 2) ifTrue: [  
+		pos := 1.
+		[ pos < aString size ] whileTrue: [  
+			encodedString nextPutAll: '16r'.
+			((aString at: pos) ~= $0) ifTrue: [ encodedString nextPut: (aString at: pos) ].
+			encodedString nextPut: (aString at: pos + 1).
+			pos := pos + 2.
+		].
+	].
+	^encodedString contents
+]
+
+{ #category : #tests }
 BERTest >> testAddRequest [
 	| encoded attrs |
 	attrs := Dictionary new.
-	attrs at: 'objectClass' put: (OrderedCollection new addLast: 'person'; yourself).
-	attrs at: 'cn' put: (OrderedCollection new addLast: 'test2'; yourself).
-	attrs at: 'sn' put: (OrderedCollection new addLast: 'test2'; yourself).
+	attrs at: 'objectClass' put: (OrderedCollection new addLast: ('person' utf8Encoded asString); yourself).
+	attrs at: 'cn' put: (OrderedCollection new addLast: ('test2' utf8Encoded asString); yourself).
+	attrs at: 'sn' put: (OrderedCollection new addLast: ('test2' utf8Encoded asString); yourself).
 
 	encoded := LDAPEncoder addRequest: 1 dn: 'cn=test2,dc=linalco,dc=test' attrs: attrs.
 	encoded := encoded asString asHex.
 
-	Transcript show: 'testAddRequest got: ', encoded; cr; show: '-'; cr.
-	self assert: (encoded = '305B0201016856041B636E3D74657374322C64633D6C696E616C636F2C64633D7465737430373017040B6F626A656374436C61737331080406706572736F6E300D0402636E310704057465737432300D0402736E310704057465737432')
+	self assert: (encoded = (self formatWithHex: '305B0201016856041B636E3D74657374322C64633D6C696E616C636F2C64633D746573743037300D0402636E3107040574657374323017040B6F626A656374436C61737331080406706572736F6E300D0402736E310704057465737432'))
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BERTest >> testBindRequest [
 	| encoded |
 	encoded := LDAPEncoder bindRequest: 1 username: 'cn=admin,dc=linalco,dc=test' credentials: 'secret' method: nil.
 	encoded := encoded asString asHex.
 
-	Transcript show: 'testBindRequest got: ', encoded; cr.
-	self assert: (encoded = '302D0201016028020103041B636E3D61646D696E2C64633D6C696E616C636F2C64633D746573748006736563726574')
+	self assert: (encoded = (self formatWithHex: ('302D0201016028020103041B636E3D61646D696E2C64633D6C696E616C636F2C64633D746573748006736563726574')))
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BERTest >> testBooleanEncoding [
 	|ber stream tests output |
 	ber := BERBoolean new.
@@ -107,24 +122,22 @@ BERTest >> testBooleanEncoding [
 		ber value: (test at: 1).	
 		ber writeOn: stream.
 		output :=  stream contents asString asHex.
-		Transcript show: 'Expected: ', (test at: 2), ' Got: ', output; cr.
-		self assert: (output = (test at: 2)) ]
+		self assert: (output = (self formatWithHex: (test at: 2))) ]
 	
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BERTest >> testDelRequest [
 	| encoded |
 	encoded := LDAPEncoder delRequest: 1 dn: 'cn=test2,dc=linalco,dc=test'.
 	encoded := encoded asString asHex.
 
-	Transcript show: 'testDelRequest got: ', encoded; cr; show: '-'; cr.
-	self assert: (encoded = '30200201014A1B636E3D74657374322C64633D6C696E616C636F2C64633D74657374')
+	self assert: (encoded = (self formatWithHex: '30200201014A1B636E3D74657374322C64633D6C696E616C636F2C64633D74657374'))
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BERTest >> testIntegerDecoding [
 	|ber stream tests value valueStream byte |
 	stream := ReadWriteStream on: (String new).
@@ -144,13 +157,12 @@ BERTest >> testIntegerDecoding [
 		ber := BERInteger newFrom: stream.
 		self assert: (ber class = BERInteger).
 		
-		Transcript show: 'Expected: ', (value asString), ' Got: ', (ber value asString); cr.
 		self assert: (ber value = value ) 
 	]
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BERTest >> testIntegerEncoding [
 	|ber stream tests output |
 	ber := BERInteger new.
@@ -162,13 +174,12 @@ BERTest >> testIntegerEncoding [
 		ber value: (test at: 1).	
 		ber writeOn: stream.
 		output :=  stream contents asString asHex.
-		Transcript show: 'Expected: ', (test at: 2), ' Got: ', output; cr.
-		self assert: (output = (test at: 2)) ]
+		self assert: (output = (self formatWithHex: (test at: 2))) ]
 	
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BERTest >> testModifyRequest [
 	| encoded ops |
 	ops :=  { 
@@ -178,12 +189,11 @@ BERTest >> testModifyRequest [
 	encoded := LDAPEncoder modifyRequest: 1 dn: 'cn=test5,dc=linalco,dc=test' ops: ops.
 	encoded := encoded asString asHex.
 
-	Transcript show: 'testModifyRequest got: ', encoded; cr."
-	self assert: (encoded = '3062020101665D041B636E3D74657374352C64633D6C696E616C636F2C64633D74657374303E301E0A010230190402736E311304077465737435736E0403666F6F0403626172301C0A01003017040B6465736372697074696F6E3108040672636875656F')
-"
+	self assert: (encoded = (self formatWithHex: '3062020101665D041B636E3D74657374352C64633D6C696E616C636F2C64633D74657374303E301E0A010230190402736E311304077465737435736E0403666F6F0403626172301C0A01003017040B6465736372697074696F6E3108040672636875656F'))
+
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BERTest >> testOctetStringEncoding [
 	|ber stream tests|
 	ber := BEROctetString new.
@@ -195,23 +205,22 @@ BERTest >> testOctetStringEncoding [
 		stream resetToStart.
 		ber value: (test at: 1).	
 		ber writeOn: stream.
-		self assert: (stream contents asString asHex = (test at: 3)) ]
+		self assert: (stream contents asString asHex = (self formatWithHex: (test at: 3))) ]
 	
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BERTest >> testSearchRequest [
 	| encoded |
 	encoded := LDAPEncoder searchRequest: 1 base: 'dc=linalco, dc=test' scope: (LDAPConnection wholeSubtree) deref: (LDAPConnection derefNever) filter: (LDAPFilter with: 'objectclass' ) attrs: (OrderedCollection new) wantAttrsOnly: false.
 	encoded := encoded asString asHex.
 
-	Transcript show: 'testSearchRequest got: ', encoded; cr.
-	self assert: (encoded = '30380201016333041364633D6C696E616C636F2C2064633D746573740A01020A0100020100020100010100870B6F626A656374636C6173733000')
+	self assert: (encoded = (self formatWithHex: '30380201016333041364633D6C696E616C636F2C2064633D746573740A01020A0100020100020100010100870B6F626A656374636C6173733000'))
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BERTest >> testSequenceEncoding [
 	|ber0 ber1 ber2 stream|
 	ber0 := BERSequence new.
@@ -223,7 +232,7 @@ BERTest >> testSequenceEncoding [
 	stream := ReadWriteStream on: (String new).
 
 	ber0 writeOn: stream.
-	self assert: (stream contents asString asHex = '3007020111020200AA') 
+	self assert: (stream contents asString asHex = (self formatWithHex: '3007020111020200AA'))
 
 
 ]
