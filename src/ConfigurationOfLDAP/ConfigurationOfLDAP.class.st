@@ -220,7 +220,7 @@ ConfigurationOfLDAP >> project [
 ConfigurationOfLDAP >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '1.2'.
+	spec for: #'common' version: '1.3'.
 
 ]
 
@@ -266,6 +266,23 @@ ConfigurationOfLDAP >> version12: spec [
 		spec 
 			package: 'LDAP' with: 'LDAP-UdoSchneider.54';
 			package: 'LDAP-Tests' with: 'LDAP-Tests-UdoSchneider.2';
+			package: 'LDAP-ActiveDirectory' with: 'LDAP-ActiveDirectory-UdoSchneider.5';
+			package: 'LDAP-SSL' with: 'LDAP-SSL-UdoSchneider.3'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfLDAP >> version13: spec [
+	<version: '1.3' imports: #('1.2-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 1.3'.
+		spec author: 'OlivierAuverlot'.
+		spec timestamp: '5/11/2015 13:54'.
+		spec 
+			package: 'LDAP' with: 'LDAP-OlivierAuverlot.55';
+			package: 'LDAP-Tests' with: 'LDAP-Tests-OlivierAuverlot.3';
 			package: 'LDAP-ActiveDirectory' with: 'LDAP-ActiveDirectory-UdoSchneider.5';
 			package: 'LDAP-SSL' with: 'LDAP-SSL-UdoSchneider.3'. ].
 
