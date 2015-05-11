@@ -1,3 +1,6 @@
+"
+BERBoolean is a boolean encoded in BER.
+"
 Class {
 	#name : #BERBoolean,
 	#superclass : #BERElement,

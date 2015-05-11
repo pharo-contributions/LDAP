@@ -1,3 +1,6 @@
+"
+LDAPEncoder encodes LDAP requests in BER format.
+"
 Class {
 	#name : #LDAPEncoder,
 	#superclass : #Object,
@@ -46,7 +49,7 @@ LDAPEncoder class >> attrAsBERElement: anAttrAsAssociation [
 	ber addElement: (BEROctetString new value: key).
 	berAttrVals := BERSet new.
 	(anAttrAsAssociation value) do: [ :eachVal |
-		berAttrVals addElement: (BEROctetString new value: eachVal) ].
+		berAttrVals addElement: (BEROctetString new value: (eachVal utf8Encoded asString)) ].
 	ber addElement: berAttrVals.
 	^ ber
 ]
@@ -197,7 +200,7 @@ LDAPEncoder class >> searchRequest: aMessageId base: aBase scope: aSearchScope d
 
 	mesg addElement: req withTag: 3.
 	mesg writeOn: stream.
-	
+
 	^ stream contents
 	
 ]

@@ -1,3 +1,6 @@
+"
+BERNull is a NULL value encoded in BER.
+"
 Class {
 	#name : #BERNull,
 	#superclass : #BERElement,

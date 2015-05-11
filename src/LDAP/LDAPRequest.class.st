@@ -1,3 +1,6 @@
+"
+LDAPRequest is an operation request that the LDAP server must execute.
+"
 Class {
 	#name : #LDAPRequest,
 	#superclass : #Object,

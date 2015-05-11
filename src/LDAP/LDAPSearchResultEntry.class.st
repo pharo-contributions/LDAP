@@ -44,7 +44,7 @@ LDAPSearchResultEntry >> decode: aStream [
 		
 		values := OrderedCollection new.
 		((eachBerAttr value) elements at: 2) value elements do: [ :eachBerValue |	
-			values add: (eachBerValue value value) asString].
+			values add: (eachBerValue value value) utf8Decoded asString ].
 		
 		attrs
 			at: (((eachBerAttr value) elements at: 1) value value) asString

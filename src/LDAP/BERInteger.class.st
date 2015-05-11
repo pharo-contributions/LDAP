@@ -1,3 +1,6 @@
+"
+BERInteger is a integer encoded in BER.
+"
 Class {
 	#name : #BERInteger,
 	#superclass : #BERElement,

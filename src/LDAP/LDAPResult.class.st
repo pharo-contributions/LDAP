@@ -22,7 +22,7 @@ LDAPResult >> checkForExceptions [
 		ifFalse: [
 			| ex |
 			ex := LDAPException newWithCode: resultCode.
-			ex signal: (errorMessage ifEmpty:[ex messageText]) ]
+			ex signal: (errorMessage utf8Decoded ifEmpty:[ex messageText ]) ]
 ]
 
 { #category : #'as yet unclassified' }

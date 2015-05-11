@@ -1,3 +1,6 @@
+"
+BERSet is a set of values encoded in BER.
+"
 Class {
 	#name : #BERSet,
 	#superclass : #BERConstruct,

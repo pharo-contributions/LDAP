@@ -1,3 +1,6 @@
+"
+LDAPDelRequest is the process to delete an entry in the LDAP directory.
+"
 Class {
 	#name : #LDAPDelRequest,
 	#superclass : #LDAPRequest,

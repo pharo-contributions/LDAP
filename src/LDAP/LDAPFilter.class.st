@@ -1,3 +1,6 @@
+"
+A LDAPFilter is used to select a set of data from the LDAP server. Filters can be associated.
+"
 Class {
 	#name : #LDAPFilter,
 	#superclass : #Object,
@@ -15,17 +18,17 @@ LDAPFilter class >> andOf: someFilters [
 
 { #category : #'as yet unclassified' }
 LDAPFilter class >> containing: aSubstring atAnywhereOf: anAttrType [
-	^ LDAPFilterSubstrings containing: aSubstring atAnywhereOf: anAttrType
+	^ LDAPFilterSubstrings containing: (aSubstring utf8Encoded asString) atAnywhereOf: anAttrType
 ]
 
 { #category : #'as yet unclassified' }
 LDAPFilter class >> containing: aSubstring atEndOf: anAttrType [
-	^ LDAPFilterSubstrings containing: aSubstring atEndOf: anAttrType
+	^ LDAPFilterSubstrings containing: (aSubstring utf8Encoded asString) atEndOf: anAttrType
 ]
 
 { #category : #'as yet unclassified' }
 LDAPFilter class >> containing: aSubstring atStartOf: anAttrType [
-	^ LDAPFilterSubstrings containing: aSubstring atStartOf: anAttrType
+	^ LDAPFilterSubstrings containing: (aSubstring utf8Encoded asString) atStartOf: anAttrType
 ]
 
 { #category : #'as yet unclassified' }
@@ -49,21 +52,21 @@ LDAPFilter class >> with: anAttrType [
 
 { #category : #'as yet unclassified' }
 LDAPFilter class >> with: anAttrType equalTo: anAttrValue [
-	^ LDAPFilterEquality new setType: anAttrType value: anAttrValue
+	^ LDAPFilterEquality new setType: anAttrType value: (anAttrValue utf8Encoded asString)
 ]
 
 { #category : #'as yet unclassified' }
 LDAPFilter class >> with: anAttrType greaterOrEqualThan: anAttrValue [
-	^ LDAPFilterGreaterOrEqual new setType: anAttrType value: anAttrValue
+	^ LDAPFilterGreaterOrEqual new setType: anAttrType value: (anAttrValue utf8Encoded asString)
 	
 ]
 
 { #category : #'as yet unclassified' }
 LDAPFilter class >> with: anAttrType lessOrEqualThan: anAttrValue [
-	^ LDAPFilterLessOrEqual new setType: anAttrType value: anAttrValue
+	^ LDAPFilterLessOrEqual new setType: anAttrType value: (anAttrValue utf8Encoded asString)
 ]
 
 { #category : #'as yet unclassified' }
 LDAPFilter class >> with: anAttrType notEqualTo: anAttrValue [
-	^self not: (self with: anAttrType equalTo: anAttrValue)
+	^self not: (self with: anAttrType equalTo: (anAttrValue utf8Encoded asString))
 ]

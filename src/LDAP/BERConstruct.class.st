@@ -1,3 +1,6 @@
+"
+A BERConstruct can be a BERSequence or a BERSet.
+"
 Class {
 	#name : #BERConstruct,
 	#superclass : #BERElement,

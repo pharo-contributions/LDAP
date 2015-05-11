@@ -1,3 +1,6 @@
+"
+BERSequence is a sequence of values encoded in BER.
+"
 Class {
 	#name : #BERSequence,
 	#superclass : #BERConstruct,

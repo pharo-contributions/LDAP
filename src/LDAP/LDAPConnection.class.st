@@ -1,3 +1,6 @@
+"
+A LDAPConnection describes the connection of a client to a LDAP server.
+"
 Class {
 	#name : #LDAPConnection,
 	#superclass : #Object,
@@ -149,6 +152,7 @@ LDAPConnection >> modifyDN: aDN toRDN: aRDN wantToClearAttrs: aWantsToClearAttrs
 { #category : #'as yet unclassified' }
 LDAPConnection >> newSearch: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
 	| nonNilFilter nonNilAttrs |
+
 	nonNilFilter := aFilter
 		ifNil: [ nonNilFilter := LDAPFilter with: 'objectclass' ]
 		ifNotNil: [ aFilter ].

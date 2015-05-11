@@ -1,3 +1,6 @@
+"
+BEROctetString is a string encoded in BER.
+"
 Class {
 	#name : #BEROctetString,
 	#superclass : #BERElement,

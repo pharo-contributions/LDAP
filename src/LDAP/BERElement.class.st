@@ -1,3 +1,6 @@
+"
+A BERElement is a datatype in the BER encoding (Basic Encoding Rules)
+"
 Class {
 	#name : #BERElement,
 	#superclass : #Object,
