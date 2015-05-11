@@ -187,6 +187,30 @@ ConfigurationOfLDAP >> baseline12: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfLDAP >> baseline13: spec [
+	<version: '1.3-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/PharoExtras/LDAP/main'.
+		spec project: 'ZincHTTPComponents' with: [
+				spec
+					className: #ConfigurationOfZincHTTPComponents;
+					versionString: #'stable';
+					repository: 'http://smalltalkhub.com/mc/Pharo/Pharo40/main';
+					repository: 'http://smalltalkhub.com/mc/Pharo/Pharo40Inbox/main' ].
+		spec 
+			package: 'LDAP';
+			package: 'LDAP-Tests' with: [
+				spec requires: #('LDAP' ). ];
+			package: 'LDAP-SSL' with: [
+				spec requires: #('LDAP' ). ];
+			package: 'LDAP-ActiveDirectory' with: [
+				spec requires: #('LDAP' 'LDAP-SSL' ). ]. ].
+
+]
+
 { #category : #accessing }
 ConfigurationOfLDAP >> customProjectAttributes [
 	 "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -199,7 +223,7 @@ ConfigurationOfLDAP >> customProjectAttributes [
 ConfigurationOfLDAP >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '1.2-baseline'.
+	spec for: #'common' version: '1.3-baseline'.
 
 ]
 
@@ -220,7 +244,7 @@ ConfigurationOfLDAP >> project [
 ConfigurationOfLDAP >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '1.3'.
+	spec for: #'common' version: '1.4'.
 
 ]
 
@@ -285,5 +309,23 @@ ConfigurationOfLDAP >> version13: spec [
 			package: 'LDAP-Tests' with: 'LDAP-Tests-OlivierAuverlot.3';
 			package: 'LDAP-ActiveDirectory' with: 'LDAP-ActiveDirectory-UdoSchneider.5';
 			package: 'LDAP-SSL' with: 'LDAP-SSL-UdoSchneider.3'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfLDAP >> version14: spec [
+	<version: '1.4' imports: #('1.3-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 1.4'.
+		spec author: 'OlivierAuverlot'.
+		spec timestamp: '5/11/2015 14:15'.
+		spec project: 'ZincHTTPComponents' with: '2.6.3'.
+		spec 
+			package: 'LDAP' with: 'LDAP-OlivierAuverlot.55';
+			package: 'LDAP-Tests' with: 'LDAP-Tests-OlivierAuverlot.3';
+			package: 'LDAP-SSL' with: 'LDAP-SSL-UdoSchneider.3';
+			package: 'LDAP-ActiveDirectory' with: 'LDAP-ActiveDirectory-UdoSchneider.5'. ].
 
 ]
