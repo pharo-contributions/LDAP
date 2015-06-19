@@ -21,6 +21,7 @@ LDAPSearchResultEntry class >> tagValue [
 { #category : #'as yet unclassified' }
 LDAPSearchResultEntry >> attrAt: aKey [
 	| selected |
+	"answer only the first value"
 	selected := attrs at: aKey ifAbsent: [ ^ nil ].
 	^ selected first asString.
 
@@ -30,6 +31,15 @@ LDAPSearchResultEntry >> attrAt: aKey [
 LDAPSearchResultEntry >> attrs [
 	"I return a Dictionary with an entry per attr. Eeach attr is an OrderedCollection, as there may be multiple values per attr."
 	^ attrs
+]
+
+{ #category : #'as yet unclassified' }
+LDAPSearchResultEntry >> attrsAt: aKey [
+	| selected |
+	"answer all values of the specified attribut"
+	selected := attrs at: aKey ifAbsent: [ ^ nil ].
+	^ selected
+
 ]
 
 { #category : #'as yet unclassified' }
