@@ -244,7 +244,7 @@ ConfigurationOfLDAP >> project [
 ConfigurationOfLDAP >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '1.4'.
+	spec for: #'common' version: '1.5'.
 
 ]
 
@@ -324,6 +324,24 @@ ConfigurationOfLDAP >> version14: spec [
 		spec project: 'ZincHTTPComponents' with: '2.6.3'.
 		spec 
 			package: 'LDAP' with: 'LDAP-OlivierAuverlot.55';
+			package: 'LDAP-Tests' with: 'LDAP-Tests-OlivierAuverlot.3';
+			package: 'LDAP-SSL' with: 'LDAP-SSL-UdoSchneider.3';
+			package: 'LDAP-ActiveDirectory' with: 'LDAP-ActiveDirectory-UdoSchneider.5'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfLDAP >> version15: spec [
+	<version: '1.5' imports: #('1.3-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 1.5'.
+		spec author: 'olivierauverlot'.
+		spec timestamp: '6/19/2015 09:41'.
+		spec project: 'ZincHTTPComponents' with: '2.6.3'.
+		spec 
+			package: 'LDAP' with: 'LDAP-olivierauverlot.56';
 			package: 'LDAP-Tests' with: 'LDAP-Tests-OlivierAuverlot.3';
 			package: 'LDAP-SSL' with: 'LDAP-SSL-UdoSchneider.3';
 			package: 'LDAP-ActiveDirectory' with: 'LDAP-ActiveDirectory-UdoSchneider.5'. ].
