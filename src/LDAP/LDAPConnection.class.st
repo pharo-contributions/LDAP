@@ -16,7 +16,7 @@ LDAPConnection class >> baseObject [
 	^ 0
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'private - accessing' }
 LDAPConnection class >> collectionizedAttrs: someAttrs [
 	^someAttrs collect: [:val | 
 		val isString ifTrue: [ OrderedCollection with: val ] ifFalse: [ val ] ].
@@ -70,12 +70,12 @@ LDAPConnection class >> singleLevel [
 	^ 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 LDAPConnection class >> to: aHostname [
 	^ self to: aHostname port: 389
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 LDAPConnection class >> to: aHostname port: aPort [
 	| obj |
 	obj := self basicNew initializeWithHost: aHostname port: aPort.

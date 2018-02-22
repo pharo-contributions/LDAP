@@ -1,3 +1,6 @@
+"
+Common superclass for LDAP exceptions
+"
 Class {
 	#name : #LDAPException,
 	#superclass : #Error,

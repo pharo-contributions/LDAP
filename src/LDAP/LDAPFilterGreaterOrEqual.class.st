@@ -1,3 +1,6 @@
+"
+Filter for greater or equal
+"
 Class {
 	#name : #LDAPFilterGreaterOrEqual,
 	#superclass : #LDAPFilterWithValueAssertion,

@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-BER'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERSet class >> tagValue [
 	"SET + Constructed"
 	^ (17 + 32)

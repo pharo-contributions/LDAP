@@ -1,3 +1,6 @@
+"
+An LDAP Message
+"
 Class {
 	#name : #LDAPMessage,
 	#superclass : #BERElement,

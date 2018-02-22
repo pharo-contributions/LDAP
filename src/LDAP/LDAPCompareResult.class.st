@@ -1,3 +1,6 @@
+"
+Result for compare
+"
 Class {
 	#name : #LDAPCompareResult,
 	#superclass : #LDAPResult,

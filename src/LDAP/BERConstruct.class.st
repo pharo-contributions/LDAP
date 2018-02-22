@@ -10,7 +10,7 @@ Class {
 	#category : #'LDAP-BER'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 BERConstruct class >> new [
 	^ self basicNew initialize
 ]

@@ -1,3 +1,6 @@
+"
+Filter for Equality
+"
 Class {
 	#name : #LDAPFilterEquality,
 	#superclass : #LDAPFilterWithValueAssertion,

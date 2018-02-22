@@ -1,3 +1,6 @@
+"
+A single filter
+"
 Class {
 	#name : #LDAPFilterSingle,
 	#superclass : #Object,

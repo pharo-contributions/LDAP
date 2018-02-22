@@ -1,3 +1,6 @@
+"
+Modify result
+"
 Class {
 	#name : #LDAPModifyResult,
 	#superclass : #LDAPResult,

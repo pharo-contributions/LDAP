@@ -1,3 +1,6 @@
+"
+A present filter
+"
 Class {
 	#name : #LDAPFilterPresent,
 	#superclass : #LDAPFilterWithType,

@@ -14,7 +14,7 @@ Class {
 	#category : #'LDAP-BER'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERElement class >> elementClasses [
 	^ {
 		BERInteger. BEROctetString . BERSequence. BEREnumerated. BERBoolean. BERSet. BERNull.
@@ -26,7 +26,7 @@ BERElement class >> elementClasses [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #utilities }
 BERElement class >> identifyIncomingElement: firstByte [
 	| type |
 	"so why are we doing this in a comparision here, instead of asking the class wether it handles the element?"
@@ -35,13 +35,13 @@ BERElement class >> identifyIncomingElement: firstByte [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 BERElement class >> new [
 	"this is here only to easily see who is using it down the heriarchy through the browser"
 	^ self basicNew initialize
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 BERElement class >> newFrom: aStream [
 	| firstByte element elementClass |
 	firstByte := aStream next.
@@ -57,7 +57,7 @@ BERElement class >> newFrom: aStream [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERElement class >> tagValue [
 	self subclassResponsibility
 ]

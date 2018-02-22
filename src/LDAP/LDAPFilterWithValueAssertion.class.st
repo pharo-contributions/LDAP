@@ -1,3 +1,6 @@
+"
+Filter with assertions about values
+"
 Class {
 	#name : #LDAPFilterWithValueAssertion,
 	#superclass : #LDAPFilterSingle,

@@ -1,3 +1,6 @@
+"
+Result of an LDAP message.
+"
 Class {
 	#name : #LDAPResult,
 	#superclass : #LDAPMessage,
@@ -10,7 +13,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPResult class >> tagValue [
 	self subclassResponsibility
 ]

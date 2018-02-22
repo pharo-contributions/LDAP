@@ -1,15 +1,18 @@
+"
+Search result code
+"
 Class {
 	#name : #LDAPSearchResultCode,
 	#superclass : #LDAPResult,
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 LDAPSearchResultCode class >> isEndMarker [
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPSearchResultCode class >> tagValue [
 	^ 16r65
 ]

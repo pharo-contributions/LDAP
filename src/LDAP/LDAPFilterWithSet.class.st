@@ -1,3 +1,6 @@
+"
+Filter with a set of filters
+"
 Class {
 	#name : #LDAPFilterWithSet,
 	#superclass : #LDAPFilterSingle,

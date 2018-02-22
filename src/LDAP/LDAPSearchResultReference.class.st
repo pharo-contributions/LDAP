@@ -1,3 +1,6 @@
+"
+A reference from a search result
+"
 Class {
 	#name : #LDAPSearchResultReference,
 	#superclass : #LDAPMessage,

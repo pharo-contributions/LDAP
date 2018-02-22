@@ -1,3 +1,6 @@
+"
+AND filter
+"
 Class {
 	#name : #LDAPFilterAnd,
 	#superclass : #LDAPFilterWithSet,

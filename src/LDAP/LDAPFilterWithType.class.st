@@ -1,3 +1,6 @@
+"
+Filter with a type
+"
 Class {
 	#name : #LDAPFilterWithType,
 	#superclass : #LDAPFilterSingle,

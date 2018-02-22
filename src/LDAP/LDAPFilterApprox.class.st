@@ -1,3 +1,6 @@
+"
+Filter for Approximation
+"
 Class {
 	#name : #LDAPFilterApprox,
 	#superclass : #LDAPFilterWithValueAssertion,

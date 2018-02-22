@@ -1,10 +1,13 @@
+"
+An LDAP Element, common superclass
+"
 Class {
 	#name : #LDAPElement,
 	#superclass : #BERElement,
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPElement class >> elementClasses [
 	^ (super elementClasses, "yuk :)"
 		{ 

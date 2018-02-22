@@ -1,3 +1,6 @@
+"
+Result for add
+"
 Class {
 	#name : #LDAPAddResult,
 	#superclass : #LDAPResult,

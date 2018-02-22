@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-BER'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERBoolean class >> tagValue [
 	^ 1
 ]

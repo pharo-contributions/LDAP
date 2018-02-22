@@ -1,3 +1,6 @@
+"
+NOT filter
+"
 Class {
 	#name : #LDAPFilterNot,
 	#superclass : #LDAPFilterWithFilter,

@@ -1,3 +1,6 @@
+"
+An entry from a search result
+"
 Class {
 	#name : #LDAPSearchResultEntry,
 	#superclass : #LDAPMessage,
@@ -8,12 +11,12 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 LDAPSearchResultEntry class >> isEndMarker [
 	^ false
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPSearchResultEntry class >> tagValue [
 	^ 16r64
 ]

@@ -1,3 +1,6 @@
+"
+Modiy DN result
+"
 Class {
 	#name : #LDAPModifyDNResult,
 	#superclass : #LDAPResult,

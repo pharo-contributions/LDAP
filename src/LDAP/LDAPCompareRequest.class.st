@@ -1,3 +1,6 @@
+"
+A request to compare
+"
 Class {
 	#name : #LDAPCompareRequest,
 	#superclass : #LDAPRequest,

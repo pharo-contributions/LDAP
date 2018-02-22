@@ -1,3 +1,6 @@
+"
+Substrings as filter
+"
 Class {
 	#name : #LDAPFilterSubstrings,
 	#superclass : #LDAPFilterWithSubstring,

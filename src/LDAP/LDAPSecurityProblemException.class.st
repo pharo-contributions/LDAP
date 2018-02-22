@@ -1,3 +1,6 @@
+"
+Problem with security
+"
 Class {
 	#name : #LDAPSecurityProblemException,
 	#superclass : #LDAPException,

@@ -1,3 +1,6 @@
+"
+OR filter
+"
 Class {
 	#name : #LDAPFilterOr,
 	#superclass : #LDAPFilterWithSet,

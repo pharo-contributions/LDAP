@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-BER'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BEROctetString class >> tagValue [
 	^ 4 
 ]

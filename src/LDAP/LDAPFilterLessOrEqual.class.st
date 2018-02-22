@@ -1,3 +1,6 @@
+"
+Filter for less or equal
+"
 Class {
 	#name : #LDAPFilterLessOrEqual,
 	#superclass : #LDAPFilterWithValueAssertion,

@@ -1,3 +1,6 @@
+"
+Request to abondon a request
+"
 Class {
 	#name : #LDAPAbandonRequest,
 	#superclass : #LDAPRequest,

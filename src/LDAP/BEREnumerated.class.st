@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-BER'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BEREnumerated class >> tagValue [
 	^ 10
 ]

@@ -1,3 +1,6 @@
+"
+Result for delete
+"
 Class {
 	#name : #LDAPDelResult,
 	#superclass : #LDAPResult,

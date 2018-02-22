@@ -1,3 +1,6 @@
+"
+Result for bind
+"
 Class {
 	#name : #LDAPBindResult,
 	#superclass : #LDAPResult,

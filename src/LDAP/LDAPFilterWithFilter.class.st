@@ -1,3 +1,6 @@
+"
+A combined filter
+"
 Class {
 	#name : #LDAPFilterWithFilter,
 	#superclass : #LDAPFilterSingle,

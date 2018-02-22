@@ -1,3 +1,6 @@
+"
+An extended result
+"
 Class {
 	#name : #LDAPExtendedResult,
 	#superclass : #LDAPResult,
