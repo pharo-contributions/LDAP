@@ -1,3 +1,6 @@
+"
+A worker (thread)
+"
 Class {
 	#name : #LDAPSWorker,
 	#superclass : #LDAPWorker,
@@ -7,17 +10,17 @@ Class {
 	#category : #'LDAP-SSL'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 LDAPSWorker class >> newTo: aHostname port: aPort [
 	^ self newTo: aHostname port: aPort ssl: aPort = 636
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 LDAPSWorker class >> newTo: aHostname port: aPort ssl: aBoolean [
 	^ self basicNew initialize: aHostname port: aPort ssl: aBoolean
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #connecting }
 LDAPSWorker >> connect [
 	[ 
 	sockStream := (ssl
@@ -35,7 +38,7 @@ LDAPSWorker >> connect [
 		ifTrue: [ sockStream connect ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPSWorker >> initialize: aHostname port: aPort ssl: aBoolean [
 	super initialize: aHostname port: aPort.
 	ssl := aBoolean
