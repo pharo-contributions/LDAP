@@ -1,5 +1,5 @@
 "
-A worker (thread)
+A secure worker (thread)
 "
 Class {
 	#name : #LDAPSWorker,
