@@ -211,6 +211,66 @@ ConfigurationOfLDAP >> baseline13: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfLDAP >> baseline14: spec [
+	<version: '1.4-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/PharoExtras/LDAP/main'.
+		spec project: 'ZincHTTPComponents' with: [
+				spec
+					className: #ConfigurationOfZincHTTPComponents;
+					versionString: #'stable';
+					repository: 'http://smalltalkhub.com/mc/Pharo/Pharo40/main';
+					repository: 'http://smalltalkhub.com/mc/Pharo/Pharo40Inbox/main' ].
+		spec 
+			package: 'LDAP';
+			package: 'LDAP-Tests' with: [
+				spec requires: #('LDAP' ). ];
+			package: 'LDAP-SSL' with: [
+				spec requires: #('LDAP' ). ];
+			package: 'LDAP-ActiveDirectory' with: [
+				spec requires: #('LDAP' 'LDAP-SSL' ). ]. ].
+
+]
+
+{ #category : #baselines }
+ConfigurationOfLDAP >> baseline16: spec [
+	<version: '1.6-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/PharoExtras/LDAP/main'.		 
+		spec 
+			package: 'LDAP';
+			package: 'LDAP-Tests' with: [
+				spec requires: #('LDAP' ). ];
+			package: 'LDAP-SSL' with: [
+				spec requires: #('LDAP' ). ];
+			package: 'LDAP-ActiveDirectory' with: [
+				spec requires: #('LDAP' 'LDAP-SSL' ). ]. ].
+
+]
+
+{ #category : #baselines }
+ConfigurationOfLDAP >> baseline17: spec [
+	<version: '1.7-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/PharoExtras/LDAP/main'.		 
+		spec 
+			package: 'LDAP';
+			package: 'LDAP-Tests' with: [
+				spec requires: #('LDAP' ). ];
+			package: 'LDAP-SSL' with: [
+				spec requires: #('LDAP' ). ];
+			package: 'LDAP-ActiveDirectory' with: [
+				spec requires: #('LDAP' 'LDAP-SSL' ). ]. ].
+
+]
+
 { #category : #accessing }
 ConfigurationOfLDAP >> customProjectAttributes [
 	 "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -223,7 +283,7 @@ ConfigurationOfLDAP >> customProjectAttributes [
 ConfigurationOfLDAP >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '1.3-baseline'.
+	spec for: #'common' version: '1.7-baseline'.
 
 ]
 
@@ -244,8 +304,8 @@ ConfigurationOfLDAP >> project [
 ConfigurationOfLDAP >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '1.5'.
-
+	spec for: #'common' version: '1.6'.
+	spec for: #'pharo4.x' version: '1.5'.
 ]
 
 { #category : #versions }
@@ -344,6 +404,23 @@ ConfigurationOfLDAP >> version15: spec [
 			package: 'LDAP' with: 'LDAP-olivierauverlot.56';
 			package: 'LDAP-Tests' with: 'LDAP-Tests-OlivierAuverlot.3';
 			package: 'LDAP-SSL' with: 'LDAP-SSL-UdoSchneider.3';
+			package: 'LDAP-ActiveDirectory' with: 'LDAP-ActiveDirectory-UdoSchneider.5'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfLDAP >> version16: spec [
+	<version: '1.6' imports: #('1.6-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 1.6'.
+		spec author: 'TorstenBergmann'.
+		spec timestamp: '2/22/2018 18:50'.
+		spec 
+			package: 'LDAP' with: 'LDAP-TorstenBergmann.58';
+			package: 'LDAP-Tests' with: 'LDAP-Tests-TorstenBergmann.4';
+			package: 'LDAP-SSL' with: 'LDAP-SSL-TorstenBergmann.5';
 			package: 'LDAP-ActiveDirectory' with: 'LDAP-ActiveDirectory-UdoSchneider.5'. ].
 
 ]
