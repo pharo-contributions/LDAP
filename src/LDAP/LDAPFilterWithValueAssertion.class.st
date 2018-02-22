@@ -11,7 +11,7 @@ Class {
 	#category : #'LDAP-Filters'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #conversion }
 LDAPFilterWithValueAssertion >> asBERElement [
 	| ber |
 	ber := BERSequence new.
@@ -21,7 +21,7 @@ LDAPFilterWithValueAssertion >> asBERElement [
 	^ ber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPFilterWithValueAssertion >> setType: anAttrType value: anAttrValue [
 	type := anAttrType.
 	value := anAttrValue	

@@ -10,7 +10,7 @@ Class {
 	#category : #'LDAP-Filters'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #conversion }
 LDAPFilterWithFilter >> asBERElement [
 	| ber |
 	ber := BERSet new.
@@ -19,7 +19,7 @@ LDAPFilterWithFilter >> asBERElement [
 	^ ber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPFilterWithFilter >> setFilter: aFilter [
 	filter := aFilter
 ]

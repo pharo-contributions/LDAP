@@ -10,14 +10,14 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'error handling' }
 LDAPCompareRequest >> checkForExceptions [
 	"Check to see if a response caused an exception and if so, raise it"
 	self isDone ifFalse:[^self error: 'LDAP timeout'].
 	searchResult checkForExceptions.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPCompareRequest >> initializeWith: anLDAPWorker dn: aDN comparing: anEqualityFilter [
 	self initializeWith: anLDAPWorker.
 	anLDAPWorker send:
@@ -25,7 +25,7 @@ LDAPCompareRequest >> initializeWith: anLDAPWorker dn: aDN comparing: anEquality
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPCompareRequest >> processResponse: aMessage [
 	isDone := true.
 	searchResult := aMessage.

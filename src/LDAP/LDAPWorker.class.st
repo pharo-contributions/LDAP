@@ -1,3 +1,6 @@
+"
+A worker (thread)
+"
 Class {
 	#name : #LDAPWorker,
 	#superclass : #Object,
@@ -13,12 +16,12 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 LDAPWorker class >> newTo: aHostname port: aPort [
 	^ self basicNew initialize: aHostname port: aPort
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPWorker >> addTarget: aRequest for: aMessageId [
 	lock critical: [
 		| data |
@@ -33,7 +36,7 @@ LDAPWorker >> addTarget: aRequest for: aMessageId [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #connecting }
 LDAPWorker >> connect [
 	[ sockStream := SocketStream openConnectionToHostNamed: hostname port: port ]
 		on: Exception do: [:ex | sockStream := nil. self error: ex messageText].
@@ -44,7 +47,7 @@ LDAPWorker >> connect [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPWorker >> delTargetFor: aMessageId [
 	lock critical: [
 		targets at: aMessageId
@@ -54,13 +57,13 @@ LDAPWorker >> delTargetFor: aMessageId [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #connecting }
 LDAPWorker >> disconnect [
 	self stop
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #dispatching }
 LDAPWorker >> dispatchMessage: aMessage [
 	| target id who |
 	id := aMessage id.
@@ -86,7 +89,7 @@ LDAPWorker >> dispatchMessage: aMessage [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPWorker >> initialize: aHostname port: aPort [
 	hostname := aHostname.
 	port := aPort.
@@ -98,24 +101,24 @@ LDAPWorker >> initialize: aHostname port: aPort [
 	running := false.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPWorker >> nextMessageId [
 	"here we should check wether we're past the message id limit, and if so reconnect and bind"
 	nextMessageId := nextMessageId + 1.
 	^ nextMessageId
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPWorker >> running [
 	^ running
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPWorker >> running: aBoolean [
 	running := aBoolean
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPWorker >> send: someData [
 	lock critical: [
 		sockStream 
@@ -124,7 +127,7 @@ LDAPWorker >> send: someData [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 LDAPWorker >> start [
 	| process |
 	running := true.
@@ -142,7 +145,7 @@ LDAPWorker >> start [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 LDAPWorker >> stop [
 	running := false.
 ]

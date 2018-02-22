@@ -18,7 +18,7 @@ LDAPResult class >> tagValue [
 	self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'error handling' }
 LDAPResult >> checkForExceptions [
 	
 	(resultCode = 0 or: [ (resultCode = 5) or: [resultCode = 6]])
@@ -28,7 +28,7 @@ LDAPResult >> checkForExceptions [
 			ex signal: (errorMessage utf8Decoded ifEmpty:[ex messageText ]) ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 LDAPResult >> decode: aStream [
 	| berResultCode berErrorMessage berMatchedDN lengthRemaining |
 		
@@ -54,17 +54,17 @@ LDAPResult >> decode: aStream [
 "
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPResult >> referral [
 	^ referral
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPResult >> referral: aReferral [
 	referral := aReferral
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPResult >> resultCode [
 	^ resultCode
 ]

@@ -15,7 +15,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPRequest >> abandon [
 	"RFC says we MUST NOT send abandon requests for the same operation multiple times"
 	isAbandoned ifFalse: [
@@ -25,25 +25,25 @@ LDAPRequest >> abandon [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'error handing' }
 LDAPRequest >> checkForExceptions [
 	"Check to see if a response caused an exception and if so, raise it"
 	self isDone ifFalse:[^self error: 'LDAP timeout'].
 	result checkForExceptions.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #defaults }
 LDAPRequest >> defaultTimeout [
 	"Answer the default timout for LDAP queries"
 	^30 "seconds"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 LDAPRequest >> hasResult [
 	^ isDone
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPRequest >> initializeWith: anLDAPWorker [
 	worker := anLDAPWorker.
 	messageId := worker nextMessageId.
@@ -56,43 +56,43 @@ LDAPRequest >> initializeWith: anLDAPWorker [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 LDAPRequest >> isDone [
 	^ isDone
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPRequest >> processResponse: aMessage [
 	isDone := true. 
 	result := aMessage.
 	waitingSemaphore signal.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPRequest >> result [
 	self wait.
 	^ result
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPRequest >> wait [
 	^self waitTimeoutSeconds: self defaultTimeout
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPRequest >> waitTimeoutMSecs: msecs [
 	result ifNil: [ waitingSemaphore waitTimeoutMSecs: msecs ].
 	self checkForExceptions.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPRequest >> waitTimeoutSeconds: seconds [
 	result ifNil: [ waitingSemaphore waitTimeoutSeconds: seconds ].
 	self checkForExceptions.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPRequest >> wantsMoreResponses [
 	"you most likely not want to implement this in a subclass, but processResponse:"
 	^ self isDone not

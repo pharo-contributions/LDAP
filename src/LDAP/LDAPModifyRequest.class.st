@@ -1,10 +1,13 @@
+"
+A request to modify
+"
 Class {
 	#name : #LDAPModifyRequest,
 	#superclass : #LDAPRequest,
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPModifyRequest >> initializeWith: anLDAPWorker dn: aDN ops: someModifyingOps [
 	self initializeWith: anLDAPWorker.
 	anLDAPWorker send:

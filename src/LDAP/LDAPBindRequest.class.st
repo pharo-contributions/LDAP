@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPBindRequest >> initializeWith: anLDAPWorker username: aUsername credentials: aPassword method: anAuthMethod [
 	anAuthMethod ifNotNil: [ self notYetImplemented ].
 	self initializeWith: anLDAPWorker.

@@ -13,7 +13,7 @@ BERSequence class >> tagValue [
 	^ (16 + 32)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 BERSequence >> decode: aStream [
 	^ super decode: aStream
 ]

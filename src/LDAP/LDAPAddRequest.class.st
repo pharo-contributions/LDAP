@@ -8,7 +8,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPAddRequest >> initializeWith: anLDAPWorker dn: aDN attrs: someAttrs [
 	self initializeWith: anLDAPWorker.
 	anLDAPWorker send:

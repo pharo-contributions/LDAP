@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPBindResult class >> tagValue [
 	^ 16r61
 ]

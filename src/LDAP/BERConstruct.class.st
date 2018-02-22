@@ -15,12 +15,12 @@ BERConstruct class >> new [
 	^ self basicNew initialize
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERConstruct >> addElement: anElement [
 	self addElement: anElement withTag: nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERConstruct >> addElement: anElement withTag: aContextTag [
 	| taggedElement |
 	taggedElement := Association new;
@@ -28,7 +28,7 @@ BERConstruct >> addElement: anElement withTag: aContextTag [
 	elements addLast: taggedElement
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 BERConstruct >> decode: aStream [
 	| elementLen part |
 	
@@ -40,18 +40,18 @@ BERConstruct >> decode: aStream [
 			self addElement: part ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERConstruct >> elements [
 	^ elements
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 BERConstruct >> initialize [
 	super initialize.
 	elements := OrderedCollection new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 BERConstruct >> writeBodyOn: aStream [
 	| data dataStream |
 	data := Array new.

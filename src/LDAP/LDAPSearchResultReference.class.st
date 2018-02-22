@@ -10,27 +10,27 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 LDAPSearchResultReference class >> isEndMarker [
 	^ false
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPSearchResultReference class >> tagValue [
 	^ 16r73
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 LDAPSearchResultReference >> decode: aStream [
 	url := (BERElement newFrom: aStream) value asString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 LDAPSearchResultReference >> isReference [
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPSearchResultReference >> url [
 	^ url
 ]

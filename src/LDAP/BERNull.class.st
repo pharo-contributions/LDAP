@@ -12,14 +12,14 @@ BERNull class >> tagValue [
 	^ 5
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #decoding }
 BERNull >> decode: aStream [
 	"not sure about this.. should it be 0?"
 	"length := 1."
 	value := nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 BERNull >> writeBodyOn: aStream [
 	self writeLength: 0 on: aStream
 ]

@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPModifyDNResult class >> tagValue [
 	^ 16r6D
 ]

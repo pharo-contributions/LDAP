@@ -21,7 +21,7 @@ LDAPSearchResultEntry class >> tagValue [
 	^ 16r64
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPSearchResultEntry >> attrAt: aKey [
 	| selected |
 	"answer only the first value"
@@ -30,13 +30,13 @@ LDAPSearchResultEntry >> attrAt: aKey [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPSearchResultEntry >> attrs [
 	"I return a Dictionary with an entry per attr. Eeach attr is an OrderedCollection, as there may be multiple values per attr."
 	^ attrs
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPSearchResultEntry >> attrsAt: aKey [
 	| selected |
 	"answer all values of the specified attribut"
@@ -45,7 +45,7 @@ LDAPSearchResultEntry >> attrsAt: aKey [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 LDAPSearchResultEntry >> decode: aStream [
 	| berDN berAttrs |
 
@@ -67,12 +67,12 @@ LDAPSearchResultEntry >> decode: aStream [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPSearchResultEntry >> dn [
 	^ dn
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 LDAPSearchResultEntry >> isReference [
 	^ false
 ]

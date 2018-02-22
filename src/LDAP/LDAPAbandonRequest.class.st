@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPAbandonRequest >> initializeWith: anLDAPWorker abandonId: anAbandonMessageId [
 	self initializeWith: anLDAPWorker.
 	anLDAPWorker send:

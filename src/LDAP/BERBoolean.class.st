@@ -12,14 +12,14 @@ BERBoolean class >> tagValue [
 	^ 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 BERBoolean >> decode: aStream [
 	value := aStream next.
 	value := value > 0.
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 BERBoolean >> writeBodyOn: aStream [
 	self writeLength: 1 on: aStream.
 	(value = 0 or: [value = false])

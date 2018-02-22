@@ -12,7 +12,7 @@ Class {
 	#category : #'LDAP-Filters'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #conversion }
 LDAPFilterWithSubstring >> asBERElement [
 	| ber substrSeq |
 	ber := BERSequence new.
@@ -25,7 +25,7 @@ LDAPFilterWithSubstring >> asBERElement [
 	^ ber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPFilterWithSubstring >> setSubstring: aSubstring type: anAttrType choiceTag: aChoiceTag [
 	substring := aSubstring.
 	type := anAttrType.

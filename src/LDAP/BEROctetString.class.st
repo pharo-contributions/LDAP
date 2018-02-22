@@ -12,12 +12,12 @@ BEROctetString class >> tagValue [
 	^ 4 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 BEROctetString >> decode: aStream [
 	value := (aStream next: length)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 BEROctetString >> writeBodyOn: aStream [
 	self writeLength: (value size) on: aStream.
 	aStream nextPutAll: value.

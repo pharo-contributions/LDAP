@@ -14,7 +14,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'error handling' }
 LDAPSearchRequest >> checkForExceptions [
 	"Check to see if a response caused an exception and if so, raise it"
 	self isDone ifFalse:[^self error: 'LDAP timeout'].
@@ -24,7 +24,7 @@ LDAPSearchRequest >> checkForExceptions [
 	].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPSearchRequest >> initializeWith: anLDAPWorker base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
 	| encoded |
 	partialResults := OrderedCollection new.
@@ -37,12 +37,12 @@ LDAPSearchRequest >> initializeWith: anLDAPWorker base: aBase scope: aSearchScop
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPSearchRequest >> next [
 	^self nextTimeout: self defaultTimeout.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPSearchRequest >> nextTimeout: seconds [
 	isDone ifFalse:[
 		"As long as the request isn't done, synchronously wait for more results"
@@ -54,7 +54,7 @@ LDAPSearchRequest >> nextTimeout: seconds [
 		ifFalse:[^nil]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPSearchRequest >> processResponse: aSearchResultEntry [
 	aSearchResultEntry class isEndMarker ifTrue:[
 		searchResult := aSearchResultEntry.

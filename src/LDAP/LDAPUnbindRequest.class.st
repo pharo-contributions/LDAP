@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPUnbindRequest >> initializeWith: anLDAPWorker [ 
 	| encoded |
 	worker := anLDAPWorker.

@@ -1,10 +1,13 @@
+"
+Modify add operation
+"
 Class {
 	#name : #LDAPModifyAddOp,
 	#superclass : #LDAPModifyOp,
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPModifyAddOp class >> tagValue [
 	^ 0
 ]

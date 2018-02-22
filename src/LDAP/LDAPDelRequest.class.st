@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPDelRequest >> initializeWith: anLDAPWorker dn: aDN [
 	self initializeWith: anLDAPWorker.
 	anLDAPWorker send:

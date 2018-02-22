@@ -10,14 +10,14 @@ Class {
 	#category : #'LDAP-Filters'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #conversion }
 LDAPFilterWithType >> asBERElement [
 	| ber |
 	ber := BEROctetString new value: type.
 	^ ber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPFilterWithType >> setType: anAttrType [
 	type := anAttrType
 	

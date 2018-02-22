@@ -12,7 +12,7 @@ BERInteger class >> tagValue [
 	^ 2 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 BERInteger >> decode: aStream [
 	|  highBitPos xorMask |
 	value := 0.
@@ -27,7 +27,7 @@ BERInteger >> decode: aStream [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 BERInteger >> writeBodyOn: aStream [
 	| octets netOctets isNegative remainderValue octetsIndex |
 	isNegative := value < 0.

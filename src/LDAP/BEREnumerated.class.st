@@ -12,7 +12,7 @@ BEREnumerated class >> tagValue [
 	^ 10
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 BEREnumerated >> decode: aStream [
 	super decode: aStream.
 

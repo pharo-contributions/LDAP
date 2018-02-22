@@ -1,10 +1,13 @@
+"
+Request to modify a distinguished name
+"
 Class {
 	#name : #LDAPModifyDNRequest,
 	#superclass : #LDAPRequest,
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPModifyDNRequest >> initializeWith: anLDAPWorker modifyDN: aDN toRDN: aRDN underDN: aUnderDN wantToClearAttrs: aWantsToClearAttrs [
 	self initializeWith: anLDAPWorker.
 	anLDAPWorker send:

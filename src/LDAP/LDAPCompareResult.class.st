@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #documentation }
 LDAPCompareResult class >> missingRFC2251 [
 	self notYetImplemented
 	
@@ -29,7 +29,7 @@ LDAPCompareResult class >> missingRFC2251 [
 "
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPCompareResult class >> tagValue [
 	^ 16r6F
 	

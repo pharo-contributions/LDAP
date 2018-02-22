@@ -87,40 +87,40 @@ LDAPConnection class >> wholeSubtree [
 	^ 2
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPConnection >> addEntry: aDN attrs: someAttrs [
 	^ LDAPAddRequest new initializeWith: worker dn: aDN attrs: (self class collectionizedAttrs: someAttrs).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #binding }
 LDAPConnection >> bindAs: aUsername credentials: aPassword [
 	^ self bindAs: aUsername credentials: aPassword method: nil
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #binding }
 LDAPConnection >> bindAs: aUsername credentials: aPassword method: anAuthMethod [
 	^ LDAPBindRequest new initializeWith: worker username: aUsername credentials: aPassword method: anAuthMethod
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPConnection >> compare: aDN using: anEqualityFilter [
 	^ LDAPCompareRequest new initializeWith: worker dn: aDN comparing: anEqualityFilter
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPConnection >> delEntry: aDN [
 	^ LDAPDelRequest new initializeWith: worker dn: aDN
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #connecting }
 LDAPConnection >> disconnect [
 	self unbind.
 	worker disconnect.
 	workerThread terminate
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPConnection >> initializeWithHost: aHostname port: aPort [
 	worker := LDAPWorker newTo: aHostname port: aPort.
 	worker connect.
@@ -128,28 +128,28 @@ LDAPConnection >> initializeWithHost: aHostname port: aPort [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 LDAPConnection >> isValid [
 	"Answers whether the connection looks still valid"
 	^worker running
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPConnection >> modify: aDN with: someLDAPAttrModifiers [
 	^ LDAPModifyRequest new initializeWith: worker dn: aDN ops: someLDAPAttrModifiers
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPConnection >> modifyDN: aDN toRDN: aRDN moveUnderDN: aUnderDN wantToClearAttrs: aWantsToClearAttrs [
 	^ LDAPModifyDNRequest new initializeWith: worker modifyDN: aDN toRDN: aRDN underDN: aUnderDN wantToClearAttrs: aWantsToClearAttrs
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPConnection >> modifyDN: aDN toRDN: aRDN wantToClearAttrs: aWantsToClearAttrs [
 	^ self modifyDN: aDN toRDN: aRDN moveUnderDN: nil wantToClearAttrs: aWantsToClearAttrs
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #searching }
 LDAPConnection >> newSearch: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
 	| nonNilFilter nonNilAttrs |
 
@@ -164,7 +164,7 @@ LDAPConnection >> newSearch: aBase scope: aSearchScope deref: aDerefBehaviour fi
 	^ LDAPSearchRequest new initializeWith: worker base: aBase scope: aSearchScope deref: aDerefBehaviour filter: nonNilFilter attrs: nonNilAttrs wantAttrsOnly: wantsAttrsOnly
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #binding }
 LDAPConnection >> unbind [
 	LDAPUnbindRequest new initializeWith: worker
 ]

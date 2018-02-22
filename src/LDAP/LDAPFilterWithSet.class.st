@@ -10,17 +10,17 @@ Class {
 	#category : #'LDAP-Filters'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 LDAPFilterWithSet class >> new [
 	^ self basicNew initialize
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPFilterWithSet >> add: aFilter [
 	filters addLast: aFilter
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #conversion }
 LDAPFilterWithSet >> asBERElement [
 	| ber |
 	ber := BERSet new.
@@ -28,7 +28,7 @@ LDAPFilterWithSet >> asBERElement [
 	^ ber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPFilterWithSet >> initialize [
 	filters := OrderedCollection new
 	

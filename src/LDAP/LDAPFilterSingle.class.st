@@ -7,12 +7,12 @@ Class {
 	#category : #'LDAP-Filters'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPFilterSingle class >> tagValue [
 	self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #conversion }
 LDAPFilterSingle >> asBERElement [
 	self subclassResponsibility
 ]

@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'utilities - requests' }
 LDAPEncoder class >> abandonRequest: aMessageId abandonId: abandonId [
 	| stream mesg req |
 	stream := ReadWriteStream on: (String new).
@@ -23,7 +23,7 @@ LDAPEncoder class >> abandonRequest: aMessageId abandonId: abandonId [
 	^ stream contents
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'utilities - requests' }
 LDAPEncoder class >> addRequest: aMessageId dn: aDN attrs: someAttrs [
 	| stream mesg req |
 	stream := ReadWriteStream on: (String new).
@@ -41,7 +41,7 @@ LDAPEncoder class >> addRequest: aMessageId dn: aDN attrs: someAttrs [
 	^ stream contents
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'utilities - attributes' }
 LDAPEncoder class >> attrAsBERElement: anAttrAsAssociation [
 	| ber berAttrVals key |
 	ber := BERSequence new.
@@ -54,7 +54,7 @@ LDAPEncoder class >> attrAsBERElement: anAttrAsAssociation [
 	^ ber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'utilities - attributes' }
 LDAPEncoder class >> attrsAsBERElement: someAttrs [
 	| ber |
 	ber := BERSequence new.
@@ -64,7 +64,7 @@ LDAPEncoder class >> attrsAsBERElement: someAttrs [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'utilities - requests' }
 LDAPEncoder class >> bindRequest: aMessageId username: aUsername credentials: aPassword method: anAuthMethod [
 	| stream mesg req |
 	stream := ReadWriteStream on: (String new).
@@ -83,7 +83,7 @@ LDAPEncoder class >> bindRequest: aMessageId username: aUsername credentials: aP
 	^ stream contents
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'utilities - requests' }
 LDAPEncoder class >> compareRequest: aMessageId dn: aDN comparing: anEqualityFilter [
 	| stream mesg req |
 	stream := ReadWriteStream on: (String new).
@@ -102,7 +102,7 @@ LDAPEncoder class >> compareRequest: aMessageId dn: aDN comparing: anEqualityFil
 	^ stream contents
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'utilities - requests' }
 LDAPEncoder class >> delRequest: aMessageId dn: aDN [
 	| stream mesg req |
 	stream := ReadWriteStream on: (String new).
@@ -118,7 +118,7 @@ LDAPEncoder class >> delRequest: aMessageId dn: aDN [
 	^ stream contents
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'utilities - requests' }
 LDAPEncoder class >> modifyDNRequest: aMessageId dn: aDN toRDN: aRDN underDN: aUnderDN wantToClearAttrs: aWantsToClearAttrs [ 
 	| stream mesg req |
 	stream := ReadWriteStream on: (String new).
@@ -140,7 +140,7 @@ LDAPEncoder class >> modifyDNRequest: aMessageId dn: aDN toRDN: aRDN underDN: aU
 	^ stream contents
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'utilities - requests' }
 LDAPEncoder class >> modifyRequest: aMessageId dn: aDN ops: someModifyingOps [
 	| stream mesg req ops |
 	stream := ReadWriteStream on: (String new).
@@ -160,7 +160,7 @@ LDAPEncoder class >> modifyRequest: aMessageId dn: aDN ops: someModifyingOps [
 	^ stream contents
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 LDAPEncoder class >> newFrom: aStream [
 	| firstByte element elementClass |
 	firstByte := aStream next.
@@ -173,7 +173,7 @@ LDAPEncoder class >> newFrom: aStream [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'utilities - requests' }
 LDAPEncoder class >> searchRequest: aMessageId base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
 	| stream mesg req attrsSeq |
 	stream := ReadWriteStream on: (String new).
@@ -205,7 +205,7 @@ LDAPEncoder class >> searchRequest: aMessageId base: aBase scope: aSearchScope d
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'utilities - requests' }
 LDAPEncoder class >> unbindRequest: aMessageId [
 	| stream mesg |
 	stream := ReadWriteStream on: (String new).

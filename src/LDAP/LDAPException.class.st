@@ -10,7 +10,7 @@ Class {
 	#category : #'LDAP-Exceptions'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 LDAPException class >> newWithCode: aResultCode [
 	| ex newClass |
 	newClass := self.
@@ -29,7 +29,7 @@ LDAPException class >> newWithCode: aResultCode [
 	^ ex
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #conversion }
 LDAPException >> asSymbol [
 "perl-extracted out of openldap's ldap.h -- we should get rid of those ugly LDAP prefixes"
 ^ resultCode caseOf: {
@@ -95,7 +95,7 @@ LDAPException >> asSymbol [
 } otherwise: [#LDAPUnknownReturnCode]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPException >> initializeWithCode: aResultCode [
 	resultCode := aResultCode.
 	self messageText: self asSymbol

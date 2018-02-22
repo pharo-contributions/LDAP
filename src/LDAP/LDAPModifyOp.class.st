@@ -1,3 +1,6 @@
+"
+Common superclass for modifying operations
+"
 Class {
 	#name : #LDAPModifyOp,
 	#superclass : #LDAPRequest,
@@ -8,19 +11,19 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'private - instance creation' }
 LDAPModifyOp class >> affecting: anAttr values: someValues [
 	| obj |
 	obj := self basicNew initializeWithAttr: anAttr values: someValues.
 	^ obj
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPModifyOp class >> tagValue [
 	^ self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #conversion }
 LDAPModifyOp >> asBERElement [
 	| ber |
 	ber := BERSequence new.
@@ -29,13 +32,13 @@ LDAPModifyOp >> asBERElement [
 	^ ber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 LDAPModifyOp >> initializeWithAttr: anAttr values: someValues [
 	attr := anAttr.
 	values := someValues
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 LDAPModifyOp >> printOn: aStream [
 	aStream nextPutAll: self class name, '(', attr, ': ', values asArray, ')'. 
 ]

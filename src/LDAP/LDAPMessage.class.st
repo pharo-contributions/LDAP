@@ -10,7 +10,7 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 LDAPMessage class >> newFrom: aStream [
 	| ber mesg |
 	ber := BERElement newFrom: aStream.
@@ -19,12 +19,12 @@ LDAPMessage class >> newFrom: aStream [
 	^ mesg
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPMessage >> id [
 	^ id
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPMessage >> id: aMessageId [
 	id := aMessageId
 ]

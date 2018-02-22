@@ -7,13 +7,13 @@ Class {
 	#category : #'LDAP-Filters'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 LDAPFilterPresent class >> having: anAttrType [
 	^ self new setType: anAttrType
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPFilterPresent class >> tagValue [
 	^ 7
 ]

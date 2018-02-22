@@ -7,12 +7,12 @@ Class {
 	#category : #'LDAP-Filters'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 LDAPFilterNot class >> filter: aFilter [
 	^ self new setFilter: aFilter
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPFilterNot class >> tagValue [
 	^ 2
 ]

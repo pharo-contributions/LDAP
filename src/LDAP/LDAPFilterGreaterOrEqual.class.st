@@ -7,7 +7,7 @@ Class {
 	#category : #'LDAP-Filters'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPFilterGreaterOrEqual class >> tagValue [
 	^ 5
 	

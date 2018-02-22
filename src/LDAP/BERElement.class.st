@@ -62,28 +62,28 @@ BERElement class >> tagValue [
 	self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 BERElement >> decode: aStream [
 	self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 BERElement >> initialize [
 	tagHeader := 0
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERElement >> length [
 	^ length
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERElement >> lengthLength [
 	^ lengthLength
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #reading }
 BERElement >> readLengthFrom: aStream [
 	| octets  firstOctet |
 	
@@ -103,49 +103,49 @@ BERElement >> readLengthFrom: aStream [
 	^ length			
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERElement >> setTag: aTag [
 	tagHeader := aTag.
 	tagLength := 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tagging }
 BERElement >> tagLength [
 	^ 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tagging }
 BERElement >> tagSetApplication [
 	tagHeader := tagHeader bitOr: 16r40
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tagging }
 BERElement >> tagSetContext [
 	tagHeader := tagHeader bitOr: 16r80
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERElement >> totalLength [
 	^ self length + self lengthLength + self tagLength
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERElement >> value [
 	^ value
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BERElement >> value: aValue [
 	value := aValue
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 BERElement >> writeBodyOn: aStream [
 	self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 BERElement >> writeLength: aLength on: aStream [
 	| octets octetsIndex remainderValue netOctets |
 	
@@ -177,14 +177,14 @@ BERElement >> writeLength: aLength on: aStream [
 	^ octetsIndex			
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 BERElement >> writeOn: aStream [
 	aStream nextPut: ((self class tagValue bitOr: tagHeader) asCharacter).
 	self writeBodyOn: aStream
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #writing }
 BERElement >> writeOn: aStream withTag: aTag [
 	| combinedTag |
 	combinedTag := self class tagValue bitOr: tagHeader.

@@ -13,7 +13,7 @@ BERSet class >> tagValue [
 	^ (17 + 32)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #encoding }
 BERSet >> decode: aStream [
 	^ super decode: aStream
 ]
