@@ -7,22 +7,22 @@ Class {
 	#category : #'LDAP-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - defaults' }
 LDAPTest class >> baseDN [
 	^ 'dc=linalco,dc=test'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - defaults' }
 LDAPTest class >> bindDN [
 	^ 'cn=admin, ',self baseDN
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - defaults' }
 LDAPTest class >> hostname [
 	^ '127.0.0.1'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - defaults' }
 LDAPTest class >> newSuite [
 	| obj |
 	obj := TestSuite named: 'LDAP'.
@@ -31,17 +31,17 @@ LDAPTest class >> newSuite [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - defaults' }
 LDAPTest class >> password [
 	^ 'secret'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - defaults' }
 LDAPTest class >> port [
 	^ 389
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 LDAPTest class >> testAll [
 	"This test expects a single entry in the tree:
 		dn: dc=linalco, dc=test
@@ -68,7 +68,7 @@ LDAPTest class >> testAll [
 		testDel.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #utilities }
 LDAPTest >> checkSearchResults: aResult expecting: expectedRDNs [
 	aResult size  = expectedRDNs size
 		ifFalse: [ ^ false ].
@@ -86,7 +86,7 @@ LDAPTest >> checkSearchResults: aResult expecting: expectedRDNs [
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #connecting }
 LDAPTest >> connect [
 	| req conn |
 	conn := LDAPConnection to: self class hostname port: self class port.
@@ -97,7 +97,7 @@ LDAPTest >> connect [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 LDAPTest >> testAddWithCollectionValues [
 	| conn req attrs |
 	conn := self connect.
@@ -116,7 +116,7 @@ LDAPTest >> testAddWithCollectionValues [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 LDAPTest >> testAddWithStringValues [
 	| conn req attrs |
 	conn := self connect.
@@ -135,14 +135,14 @@ LDAPTest >> testAddWithStringValues [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 LDAPTest >> testBind [
 	| conn |
 	conn := self connect.
 	conn disconnect.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 LDAPTest >> testCompare [
 	| conn req |
 	conn := self connect.
@@ -158,7 +158,7 @@ LDAPTest >> testCompare [
 	conn disconnect.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 LDAPTest >> testDel [
 	| conn req |
 	conn := self connect.
@@ -172,7 +172,7 @@ LDAPTest >> testDel [
 	conn disconnect
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 LDAPTest >> testDoubleBind [
 	| conn req |
 	conn := self connect.
@@ -181,7 +181,7 @@ LDAPTest >> testDoubleBind [
 	conn disconnect.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 LDAPTest >> testModify [
 	| conn req rr ops |
 	conn := self connect.
@@ -204,7 +204,7 @@ LDAPTest >> testModify [
 	conn disconnect.	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 LDAPTest >> testSearch [
 	| conn req rr |
 	conn := self connect.
@@ -216,7 +216,7 @@ LDAPTest >> testSearch [
 	conn disconnect.	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 LDAPTest >> testSearchWithFilters [
 	| conn req rr |
 	conn := self connect.
@@ -245,7 +245,7 @@ LDAPTest >> testSearchWithFilters [
 	conn disconnect.	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 LDAPTest >> testSearchWithNext [
 	| conn req rr r |
 	conn := self connect.
