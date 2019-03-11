@@ -26,7 +26,7 @@ Metacello new
 	conn isValid ] on: Error do: [ 1 halt ]
 ```
 
-### Establish a connection to the LDAP server (on ssl)
+### Establish a connection to the LDAP server (no ssl)
 ```
 conn := (LDAPConnection to: 'ldap.domain.org' port: 389).
 req := conn bindAs: 'cn=admin,dc=domain,dc=org' credentials: 'password'.
