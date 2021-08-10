@@ -31,7 +31,7 @@ BERInteger >> decode: aStream [
 BERInteger >> writeBodyOn: aStream [
 	| octets netOctets isNegative remainderValue octetsIndex |
 	isNegative := value < 0.
-	octets := ByteArray new: (value digitLength + 2).
+	octets := ByteArray new: (value bytesCount + 2).
 	
 	"put value into octet array, covert negatives as appropiate"
 	
