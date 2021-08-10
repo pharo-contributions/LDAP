@@ -1,16 +1,17 @@
 # LDAP Support for Pharo
 
-Migrated from the original repository at http://smalltalkhub.com/#!/~PharoExtras/LDAP/
+Port to Pharo 9.0. Migrated from the original repository at http://smalltalkhub.com/PharoExtras/LDAP/
 
-LDAP (Lightweight Directory Access Protocol) is a network protocol that allows the communication between Pharo and entreprise directories. LDAP is mainly used for authentication of users into the mails servers, enterprise applications or biometric systems. This implementation is fully written in Pharo and don't requires access to native libraries.
+LDAP (Lightweight Directory Access Protocol) is a network protocol for remote directories. LDAP is mainly used for authentication of users into the mails servers, enterprise applications or biometric systems.
+
+This implementation allows Pharo to communicate with LDAP directories. It is fully written in Pharo and does not requires access to native libraries.
 
 
 ## Loading
 ```
 Metacello new
- 	configuration: 'LDAP';
- 	repository: 'github://pharo-contributions/LDAP/src';
-	version: #stable;
+ 	baseline: 'LDAP';
+ 	repository: 'github://{repo}/LDAP/src'; "For example 'github://pharo-contributions/LDAP/src'"
 	load.
 ```
 
