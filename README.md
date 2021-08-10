@@ -4,7 +4,7 @@ Port to Pharo 9.0. Migrated from the original repository at http://smalltalkhub.
 
 LDAP (Lightweight Directory Access Protocol) is a network protocol for remote directories. LDAP is mainly used for authentication of users into the mails servers, enterprise applications or biometric systems.
 
-This implementation allows Pharo to communicate with LDAP directories. It is fully written in Pharo and does not requires access to native libraries.
+This implementation allows Pharo to communicate with such LDAP directories. It is fully written in Pharo and does not require access to native libraries.
 
 
 ## Loading
