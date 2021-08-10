@@ -70,8 +70,8 @@ LDAPTest class >> testAll [
 
 { #category : #utilities }
 LDAPTest >> checkSearchResults: aResult expecting: expectedRDNs [
-	aResult size  = expectedRDNs size
-		ifFalse: [ ^ false ].
+	aResult size  < expectedRDNs size
+		ifTrue: [ ^ false ].
 	
 	expectedRDNs do: [:eachExpected | | qualified isPresent |
 		eachExpected
