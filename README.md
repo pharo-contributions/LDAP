@@ -1,3 +1,4 @@
+
 # LDAP Support for Pharo
 
 Port to Pharo 9.0. Migrated from the original repository at http://smalltalkhub.com/PharoExtras/LDAP/
@@ -8,18 +9,38 @@ This implementation allows Pharo to communicate with such LDAP directories. It i
 
 
 ## Loading
-```
+```Smalltalk
 Metacello new
  	baseline: 'LDAP';
  	repository: 'github://{repo}/LDAP/src'; "For example 'github://pharo-contributions/LDAP/src'"
 	load.
 ```
-
+### Loading for Pharo 7 and older
+Load the project using the configuration and the *commitish* corresponding to the legacy tag, branch or even SHA as the following:
+```Smalltalk
+Metacello new
+ 	configuration: 'LDAP';
+	githubUser: 'pharo-contributions' project: 'LDAP' 
+		commitish: 'd8f505b34dd2489eb29f61cf85512eb943b35e5a' 
+		path: 'src';
+	version: #stable;
+	load.
+```
+At this point, no branch or tag exist, so use the most current SHA at that point: [LDAP legacy](https://github.com/pharo-contributions/LDAP/tree/d8f505b34dd2489eb29f61cf85512eb943b35e5a).
+See [How to load a git project](https://github.com/pharo-open-documentation/pharo-wiki/blob/master/General/Baselines.md#how-to-load-a-git-project-using-its-baseline) for more information.
 
 ## Example Snippets
 
-### SSL
+### Establish a connection to the LDAP server
+```Smalltalk
+| conn req |
+conn := (LDAPConnection to: 'ldap.domain.org' port: 389).
+req := conn bindAs: 'cn=admin,dc=domain,dc=org' credentials: 'password'.
+req wait.
 ```
+
+### Establish a connection to the LDAP server with SSL
+```Smalltalk
 | conn req |
 [ conn := (LDAPSConnection to: 'sldap123.someuri.org' port: 686 ssl: true).
 	req := conn bindAs: 'uid=myuid,ou=people,o=someuri,c=org' credentials: '123'.
@@ -27,15 +48,9 @@ Metacello new
 	conn isValid ] on: Error do: [ 1 halt ]
 ```
 
-### Establish a connection to the LDAP server (no ssl)
-```
-conn := (LDAPConnection to: 'ldap.domain.org' port: 389).
-req := conn bindAs: 'cn=admin,dc=domain,dc=org' credentials: 'password'.
-req wait.
-```
 
 ### Create new entry
-```
+```Smalltalk
 attrs := Dictionary new
     at: 'objectClass' put: (OrderedCollection new add: 'inetOrgPerson'; yourself);
     at: 'cn' put: 'Doe John';
@@ -48,21 +63,21 @@ req wait.
 ```
 
 ### Change the value of an attribute
-```
+```Smalltalk
 ops := { LDAPAttrModifier set: 'sn' to: { 'Doe' } }.
 req := conn modify: 'uid=jdoe,ou=people,dc=domain,dc=org' with: ops.
 req wait.
 ```
 
 ### Add an attribute
-```
+```Smalltalk
 ops := { LDAPAttrModifier addTo: 'loginShell' values: { '/bin/bash' } }.
 req := conn modify: 'uid=jdoe,ou=people,dc=domain,dc=org' with: ops.
 req wait.
 ```
 
 ### Read all entries
-```
+```Smalltalk
 req := conn 
     newSearch: 'ou=people,dc=domain,dc=org' 
     scope: (LDAPConnection wholeSubtree) 
@@ -73,7 +88,7 @@ req := conn
 ```
 
 ### Select entries with filters
-```
+```Smalltalk
 req := conn
     newSearch: 'ou=people,dc=domain,dc=org'
     scope: LDAPConnection wholeSubtree
@@ -87,12 +102,12 @@ req wait.
 ```
 
 ### Delete an entry
-```
+```Smalltalk
 req := connection delEntry: 'uid=doe,ou=people,dc=domain,dc=org'.
 req wait.
 ```
 
 ### Disconnect the client
-```
+```Smalltalk
 conn disconnect
 ```
