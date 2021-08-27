@@ -12,14 +12,22 @@ BERNull class >> tagValue [
 	^ 5
 ]
 
-{ #category : #decoding }
-BERNull >> decode: aStream [
-	"not sure about this.. should it be 0?"
-	"length := 1."
-	value := nil
+{ #category : #encoding }
+BERNull >> decode: aStream length: anInteger [
+"Nothing to do"
+]
+
+{ #category : #accessing }
+BERNull >> length [
+	^ 0
+]
+
+{ #category : #accessing }
+BERNull >> value [
+	^ nil
 ]
 
 { #category : #writing }
 BERNull >> writeBodyOn: aStream [
-	self writeLength: 0 on: aStream
+"Nothing to do"
 ]
