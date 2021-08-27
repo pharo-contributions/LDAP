@@ -166,5 +166,5 @@ LDAPConnection >> newSearch: aBase scope: aSearchScope deref: aDerefBehaviour fi
 
 { #category : #binding }
 LDAPConnection >> unbind [
-	LDAPUnbindRequest new initializeWith: worker
+	^ LDAPRequest new initializeWith: worker request: (LDAPUnbindRequest new)
 ]

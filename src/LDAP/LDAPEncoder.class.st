@@ -217,18 +217,3 @@ LDAPEncoder class >> searchRequest: aMessageId base: aBase scope: aSearchScope d
 	^ stream contents
 	
 ]
-
-{ #category : #'utilities - requests' }
-LDAPEncoder class >> unbindRequest: aMessageId [
-	| stream mesg |
-	stream := ReadWriteStream on: (String new).
-
-	mesg := BERSequence new.
-	mesg addElement: (BERInteger new value: aMessageId).
-
-	mesg addElement: (BERNull new tagSetApplication) withTag: 2.
-
-	mesg writeOn: stream.
-		
-	^ stream contents
-]
