@@ -3,17 +3,19 @@ A present filter
 "
 Class {
 	#name : #LDAPFilterPresent,
-	#superclass : #LDAPFilterWithType,
+	#superclass : #BEROctetString,
+	#traits : 'TLDAPComposeFilter',
+	#classTraits : 'TLDAPComposeFilter classTrait',
 	#category : #'LDAP-Filters'
 }
 
 { #category : #'instance creation' }
 LDAPFilterPresent class >> having: anAttrType [
-	^ self new setType: anAttrType
+	^ self new value: anAttrType
 
 ]
 
 { #category : #accessing }
 LDAPFilterPresent class >> tagValue [
-	^ 7
+	^ 16r87 "Context 7"
 ]

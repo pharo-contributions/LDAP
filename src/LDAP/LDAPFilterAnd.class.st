@@ -9,5 +9,10 @@ Class {
 
 { #category : #accessing }
 LDAPFilterAnd class >> tagValue [
-	^ 0
+	^ 16rA0 "Context 0"
+]
+
+{ #category : #converting }
+LDAPFilterAnd >> asAndElements [ 
+	^ elements
 ]

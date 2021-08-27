@@ -17,7 +17,7 @@ LDAPCompareRequest class >> tagValue [
 
 { #category : #accessing }
 LDAPCompareRequest >> comparing: aFilter [
-	elements at: 2 put: aFilter asBERElement
+	elements at: 2 put: aFilter
 ]
 
 { #category : #accessing }
@@ -30,6 +30,6 @@ LDAPCompareRequest >> initialize [
 	super initialize.
 	
 	self addElement: (BEROctetString new). "entry"
-	self addElement: (LDAPFilterEquality new asBERElement). "AttributeValueAssertion"
+	self addElement: (LDAPFilterEquality new). "AttributeValueAssertion"
 
 ]

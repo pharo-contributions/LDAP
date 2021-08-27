@@ -11,7 +11,7 @@ Class {
 LDAPFilter class >> andOf: someFilters [
 	| set |
 	set := LDAPFilterAnd new.
-	someFilters do: [ :each | set add: each ].
+	someFilters do: [ :each | set addElement: each ].
 	^ set
 
 ]
@@ -40,7 +40,7 @@ LDAPFilter class >> not: aFilter [
 LDAPFilter class >> orOf: someFilters [
 	| set |
 	set := LDAPFilterOr new.
-	someFilters do: [ :each | set add: each ].
+	someFilters do: [ :each | set addElement: each ].
 	^ set
 
 ]
@@ -52,18 +52,18 @@ LDAPFilter class >> with: anAttrType [
 
 { #category : #'instance creation' }
 LDAPFilter class >> with: anAttrType equalTo: anAttrValue [
-	^ LDAPFilterEquality new setType: anAttrType value: (anAttrValue utf8Encoded asString)
+	^ LDAPFilterEquality new description: anAttrType; assertionValue: anAttrValue
 ]
 
 { #category : #'instance creation' }
 LDAPFilter class >> with: anAttrType greaterOrEqualThan: anAttrValue [
-	^ LDAPFilterGreaterOrEqual new setType: anAttrType value: (anAttrValue utf8Encoded asString)
+	^ LDAPFilterGreaterOrEqual new description: anAttrType; assertionValue: anAttrValue
 	
 ]
 
 { #category : #'instance creation' }
 LDAPFilter class >> with: anAttrType lessOrEqualThan: anAttrValue [
-	^ LDAPFilterLessOrEqual new setType: anAttrType value: (anAttrValue utf8Encoded asString)
+	^ LDAPFilterLessOrEqual new description: anAttrType; assertionValue: anAttrValue
 ]
 
 { #category : #'instance creation' }

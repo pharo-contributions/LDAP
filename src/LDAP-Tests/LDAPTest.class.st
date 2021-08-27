@@ -147,11 +147,11 @@ LDAPTest >> testCompare [
 	| conn req |
 	conn := self connect.
 
-	req :=conn compare: 'cn=test1,', self class baseDN using: (LDAPFilterEquality new setType: 'cn' value: 'test1').
+	req :=conn compare: 'cn=test1,', self class baseDN using: (LDAPFilterEquality new description: 'cn'; value: 'test1').
 	req wait.
 	self assert: (req result).
 
-	req :=conn compare: 'cn=test1,', self class baseDN using: (LDAPFilterEquality new setType: 'cn' value: 'test2').
+	req :=conn compare: 'cn=test1,', self class baseDN using: (LDAPFilterEquality new description: 'cn'; value: 'test2').
 	req wait.
 	self deny: (req result).
 
@@ -197,7 +197,7 @@ LDAPTest >> testModify [
 	req := conn modify: (rr dn) with: ops.
 	req wait.
 	
-	req :=conn compare: 'cn=test1,', self class baseDN using: (LDAPFilterEquality new setType: 'sn' value: 'test5sn').
+	req :=conn compare: 'cn=test1,', self class baseDN using: (LDAPFilterEquality new description: 'sn'; value: 'test5sn').
 	req wait.
 	self assert: (req result).
 	

@@ -3,26 +3,38 @@ Filter with assertions about values
 "
 Class {
 	#name : #LDAPFilterWithValueAssertion,
-	#superclass : #LDAPFilterSingle,
-	#instVars : [
-		'type',
-		'value'
-	],
+	#superclass : #BERSequence,
+	#traits : 'TLDAPComposeFilter',
+	#classTraits : 'TLDAPComposeFilter classTrait',
 	#category : #'LDAP-Filters'
 }
 
-{ #category : #conversion }
-LDAPFilterWithValueAssertion >> asBERElement [
-	| ber |
-	ber := BERSequence new.
-	ber
-		addElement: (BEROctetString new value: type);
-		addElement: (BEROctetString new value: value).
-	^ ber
+{ #category : #accessing }
+LDAPFilterWithValueAssertion >> assertionValue [ 
+	^ elements second value
 ]
 
 { #category : #accessing }
-LDAPFilterWithValueAssertion >> setType: anAttrType value: anAttrValue [
-	type := anAttrType.
-	value := anAttrValue	
+LDAPFilterWithValueAssertion >> assertionValue: aString [
+	elements second value: aString
+]
+
+{ #category : #accessing }
+LDAPFilterWithValueAssertion >> description [ 
+	^ elements first value
+]
+
+{ #category : #accessing }
+LDAPFilterWithValueAssertion >> description: aString [
+	elements first value: aString
+]
+
+{ #category : #conversion }
+LDAPFilterWithValueAssertion >> initialize [ 
+	super initialize.
+
+	self
+		addElement: (BEROctetString new);
+		addElement: (BEROctetString new).
+
 ]

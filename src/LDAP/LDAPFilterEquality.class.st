@@ -9,5 +9,5 @@ Class {
 
 { #category : #accessing }
 LDAPFilterEquality class >> tagValue [
-	^ 3
+	^ 16rA3 "Context 3"
 ]
