@@ -4,7 +4,7 @@ Result for delete
 Class {
 	#name : #LDAPDelResult,
 	#superclass : #LDAPResult,
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Results'
 }
 
 { #category : #accessing }

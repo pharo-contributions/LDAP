@@ -4,7 +4,7 @@ Result for compare
 Class {
 	#name : #LDAPCompareResult,
 	#superclass : #LDAPResult,
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Results'
 }
 
 { #category : #documentation }

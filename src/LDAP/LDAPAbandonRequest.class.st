@@ -4,7 +4,7 @@ Request to abondon a request
 Class {
 	#name : #LDAPAbandonRequest,
 	#superclass : #BERInteger,
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Requests'
 }
 
 { #category : #accessing }

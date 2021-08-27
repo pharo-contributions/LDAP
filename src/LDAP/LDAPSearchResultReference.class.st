@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'url'
 	],
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Results'
 }
 
 { #category : #testing }

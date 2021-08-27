@@ -4,7 +4,7 @@ Result for bind
 Class {
 	#name : #LDAPBindResult,
 	#superclass : #LDAPResult,
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Results'
 }
 
 { #category : #accessing }

@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'searchResult'
 	],
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Requests'
 }
 
 { #category : #accessing }

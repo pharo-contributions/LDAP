@@ -8,7 +8,7 @@ Class {
 		'dn',
 		'attrs'
 	],
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Results'
 }
 
 { #category : #testing }

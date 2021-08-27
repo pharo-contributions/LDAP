@@ -4,7 +4,7 @@ Result of an LDAP message.
 Class {
 	#name : #LDAPResult,
 	#superclass : #BERSequence,
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Results'
 }
 
 { #category : #accessing }

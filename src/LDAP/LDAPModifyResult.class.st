@@ -4,7 +4,7 @@ Modify result
 Class {
 	#name : #LDAPModifyResult,
 	#superclass : #LDAPResult,
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Results'
 }
 
 { #category : #accessing }

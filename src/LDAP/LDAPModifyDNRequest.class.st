@@ -4,7 +4,7 @@ Request to modify a distinguished name
 Class {
 	#name : #LDAPModifyDNRequest,
 	#superclass : #BERSequence,
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Requests'
 }
 
 { #category : #accessing }
@@ -39,7 +39,7 @@ LDAPModifyDNRequest >> newRdn: aRdn [
 
 { #category : #accessing }
 LDAPModifyDNRequest >> underDn: aDn [
-	elements size < 4 ifTrue: [ elements addElement: LDAPPrimitive0String new ].
+	elements size < 4 ifTrue: [ elements addElement: (LDAPContextSpecificString new tagValue: 0)].
 	elements fourth value: aDn
 ]
 

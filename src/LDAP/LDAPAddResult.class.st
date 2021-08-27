@@ -4,7 +4,7 @@ Result for add
 Class {
 	#name : #LDAPAddResult,
 	#superclass : #LDAPResult,
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Results'
 }
 
 { #category : #accessing }

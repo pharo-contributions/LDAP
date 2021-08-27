@@ -4,7 +4,7 @@ Search result code
 Class {
 	#name : #LDAPSearchResultCode,
 	#superclass : #LDAPResult,
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Results'
 }
 
 { #category : #testing }
