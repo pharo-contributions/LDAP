@@ -8,10 +8,28 @@ Class {
 	#category : #'LDAP-Core'
 }
 
+{ #category : #accessing }
+LDAPAddRequest class >> tagValue [
+	^ 16r68 "Application 8"
+]
+
+{ #category : #accessing }
+LDAPAddRequest >> attrs: aDictionary [
+	| ber |
+	ber := LDAPEncoder attrsAsBERElement: aDictionary.
+	elements at: 2 put: ber.
+]
+
+{ #category : #accessing }
+LDAPAddRequest >> dn: aDn [
+	elements first value: aDn
+]
+
 { #category : #initialization }
-LDAPAddRequest >> initializeWith: anLDAPWorker dn: aDN attrs: someAttrs [
-	self initializeWith: anLDAPWorker.
-	anLDAPWorker send:
-		(LDAPEncoder addRequest: messageId dn: aDN attrs: someAttrs).
+LDAPAddRequest >> initialize [ 
+	super initialize.
+	
+	self addElement: (BEROctetString new).
+	self addElement: (BERSequence new).
 
 ]

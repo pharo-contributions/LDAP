@@ -28,7 +28,7 @@ LDAPModifyOp >> asBERElement [
 	| ber |
 	ber := BERSequence new.
 	ber addElement: (BEREnumerated new value: self class tagValue).
-	ber addElement: (LDAPEncoder attrAsBERElement: (Association key: attr value: values)).
+	ber addElement: (LDAPEncoder attributeDescription: attr andValues: values).
 	^ ber
 ]
 

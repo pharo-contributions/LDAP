@@ -7,45 +7,25 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'utilities - requests' }
-LDAPEncoder class >> addRequest: aMessageId dn: aDN attrs: someAttrs [
-	| stream mesg req |
-	stream := ReadWriteStream on: (String new).
-
-	mesg := BERSequence new.
-	mesg addElement: (BERInteger new value: aMessageId).
-
-	req := BERSequence new.
-	req addElement: (BEROctetString new value: aDN).
-	req addElement: (self attrsAsBERElement: someAttrs).
-	
-	mesg addElement: (req tagSetApplication) withTag: 8.
-	mesg writeOn: stream.
-		
-	^ stream contents
-]
-
-{ #category : #'utilities - attributes' }
-LDAPEncoder class >> attrAsBERElement: anAttrAsAssociation [
-	| ber berAttrVals key |
+{ #category : #converting }
+LDAPEncoder class >> attributeDescription: aString andValues: aCollectionOfStrings [
+"Convert an attribute to a BERElement"
+	| ber values |
 	ber := BERSequence new.
-	key := anAttrAsAssociation key.
-	ber addElement: (BEROctetString new value: key).
-	berAttrVals := BERSet new.
-	(anAttrAsAssociation value) do: [ :eachVal |
-		berAttrVals addElement: (BEROctetString new value: (eachVal utf8Encoded asString)) ].
-	ber addElement: berAttrVals.
+	ber addElement: (BEROctetString new value: aString).
+	values := BERSet new.
+	aCollectionOfStrings do: [ :eachVal |
+		values addElement: (BEROctetString new value: eachVal) ].
+	ber addElement: values.
 	^ ber
 ]
 
 { #category : #'utilities - attributes' }
-LDAPEncoder class >> attrsAsBERElement: someAttrs [
+LDAPEncoder class >> attrsAsBERElement: aDictionary [
 	| ber |
 	ber := BERSequence new.
-	someAttrs associationsDo: [ :eachAttr |
-		ber addElement: (self attrAsBERElement: eachAttr) ].
+	aDictionary associationsDo: [ :a | ber addElement: (self attributeDescription: a key andValues: a value) ].
 	^ ber
-	
 ]
 
 { #category : #'utilities - requests' }

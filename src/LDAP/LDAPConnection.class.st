@@ -89,7 +89,7 @@ LDAPConnection class >> wholeSubtree [
 
 { #category : #accessing }
 LDAPConnection >> addEntry: aDN attrs: someAttrs [
-	^ LDAPAddRequest new initializeWith: worker dn: aDN attrs: (self class collectionizedAttrs: someAttrs).
+	^ LDAPRequest new initializeWith: worker request: (LDAPAddRequest new dn: aDN; attrs: someAttrs).
 ]
 
 { #category : #binding }

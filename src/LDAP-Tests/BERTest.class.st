@@ -87,17 +87,18 @@ BERTest >> formatWithHex: aString [
 
 { #category : #tests }
 BERTest >> testAddRequest [
-	| encoded attrs |
+	| request encoded expected attrs |
 	attrs := Dictionary new.
 	attrs at: 'objectClass' put: (OrderedCollection new addLast: ('person' utf8Encoded asString); yourself).
 	attrs at: 'cn' put: (OrderedCollection new addLast: ('test2' utf8Encoded asString); yourself).
 	attrs at: 'sn' put: (OrderedCollection new addLast: ('test2' utf8Encoded asString); yourself).
 
-	encoded := LDAPEncoder addRequest: 1 dn: 'cn=test2,dc=linalco,dc=test' attrs: attrs.
+	request := LDAPAddRequest new dn: 'cn=test2,dc=linalco,dc=test'; attrs: attrs.
+	encoded := LDAPEncoder id: 1 request: request.
 	encoded := encoded asString asHex.
 
-	self assert: (encoded = (self formatWithHex: '305B0201016856041B636E3D74657374322C64633D6C696E616C636F2C64633D746573743037300D0402636E3107040574657374323017040B6F626A656374436C61737331080406706572736F6E300D0402736E310704057465737432'))
-
+	expected := self formatWithHex: '305B0201016856041B636E3D74657374322C64633D6C696E616C636F2C64633D746573743037300D0402636E3107040574657374323017040B6F626A656374436C61737331080406706572736F6E300D0402736E310704057465737432'.
+	self assert: encoded equals: expected
 ]
 
 { #category : #tests }
