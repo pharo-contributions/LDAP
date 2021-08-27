@@ -105,7 +105,7 @@ LDAPConnection >> bindAs: aUsername credentials: aPassword method: anAuthMethod 
 
 { #category : #accessing }
 LDAPConnection >> compare: aDN using: anEqualityFilter [
-	^ LDAPCompareRequest new initializeWith: worker dn: aDN comparing: anEqualityFilter
+	^ LDAPRequest new initializeWith: worker request: (LDAPCompareRequest new dn: aDN; comparing: anEqualityFilter)
 ]
 
 { #category : #accessing }
