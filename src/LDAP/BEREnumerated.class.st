@@ -11,9 +11,3 @@ Class {
 BEREnumerated class >> tagValue [
 	^ 10
 ]
-
-{ #category : #encoding }
-BEREnumerated >> decode: aStream [
-	super decode: aStream.
-
-]
