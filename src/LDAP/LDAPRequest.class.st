@@ -10,7 +10,7 @@ Class {
 		'waitingSemaphore',
 		'isDone',
 		'result',
-		'isAbandoned'
+		'abandoned'
 	],
 	#category : #'LDAP-Core'
 }
@@ -44,16 +44,16 @@ LDAPRequest >> hasResult [
 ]
 
 { #category : #initialization }
-LDAPRequest >> initializeWith: anLDAPWorker [
+LDAPRequest >> initializeWith: anLDAPWorker request: aRequest [
 	worker := anLDAPWorker.
 	messageId := worker nextMessageId.
 	waitingSemaphore := Semaphore new.
-	isAbandoned := false.
+	abandoned := nil.
 	isDone := false.
 
 	worker addTarget: self for: messageId.
+	worker send: (LDAPEncoder id: messageId request: aRequest).
 
-	
 ]
 
 { #category : #testing }

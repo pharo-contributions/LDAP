@@ -119,6 +119,19 @@ LDAPEncoder class >> delRequest: aMessageId dn: aDN [
 ]
 
 { #category : #'utilities - requests' }
+LDAPEncoder class >> id: aMessageId request: aRequest [
+	| stream mesg |
+	stream := ReadWriteStream on: (String new).
+
+	mesg := BERSequence new.
+	mesg addElement: (BERInteger new value: aMessageId).
+	mesg addElement: aRequest.
+
+	mesg writeOn: stream.
+	^ stream contents
+]
+
+{ #category : #'utilities - requests' }
 LDAPEncoder class >> modifyDNRequest: aMessageId dn: aDN toRDN: aRDN underDN: aUnderDN wantToClearAttrs: aWantsToClearAttrs [ 
 	| stream mesg req |
 	stream := ReadWriteStream on: (String new).
