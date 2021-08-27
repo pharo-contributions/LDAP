@@ -63,26 +63,6 @@ LDAPEncoder class >> modifyDNRequest: aMessageId dn: aDN toRDN: aRDN underDN: aU
 	^ stream contents
 ]
 
-{ #category : #'utilities - requests' }
-LDAPEncoder class >> modifyRequest: aMessageId dn: aDN ops: someModifyingOps [
-	| stream mesg req ops |
-	stream := ReadWriteStream on: (String new).
-
-	mesg := BERSequence new.
-	mesg addElement: (BERInteger new value: aMessageId).
-
-	req := BERSequence new.
-	req addElement: (BEROctetString new value: aDN).
-	ops := BERSequence new.
-	someModifyingOps do: [ :each | ops addElement: each asBERElement ].
-	req addElement: ops.
-	
-	mesg addElement: (req tagSetApplication) withTag: 6.
-	mesg writeOn: stream.
-		
-	^ stream contents
-]
-
 { #category : #'instance creation' }
 LDAPEncoder class >> newFrom: aStream [
 	| firstByte element elementClass |

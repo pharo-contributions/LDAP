@@ -136,7 +136,7 @@ LDAPConnection >> isValid [
 
 { #category : #accessing }
 LDAPConnection >> modify: aDN with: someLDAPAttrModifiers [
-	^ LDAPModifyRequest new initializeWith: worker dn: aDN ops: someLDAPAttrModifiers
+	^ LDAPRequest new initializeWith: worker request: (LDAPModifyRequest new dn: aDN; ops: someLDAPAttrModifiers)
 ]
 
 { #category : #accessing }

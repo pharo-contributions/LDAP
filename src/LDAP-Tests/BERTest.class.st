@@ -186,15 +186,17 @@ BERTest >> testIntegerEncoding [
 
 { #category : #tests }
 BERTest >> testModifyRequest [
-	| encoded ops |
+	| request encoded expected ops |
 	ops :=  { 
 			LDAPAttrModifier set: 'sn' to: { 'test5sn' . 'foo' . 'bar'}.
 			LDAPAttrModifier addTo: 'description' values: {'rchueo'} }.
 									
-	encoded := LDAPEncoder modifyRequest: 1 dn: 'cn=test5,dc=linalco,dc=test' ops: ops.
+	request := LDAPModifyRequest new dn: 'cn=test5,dc=linalco,dc=test'; ops: ops.
+	encoded := LDAPEncoder id: 1 request: request.
 	encoded := encoded asString asHex.
 
-	self assert: (encoded = (self formatWithHex: '3062020101665D041B636E3D74657374352C64633D6C696E616C636F2C64633D74657374303E301E0A010230190402736E311304077465737435736E0403666F6F0403626172301C0A01003017040B6465736372697074696F6E3108040672636875656F'))
+	expected := self formatWithHex: '3062020101665D041B636E3D74657374352C64633D6C696E616C636F2C64633D74657374303E301E0A010230190402736E311304077465737435736E0403666F6F0403626172301C0A01003017040B6465736372697074696F6E3108040672636875656F'.
+	self assert: encoded equals: expected
 
 ]
 
