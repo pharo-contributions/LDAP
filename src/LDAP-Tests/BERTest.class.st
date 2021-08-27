@@ -103,12 +103,13 @@ BERTest >> testAddRequest [
 
 { #category : #tests }
 BERTest >> testBindRequest [
-	| encoded |
-	encoded := LDAPEncoder bindRequest: 1 username: 'cn=admin,dc=linalco,dc=test' credentials: 'secret' method: nil.
+	| request encoded expected |
+	request := LDAPBindRequest new username: 'cn=admin,dc=linalco,dc=test'; password: 'secret'.
+	encoded := LDAPEncoder id: 1 request: request.
 	encoded := encoded asString asHex.
 
-	self assert: (encoded = (self formatWithHex: ('302D0201016028020103041B636E3D61646D696E2C64633D6C696E616C636F2C64633D746573748006736563726574')))
-
+	expected := self formatWithHex: '302D0201016028020103041B636E3D61646D696E2C64633D6C696E616C636F2C64633D746573748006736563726574'.
+	self assert: encoded equals: expected
 ]
 
 { #category : #tests }

@@ -7,11 +7,27 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #initialization }
-LDAPBindRequest >> initializeWith: anLDAPWorker username: aUsername credentials: aPassword method: anAuthMethod [
-	anAuthMethod ifNotNil: [ self notYetImplemented ].
-	self initializeWith: anLDAPWorker.
-	anLDAPWorker send:
-		(LDAPEncoder bindRequest: messageId username: aUsername credentials: aPassword method: anAuthMethod).
+{ #category : #accessing }
+LDAPBindRequest class >> tagValue [
+	^ 16r60 "Application 0"
+]
 
+{ #category : #initialization }
+LDAPBindRequest >> initialize [ 
+	super initialize.
+	
+	self addElement: (BERInteger new value: 3). "version"
+	self addElement: (BEROctetString new). "name"
+	self addElement: (LDAPSimpleAuthString new). "simple"
+
+]
+
+{ #category : #accessing }
+LDAPBindRequest >> password: aString [
+	elements third value: aString
+]
+
+{ #category : #accessing }
+LDAPBindRequest >> username: aString [
+	elements second value: aString
 ]

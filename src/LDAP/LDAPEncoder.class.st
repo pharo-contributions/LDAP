@@ -29,25 +29,6 @@ LDAPEncoder class >> attrsAsBERElement: aDictionary [
 ]
 
 { #category : #'utilities - requests' }
-LDAPEncoder class >> bindRequest: aMessageId username: aUsername credentials: aPassword method: anAuthMethod [
-	| stream mesg req |
-	stream := ReadWriteStream on: (String new).
-
-	mesg := BERSequence new.
-	mesg addElement: (BERInteger new value: aMessageId).
-
-	req := BERSequence new tagSetApplication.
-	req addElement: (BERInteger new value: 3).
-	req addElement: (BEROctetString new value: aUsername).
-	req addElement: (BEROctetString new tagSetContext;  value: aPassword) withTag: 0.
-
-	mesg addElement: req withTag: 0.
-	mesg writeOn: stream.
-		
-	^ stream contents
-]
-
-{ #category : #'utilities - requests' }
 LDAPEncoder class >> compareRequest: aMessageId dn: aDN comparing: anEqualityFilter [
 	| stream mesg req |
 	stream := ReadWriteStream on: (String new).

@@ -100,7 +100,7 @@ LDAPConnection >> bindAs: aUsername credentials: aPassword [
 
 { #category : #binding }
 LDAPConnection >> bindAs: aUsername credentials: aPassword method: anAuthMethod [
-	^ LDAPBindRequest new initializeWith: worker username: aUsername credentials: aPassword method: anAuthMethod
+	^ LDAPRequest new initializeWith: worker request: (LDAPBindRequest new username: aUsername; password: aPassword; method: anAuthMethod)
 ]
 
 { #category : #accessing }
