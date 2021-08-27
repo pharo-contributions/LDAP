@@ -17,32 +17,20 @@ BERConstruct class >> new [
 
 { #category : #accessing }
 BERConstruct >> addElement: anElement [
-	self addElement: anElement withTag: nil
-]
-
-{ #category : #accessing }
-BERConstruct >> addElement: anElement withTag: aContextTag [
-	| taggedElement |
-	taggedElement := Association new;
-		key: aContextTag value: anElement.
-	elements addLast: taggedElement
+	elements addLast: anElement
 ]
 
 { #category : #encoding }
-BERConstruct >> decode: aStream [
+BERConstruct >> decode: aStream length: aLength [
 	| elementLen part |
 	
-	elementLen := self length.
+	elementLen := aLength.
 	[elementLen > 0]
 		whileTrue: [
-			part := self class newFrom: aStream.
+			part := BERElement newFrom: aStream.
 			elementLen := elementLen - part totalLength.
-			self addElement: part ]
-]
-
-{ #category : #accessing }
-BERConstruct >> elements [
-	^ elements
+			self addElement: part
+		].
 ]
 
 { #category : #initialization }
@@ -51,16 +39,18 @@ BERConstruct >> initialize [
 	elements := OrderedCollection new
 ]
 
+{ #category : #accessing }
+BERConstruct >> length [
+	^ elements inject: 0 into: [ :sum :each | sum + each totalLength ]
+]
+
+{ #category : #accessing }
+BERConstruct >> value [
+	^ elements
+]
+
 { #category : #writing }
 BERConstruct >> writeBodyOn: aStream [
-	| data dataStream |
-	data := Array new.
-	dataStream := WriteStream on: data.
-	
-	elements do: [:taggedElement |
-		taggedElement value writeOn: dataStream withTag: (taggedElement key) ].
-	
-	"shouldnt we move this somewhere else?"
-	self writeLength: (dataStream contents size) on: aStream.
-	aStream nextPutAll: (dataStream contents)
+	elements do: [ :element | element writeOn: aStream  ].
+
 ]
