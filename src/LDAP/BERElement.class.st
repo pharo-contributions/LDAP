@@ -106,6 +106,15 @@ BERElement >> length [
 	^ self subclassResponsibility
 ]
 
+{ #category : #printing }
+BERElement >> printOn: aStream [
+	super printOn: aStream.
+	aStream nextPutAll: ' ('.
+	self value printOn: aStream.
+	aStream nextPutAll: ')'.
+
+]
+
 { #category : #'instance creation' }
 BERElement >> readFrom: aStream [
 	| firstByte length |

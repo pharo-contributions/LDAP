@@ -39,6 +39,12 @@ BERConstruct >> length [
 	^ elements inject: 0 into: [ :sum :each | sum + each totalLength ]
 ]
 
+{ #category : #printing }
+BERConstruct >> printOn: aStream [
+	aStream << 'a ' << self class name << ' '.
+	elements printElementsOn: aStream.
+]
+
 { #category : #accessing }
 BERConstruct >> value [
 	^ elements
