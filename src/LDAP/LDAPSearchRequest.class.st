@@ -4,15 +4,26 @@ LDAPSearchRequest is the process to search entries from the LDAP directory.
 Class {
 	#name : #LDAPSearchRequest,
 	#superclass : #BERSequence,
-	#instVars : [
-		'partialResults',
-		'iterator',
-		'gotNewResultSemaphore',
-		'searchResult',
-		'resultCount'
-	],
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Requests'
 }
+
+{ #category : #accessing }
+LDAPSearchRequest class >> tagValue [
+	^ 16r63 "Application 3"
+]
+
+{ #category : #accessing }
+LDAPSearchRequest >> attrs: someAttrs [
+	| ber |
+	ber := BERSequence new.
+	someAttrs do: [ :each | ber addElement: (BEROctetString new value: each) ].
+	elements at: 8 put: ber.
+]
+
+{ #category : #accessing }
+LDAPSearchRequest >> base: aDn [
+	elements first value: aDn
+]
 
 { #category : #'error handling' }
 LDAPSearchRequest >> checkForExceptions [
@@ -24,16 +35,29 @@ LDAPSearchRequest >> checkForExceptions [
 	].
 ]
 
+{ #category : #accessing }
+LDAPSearchRequest >> derefAliases: anEnumeratedValue [
+	elements third value: anEnumeratedValue
+]
+
+{ #category : #accessing }
+LDAPSearchRequest >> filter: aFilter [
+	elements at: 7 put: aFilter 
+]
+
 { #category : #initialization }
-LDAPSearchRequest >> initializeWith: anLDAPWorker base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
-	| encoded |
-	partialResults := OrderedCollection new.
-	iterator :=  0.
-	resultCount := 0.
-	gotNewResultSemaphore := Semaphore new.
-	self initializeWith: anLDAPWorker.
-	encoded := LDAPEncoder searchRequest: messageId  base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly.
-	anLDAPWorker send: encoded.
+LDAPSearchRequest >> initialize [ 
+	super initialize.
+	
+	self
+		addElement: (BEROctetString new); "dn"
+		addElement: (BEREnumerated new); "scope"
+		addElement: (BEREnumerated new); "derefAliases"
+		addElement: (BERInteger new value: 0); "sizelimit"
+		addElement: (BERInteger new value: 0); "timelimit"
+		addElement: (BERBoolean new); "typesOnly"
+		addElement: (LDAPFilterOr new); "filter. Absolute false filter (|)"
+		addElement: (BERSequence new). "attrs"
 
 ]
 
@@ -67,4 +91,24 @@ LDAPSearchRequest >> processResponse: aSearchResultEntry [
 	].
 	gotNewResultSemaphore signal.
 
+]
+
+{ #category : #accessing }
+LDAPSearchRequest >> scope: aScope [
+	elements second value: aScope
+]
+
+{ #category : #accessing }
+LDAPSearchRequest >> sizeLimit: anInteger [
+	elements fourth value: anInteger
+]
+
+{ #category : #accessing }
+LDAPSearchRequest >> timeLimit: anInteger [
+	elements fifth value: anInteger
+]
+
+{ #category : #accessing }
+LDAPSearchRequest >> wantAttrsOnly: aBoolean [
+	elements sixth value: aBoolean
 ]

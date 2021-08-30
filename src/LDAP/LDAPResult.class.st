@@ -3,7 +3,7 @@ Result of an LDAP message.
 "
 Class {
 	#name : #LDAPResult,
-	#superclass : #BERSequence,
+	#superclass : #LDAPAbstractResult,
 	#category : #'LDAP-Results'
 }
 
@@ -25,6 +25,11 @@ LDAPResult >> checkForExceptions [
 { #category : #accessing }
 LDAPResult >> errorMessage [
 	^ elements third value
+]
+
+{ #category : #testing }
+LDAPResult >> isEndMarker [
+	^ true
 ]
 
 { #category : #accessing }

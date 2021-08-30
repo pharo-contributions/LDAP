@@ -53,35 +53,3 @@ LDAPEncoder class >> newFrom: aStream [
 	^ element
 
 ]
-
-{ #category : #'utilities - requests' }
-LDAPEncoder class >> searchRequest: aMessageId base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
-	| stream mesg req attrsSeq |
-	stream := ReadWriteStream on: (String new).
-
-	mesg := BERSequence new.
-	mesg addElement: (BERInteger new value: aMessageId).
-
-	req := BERSequence new tagSetApplication.
-	
-	req
-		addElement: (BEROctetString new value: aBase);
-		addElement: (BEREnumerated new value: aSearchScope);
-		addElement: (BEREnumerated new value: aDerefBehaviour);
-		addElement: (BERInteger new value: 0); "sizelimit"
-		addElement: (BERInteger new value: 0); "timelimit"
-		addElement: (BERBoolean new value: wantsAttrsOnly);
-		addElement: 
-			(aFilter asBERElement) tagSetContext withTag: (aFilter class tagValue).
-
-	attrsSeq := BERSequence new.
-	someAttrs do: [ :each |
-		attrsSeq addElement: (BEROctetString new value: each) ].
-	req addElement: attrsSeq.
-
-	mesg addElement: req withTag: 3.
-	mesg writeOn: stream.
-
-	^ stream contents
-	
-]

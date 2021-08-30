@@ -9,8 +9,8 @@ Class {
 		'messageId',
 		'waitingSemaphore',
 		'isDone',
-		'result',
-		'abandoned'
+		'abandoned',
+		'response'
 	],
 	#category : #'LDAP-Core'
 }
@@ -31,7 +31,7 @@ LDAPRequest >> abandon [
 LDAPRequest >> checkForExceptions [
 	"Check to see if a response caused an exception and if so, raise it"
 	self isDone ifFalse:[^self error: 'LDAP timeout'].
-	result checkForExceptions.
+	response checkForExceptions.
 ]
 
 { #category : #defaults }
@@ -50,6 +50,7 @@ LDAPRequest >> initializeWith: anLDAPWorker request: aRequest [
 	worker := anLDAPWorker.
 	messageId := worker nextMessageId.
 	waitingSemaphore := Semaphore new.
+	response := nil.
 	abandoned := nil.
 	isDone := false.
 
@@ -66,14 +67,20 @@ LDAPRequest >> isDone [
 { #category : #accessing }
 LDAPRequest >> processResponse: aMessage [
 	isDone := true. 
-	result := aMessage.
+	response := aMessage.
 	waitingSemaphore signal.
+]
+
+{ #category : #accessing }
+LDAPRequest >> response [
+	self wait.
+	^ response
 ]
 
 { #category : #accessing }
 LDAPRequest >> result [
 	self wait.
-	^ result
+	^ response ifNotNil: [ response processResult ]
 ]
 
 { #category : #accessing }
@@ -84,13 +91,13 @@ LDAPRequest >> wait [
 
 { #category : #accessing }
 LDAPRequest >> waitTimeoutMSecs: msecs [
-	result ifNil: [ waitingSemaphore waitTimeoutMSecs: msecs ].
+	response ifNil: [ waitingSemaphore waitTimeoutMSecs: msecs ].
 	self checkForExceptions.
 ]
 
 { #category : #accessing }
 LDAPRequest >> waitTimeoutSeconds: seconds [
-	result ifNil: [ waitingSemaphore waitTimeoutSeconds: seconds ].
+	response ifNil: [ waitingSemaphore waitTimeoutSeconds: seconds ].
 	self checkForExceptions.
 ]
 

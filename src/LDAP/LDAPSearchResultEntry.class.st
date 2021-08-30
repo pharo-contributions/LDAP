@@ -3,18 +3,9 @@ An entry from a search result
 "
 Class {
 	#name : #LDAPSearchResultEntry,
-	#superclass : #BERSequence,
-	#instVars : [
-		'dn',
-		'attrs'
-	],
+	#superclass : #LDAPSearchPartialResult,
 	#category : #'LDAP-Results'
 }
-
-{ #category : #testing }
-LDAPSearchResultEntry class >> isEndMarker [
-	^ false
-]
 
 { #category : #accessing }
 LDAPSearchResultEntry class >> tagValue [
@@ -23,56 +14,44 @@ LDAPSearchResultEntry class >> tagValue [
 
 { #category : #accessing }
 LDAPSearchResultEntry >> attrAt: aKey [
-	| selected |
 	"answer only the first value"
-	selected := attrs at: aKey ifAbsent: [ ^ nil ].
-	^ selected first asString.
+	| partialAttributeList selected |
+	partialAttributeList := elements second value.
+	selected := partialAttributeList detect: [ :pa | aKey = pa value first value ] ifNone: [ ^ nil ].
+	^ selected value second value first value
 
 ]
 
 { #category : #accessing }
 LDAPSearchResultEntry >> attrs [
-	"I return a Dictionary with an entry per attr. Eeach attr is an OrderedCollection, as there may be multiple values per attr."
-	^ attrs
+	"I return a Dictionary with an entry per attr. Eeach attr is an collection, as there may be multiple values per attr."
+	| partialAttributeList  |
+	partialAttributeList := elements second value.
+	^ partialAttributeList collect: [ :partialAttribute | 
+		| type set |
+		type := partialAttribute value first value.
+		set := partialAttribute value second value.
+		type -> (set collect: #value)
+	] asDictionary
+
 ]
 
 { #category : #accessing }
 LDAPSearchResultEntry >> attrsAt: aKey [
-	| selected |
 	"answer all values of the specified attribut"
-	selected := attrs at: aKey ifAbsent: [ ^ nil ].
-	^ selected
+	| partialAttributeList selected |
+	partialAttributeList := elements second value.
+	selected := partialAttributeList detect: [ :pa | aKey = pa value first value ] ifNone: [ ^ nil ].
+	^ selected value second value collect: #value
 
-]
-
-{ #category : #encoding }
-LDAPSearchResultEntry >> decode: aStream [
-	| berDN berAttrs |
-
-	berDN := BERElement newFrom: aStream.
-	berAttrs := BERElement newFrom: aStream.
-
-	attrs := Dictionary new.
-	berAttrs elements do: [ :eachBerAttr | | values |
-		
-		values := OrderedCollection new.
-		((eachBerAttr value) elements at: 2) value elements do: [ :eachBerValue |	
-			values add: (eachBerValue value value) utf8Decoded asString ].
-		
-		attrs
-			at: (((eachBerAttr value) elements at: 1) value value) asString
-			put: values ].
-
-	dn := berDN value asString.
-
-]
-
-{ #category : #accessing }
-LDAPSearchResultEntry >> dn [
-	^ dn
 ]
 
 { #category : #testing }
 LDAPSearchResultEntry >> isReference [
 	^ false
+]
+
+{ #category : #accessing }
+LDAPSearchResultEntry >> matchedDN [
+	^ elements first value
 ]

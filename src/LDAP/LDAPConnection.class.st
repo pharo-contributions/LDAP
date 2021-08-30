@@ -154,15 +154,17 @@ LDAPConnection >> modifyDN: aDN toRDN: aRDN wantToClearAttrs: aWantsToClearAttrs
 LDAPConnection >> newSearch: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
 	| nonNilFilter nonNilAttrs |
 
-	nonNilFilter := aFilter
-		ifNil: [ nonNilFilter := LDAPFilter with: 'objectclass' ]
-		ifNotNil: [ aFilter ].
+	nonNilFilter := aFilter ifNil: [ nonNilFilter := LDAPFilter with: 'objectclass' ].
+	nonNilAttrs := someAttrs ifNil: [ nonNilAttrs := OrderedCollection new ].
 	
-	nonNilAttrs := someAttrs
-		ifNil: [ nonNilAttrs := OrderedCollection new ]
-		ifNotNil: [ someAttrs ].
-	
-	^ LDAPSearchRequest new initializeWith: worker base: aBase scope: aSearchScope deref: aDerefBehaviour filter: nonNilFilter attrs: nonNilAttrs wantAttrsOnly: wantsAttrsOnly
+	^ LDAPRequest new initializeWith: worker
+		request: (LDAPSearchRequest new
+			base: aBase;
+			scope: aSearchScope;
+			derefAliases: aDerefBehaviour;
+			filter: nonNilFilter;
+			attrs: nonNilAttrs;
+			wantAttrsOnly: wantsAttrsOnly)
 ]
 
 { #category : #binding }

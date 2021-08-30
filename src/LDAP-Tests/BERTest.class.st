@@ -220,11 +220,13 @@ BERTest >> testOctetStringEncoding [
 
 { #category : #tests }
 BERTest >> testSearchRequest [
-	| encoded |
-	encoded := LDAPEncoder searchRequest: 1 base: 'dc=linalco, dc=test' scope: (LDAPConnection wholeSubtree) deref: (LDAPConnection derefNever) filter: (LDAPFilter with: 'objectclass' ) attrs: (OrderedCollection new) wantAttrsOnly: false.
-	encoded := encoded asString asHex.
+	| request encoded hex expected |
+	request := LDAPSearchRequest new base: 'dc=linalco, dc=test'; scope: (LDAPConnection wholeSubtree); derefAliases: (LDAPConnection derefNever); filter: (LDAPFilter with: 'objectclass' ); attrs: (OrderedCollection new); wantAttrsOnly: false.
+	encoded := LDAPEncoder id: 1 request: request.
+	hex := encoded asString asHex.
 
-	self assert: (encoded = (self formatWithHex: '30380201016333041364633D6C696E616C636F2C2064633D746573740A01020A0100020100020100010100870B6F626A656374636C6173733000'))
+	expected := self formatWithHex: '30380201016333041364633D6C696E616C636F2C2064633D746573740A01020A0100020100020100010100870B6F626A656374636C6173733000'.
+	self assert: hex equals: expected
 
 ]
 
