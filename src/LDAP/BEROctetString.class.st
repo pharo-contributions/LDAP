@@ -20,6 +20,13 @@ BEROctetString >> decode: aStream length: aLength [
 	string := (aStream next: aLength) asByteArray
 ]
 
+{ #category : #inspecting }
+BEROctetString >> inspectionString [
+	<inspectorPresentationOrder: -10 title: 'Octet String'>
+	
+	^ string asString inspectionString 
+]
+
 { #category : #accessing }
 BEROctetString >> length [ 
 	^ string size

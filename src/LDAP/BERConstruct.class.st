@@ -34,6 +34,13 @@ BERConstruct >> initialize [
 	elements := OrderedCollection new
 ]
 
+{ #category : #inspecting }
+BERConstruct >> inspectionItems: aBuilder [
+	<inspectorPresentationOrder: 0 title: 'Items'> 
+	
+	^ elements inspectionItems: aBuilder
+]
+
 { #category : #accessing }
 BERConstruct >> length [
 	^ elements inject: 0 into: [ :sum :each | sum + each totalLength ]
