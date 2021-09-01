@@ -10,11 +10,6 @@ Class {
 	#category : #'LDAP-BER'
 }
 
-{ #category : #'instance creation' }
-BERConstruct class >> new [
-	^ self basicNew initialize
-]
-
 { #category : #accessing }
 BERConstruct >> addElement: anElement [
 	elements addLast: anElement

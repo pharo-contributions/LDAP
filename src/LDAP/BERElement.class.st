@@ -43,12 +43,6 @@ BERElement class >> lengthLength: anInteger [
 ]
 
 { #category : #'instance creation' }
-BERElement class >> new [
-	"this is here only to easily see who is using it down the heriarchy through the browser"
-	^ self basicNew initialize
-]
-
-{ #category : #'instance creation' }
 BERElement class >> newFrom: aStream [
 	| firstByte element elementClass |
 	firstByte := aStream peek.
