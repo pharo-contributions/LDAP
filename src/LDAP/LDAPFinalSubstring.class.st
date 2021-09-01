@@ -1,7 +1,10 @@
+"
+I am a string used to look at the end of another string.
+"
 Class {
 	#name : #LDAPFinalSubstring,
 	#superclass : #LDAPSubstring,
-	#category : #'LDAP-Substrings'
+	#category : #'LDAP-ContextElements'
 }
 
 { #category : #accessing }

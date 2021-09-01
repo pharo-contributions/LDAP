@@ -1,7 +1,10 @@
+"
+I am a password string.
+"
 Class {
 	#name : #LDAPSimpleAuthString,
 	#superclass : #BEROctetString,
-	#category : #'LDAP-Core'
+	#category : #'LDAP-ContextElements'
 }
 
 { #category : #accessing }

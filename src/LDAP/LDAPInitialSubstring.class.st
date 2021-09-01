@@ -1,7 +1,10 @@
+"
+I am a string used to look at the beginning of another string.
+"
 Class {
 	#name : #LDAPInitialSubstring,
 	#superclass : #LDAPSubstring,
-	#category : #'LDAP-Substrings'
+	#category : #'LDAP-ContextElements'
 }
 
 { #category : #accessing }

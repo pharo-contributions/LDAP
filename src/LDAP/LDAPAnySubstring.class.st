@@ -1,7 +1,10 @@
+"
+I am a string used to look anywhere in another string.
+"
 Class {
 	#name : #LDAPAnySubstring,
 	#superclass : #LDAPSubstring,
-	#category : #'LDAP-Substrings'
+	#category : #'LDAP-ContextElements'
 }
 
 { #category : #accessing }
