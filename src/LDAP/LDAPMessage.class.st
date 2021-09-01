@@ -31,6 +31,19 @@ LDAPMessage class >> newFrom: aStream [
 	^ message
 ]
 
+{ #category : #accessing }
+LDAPMessage >> controls [
+	^ (elements size > 2) ifTrue: [ elements third value ] ifFalse: [ #() ]
+]
+
+{ #category : #accessing }
+LDAPMessage >> controls: aCollection [
+	| controls |
+	controls := LDAPControls new.
+	aCollection do: [ :each | controls addElement: each ].
+	(elements size > 2) ifTrue: [ elements at: 3 put: controls ] ifFalse: [ elements addLast: controls ]
+]
+
 { #category : #'instance creation' }
 LDAPMessage >> createApplicationElement: aTagValue [
 "Create a BER applicatio element from a tag value"
