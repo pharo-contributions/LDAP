@@ -45,8 +45,8 @@ LDAPConnection >> adDeleteUser: dn [
 LDAPConnection >> adExists: dn [
 	^ (self
 		newSearch: dn
-		scope: LDAPConnection wholeSubtree
-		deref: LDAPConnection derefNever
+		scope: LDAPSearchScope wholeSubtree
+		deref: LDAPSearchDerefAliases never
 		filter: nil
 		attrs: nil
 		wantAttrsOnly: false) result notEmpty

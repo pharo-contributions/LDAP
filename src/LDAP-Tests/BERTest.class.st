@@ -236,7 +236,11 @@ BERTest >> testOctetStringEncoding [
 { #category : #tests }
 BERTest >> testSearchRequest [
 	| request encoded hex expected |
-	request := LDAPSearchRequest new base: 'dc=linalco, dc=test'; scope: (LDAPConnection wholeSubtree); derefAliases: (LDAPConnection derefNever); filter: (LDAPFilter with: 'objectclass' ); attrs: (OrderedCollection new); wantAttrsOnly: false.
+	request := LDAPSearchRequest new 
+		base: 'dc=linalco, dc=test'; 
+		scope: LDAPSearchScope wholeSubtree; 
+		derefAliases: LDAPSearchDerefAliases never; 
+		filter: (LDAPFilter with: 'objectclass' ).
 	encoded := (LDAPMessage new id: 1; operation: request) encoded.
 	hex := encoded asString asHex.
 

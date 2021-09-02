@@ -11,37 +11,6 @@ Class {
 	#category : #'LDAP-Core'
 }
 
-{ #category : #'search scope constants' }
-LDAPConnection class >> baseObject [
-	^ 0
-]
-
-{ #category : #'private - accessing' }
-LDAPConnection class >> collectionizedAttrs: someAttrs [
-	^someAttrs collect: [:val | 
-		val isString ifTrue: [ OrderedCollection with: val ] ifFalse: [ val ] ].
-]
-
-{ #category : #'search deref constants' }
-LDAPConnection class >> derefAlways [
-	^ 3
-]
-
-{ #category : #'search deref constants' }
-LDAPConnection class >> derefFindingBaseObj [
-	^ 2
-]
-
-{ #category : #'search deref constants' }
-LDAPConnection class >> derefInSearching [
-	^ 1
-]
-
-{ #category : #'search deref constants' }
-LDAPConnection class >> derefNever [
-	^ 0
-]
-
 { #category : #documentation }
 LDAPConnection class >> missingRFC2251 [
 	self notYetImplemented
@@ -65,11 +34,6 @@ WONT
 "
 ]
 
-{ #category : #'search scope constants' }
-LDAPConnection class >> singleLevel [
-	^ 1
-]
-
 { #category : #'instance creation' }
 LDAPConnection class >> to: aHostname [
 	^ self to: aHostname port: 389
@@ -80,11 +44,6 @@ LDAPConnection class >> to: aHostname port: aPort [
 	| obj |
 	obj := self basicNew initializeWithHost: aHostname port: aPort.
 	^ obj
-]
-
-{ #category : #'search scope constants' }
-LDAPConnection class >> wholeSubtree [
-	^ 2
 ]
 
 { #category : #accessing }
