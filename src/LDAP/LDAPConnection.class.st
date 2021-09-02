@@ -89,7 +89,7 @@ LDAPConnection class >> wholeSubtree [
 
 { #category : #accessing }
 LDAPConnection >> addEntry: aDN attrs: someAttrs [
-	^ LDAPRequest new initializeWith: worker request: (LDAPAddRequest new dn: aDN; attrs: someAttrs).
+	^ self request: (LDAPAddRequest new dn: aDN; attrs: someAttrs).
 ]
 
 { #category : #binding }
@@ -100,17 +100,17 @@ LDAPConnection >> bindAs: aUsername credentials: aPassword [
 
 { #category : #binding }
 LDAPConnection >> bindAs: aUsername credentials: aPassword method: anAuthMethod [
-	^ LDAPRequest new initializeWith: worker request: (LDAPBindRequest new username: aUsername; password: aPassword)
+	^ self request: (LDAPBindRequest new username: aUsername; password: aPassword)
 ]
 
 { #category : #accessing }
 LDAPConnection >> compare: aDN using: anEqualityFilter [
-	^ LDAPRequest new initializeWith: worker request: (LDAPCompareRequest new dn: aDN; comparing: anEqualityFilter)
+	^ self request: (LDAPCompareRequest new dn: aDN; comparing: anEqualityFilter)
 ]
 
 { #category : #accessing }
 LDAPConnection >> delEntry: aDN [
-	^	LDAPRequest new initializeWith: worker request: (LDAPDelRequest new dn: aDN)
+	^	self request: (LDAPDelRequest new dn: aDN)
 ]
 
 { #category : #connecting }
@@ -136,13 +136,12 @@ LDAPConnection >> isValid [
 
 { #category : #accessing }
 LDAPConnection >> modify: aDN with: someLDAPAttrModifiers [
-	^ LDAPRequest new initializeWith: worker request: (LDAPModifyRequest new dn: aDN; ops: someLDAPAttrModifiers)
+	^ self request: (LDAPModifyRequest new dn: aDN; ops: someLDAPAttrModifiers)
 ]
 
 { #category : #accessing }
 LDAPConnection >> modifyDN: aDN toRDN: aRDN moveUnderDN: aUnderDN wantToClearAttrs: aWantsToClearAttrs [
-	^ LDAPRequest new initializeWith: worker
-		request: (LDAPModifyDNRequest new dn: aDN; newRdn: aRDN; underDn: aUnderDN; wantToClearAttrs: aWantsToClearAttrs)
+	^ self request: (LDAPModifyDNRequest new dn: aDN; newRdn: aRDN; underDn: aUnderDN; wantToClearAttrs: aWantsToClearAttrs)
 ]
 
 { #category : #accessing }
@@ -157,8 +156,7 @@ LDAPConnection >> newSearch: aBase scope: aSearchScope deref: aDerefBehaviour fi
 	nonNilFilter := aFilter ifNil: [ nonNilFilter := LDAPFilter with: 'objectclass' ].
 	nonNilAttrs := someAttrs ifNil: [ nonNilAttrs := OrderedCollection new ].
 	
-	^ LDAPRequest new initializeWith: worker
-		request: (LDAPSearchRequest new
+	^ self request: (LDAPSearchRequest new
 			base: aBase;
 			scope: aSearchScope;
 			derefAliases: aDerefBehaviour;
@@ -167,7 +165,12 @@ LDAPConnection >> newSearch: aBase scope: aSearchScope deref: aDerefBehaviour fi
 			wantAttrsOnly: wantsAttrsOnly)
 ]
 
+{ #category : #'command execution' }
+LDAPConnection >> request: aLDAPCommand [
+	^ LDAPRequest new initializeWith: worker request: aLDAPCommand
+]
+
 { #category : #binding }
 LDAPConnection >> unbind [
-	^ LDAPRequest new initializeWith: worker request: (LDAPUnbindRequest new)
+	^ self request: (LDAPUnbindRequest new)
 ]
