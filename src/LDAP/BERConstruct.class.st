@@ -10,21 +10,28 @@ Class {
 	#category : #'LDAP-BER'
 }
 
+{ #category : #adding }
+BERConstruct >> addAll: aCollection [
+	elements addAllLast: aCollection.
+]
+
 { #category : #accessing }
 BERConstruct >> addElement: anElement [
 	elements addLast: anElement
 ]
 
 { #category : #encoding }
-BERConstruct >> decode: aStream length: aLength [
-	| elementLen part |
-	
+BERConstruct >> decode: aStream length: aLength with: aDecoder [
+	| index elementLen part |
+	elements removeAll.
+	index := 1.
 	elementLen := aLength.
 	[elementLen > 0]
 		whileTrue: [
-			part := BERElement newFrom: aStream.
+			part := aDecoder elementFrom: aStream in: self at: index.
 			elementLen := elementLen - part totalLength.
-			self addElement: part
+			self addElement: part.
+			index := index + 1.
 		].
 ]
 

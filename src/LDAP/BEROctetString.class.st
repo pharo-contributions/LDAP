@@ -16,7 +16,7 @@ BEROctetString class >> tagValue [
 ]
 
 { #category : #encoding }
-BEROctetString >> decode: aStream length: aLength [
+BEROctetString >> decode: aStream length: aLength with: aDecoder [
 	string := (aStream next: aLength) asByteArray
 ]
 

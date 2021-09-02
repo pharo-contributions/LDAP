@@ -47,6 +47,7 @@ LDAPRequest >> hasResult [
 
 { #category : #initialization }
 LDAPRequest >> initializeWith: anLDAPWorker request: aRequest [
+	| message |
 	worker := anLDAPWorker.
 	messageId := worker nextMessageId.
 	waitingSemaphore := Semaphore new.
@@ -55,7 +56,8 @@ LDAPRequest >> initializeWith: anLDAPWorker request: aRequest [
 	isDone := false.
 
 	worker addTarget: self for: messageId.
-	worker send: (LDAPEncoder id: messageId request: aRequest).
+	message := LDAPMessage new id: messageId; operation: aRequest.
+	worker send: message encoded.
 
 ]
 

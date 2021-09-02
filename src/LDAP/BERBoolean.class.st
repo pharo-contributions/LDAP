@@ -16,7 +16,7 @@ BERBoolean class >> tagValue [
 ]
 
 { #category : #encoding }
-BERBoolean >> decode: aStream length: anInteger [
+BERBoolean >> decode: aStream length: anInteger with: aDecoder [
 	self value: aStream next.
 
 ]

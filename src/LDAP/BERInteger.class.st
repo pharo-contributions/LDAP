@@ -16,7 +16,7 @@ BERInteger class >> tagValue [
 ]
 
 { #category : #encoding }
-BERInteger >> decode: aStream length: aLength [
+BERInteger >> decode: aStream length: aLength with: aDecoder [
 	| highBit negative powerOfTwo |
 	"if the high bit is set, we have negative"	
 	highBit := aStream peek asInteger bitAnd: 16r80.

@@ -13,7 +13,7 @@ BERNull class >> tagValue [
 ]
 
 { #category : #encoding }
-BERNull >> decode: aStream length: anInteger [
+BERNull >> decode: aStream length: anInteger with: aDecoder [
 "Nothing to do"
 ]
 

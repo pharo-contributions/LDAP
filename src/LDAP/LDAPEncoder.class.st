@@ -27,29 +27,3 @@ LDAPEncoder class >> attrsAsBERElement: aDictionary [
 	aDictionary associationsDo: [ :a | ber addElement: (self attributeDescription: a key andValues: a value) ].
 	^ ber
 ]
-
-{ #category : #'utilities - requests' }
-LDAPEncoder class >> id: aMessageId request: aRequest [
-	| stream mesg |
-	stream := ReadWriteStream on: (String new).
-
-	mesg := BERSequence new.
-	mesg addElement: (BERInteger new value: aMessageId).
-	mesg addElement: aRequest.
-
-	mesg writeOn: stream.
-	^ stream contents
-]
-
-{ #category : #'instance creation' }
-LDAPEncoder class >> newFrom: aStream [
-	| firstByte element elementClass |
-	firstByte := aStream next.
-	elementClass := self identifyIncomingElement: firstByte.
-	elementClass ifNil: [
-		LDAPException new messageText: 'invalid tag -- make sure class is in identifyIncomingElements'; signal ].
-	element := elementClass new setTag: firstByte.
-	element decode: aStream.
-	^ element
-
-]

@@ -1,18 +1,57 @@
 "
-An LDAP Message
+I am LDAP Message.
+
+I am a pseudo BER Sequence. (I do not have my own application tag)
 "
 Class {
 	#name : #LDAPMessage,
 	#superclass : #BERSequence,
+	#classVars : [
+		'LdapTags'
+	],
 	#category : #'LDAP-Core'
 }
 
+{ #category : #'class initialization' }
+LDAPMessage class >> initialize [ 
+"LDAP messages class initialization. Populate the knownTags variable for application elements creation."
+	| classes |
+	classes := BERElement allSubclasses select: [ :c | c class canPerform: #tagValue ].
+	classes := classes select: #isApplication.
+	LdapTags := (classes collect: [ :c | c tagValue -> c ]) asDictionary.
+]
+
 { #category : #'instance creation' }
 LDAPMessage class >> newFrom: aStream [
-	| mesg |
-	mesg := self new.
-	mesg readFrom: aStream.
-	^ mesg
+"Create a BER decoder with the LDAPMessage as application"
+	| decoder message |
+	message := self new.
+	decoder := BERDecoder new application: message.
+	decoder decode: message from: aStream.
+	^ message
+]
+
+{ #category : #'instance creation' }
+LDAPMessage >> createApplicationElement: aTagValue [
+"Create a BER applicatio element from a tag value"
+	| elementClass |
+	elementClass := LdapTags at: aTagValue ifAbsent: [ ^ nil ].
+	^ elementClass new
+
+]
+
+{ #category : #'instance creation' }
+LDAPMessage >> createContextElement: aTagValue at: anIndex with: aDecoder [
+"Used for controls"
+	(aTagValue = LDAPControls tagValue) ifFalse: [ ^ nil ].
+	^ LDAPControls new
+]
+
+{ #category : #converting }
+LDAPMessage >> encoded [
+"Return the encoded message"
+	^ ByteString streamContents: [ :stream | self writeOn: stream ]
+
 ]
 
 { #category : #accessing }
@@ -21,6 +60,36 @@ LDAPMessage >> id [
 ]
 
 { #category : #accessing }
-LDAPMessage >> response [
+LDAPMessage >> id: anInteger [
+	elements first value: anInteger 
+]
+
+{ #category : #initialization }
+LDAPMessage >> initialize [ 
+	super initialize.
+	
+	self addElement: (BERInteger new). "id"
+	self addElement: (BERNull new). "protocolOp"
+
+]
+
+{ #category : #accessing }
+LDAPMessage >> operation [
 	^ elements second
+]
+
+{ #category : #accessing }
+LDAPMessage >> operation: anObject [
+	elements at: 2 put: anObject
+]
+
+{ #category : #accessing }
+LDAPMessage >> response [
+	^ elements value second
+]
+
+{ #category : #accessing }
+LDAPMessage >> sequence: anObject [
+	elements removeAll.
+	elements addAll: anObject value.
 ]

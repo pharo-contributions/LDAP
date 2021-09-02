@@ -281,3 +281,23 @@ LDAPTest >> test10_Delete [
 
 	conn disconnect
 ]
+
+{ #category : #tests }
+LDAPTest >> testMessage [
+	| message id dn code result seq encoded |
+	seq := BERSequence new.
+	id := BERInteger new value: 2.
+	seq addElement: id.
+	result := LDAPBindResult new.
+	code := BEREnumerated new value: 0.
+	result addElement: code.
+	dn := BEROctetString new value: self class bindDN.
+	result addElement: dn.
+	seq addElement: result.
+	encoded := ByteString streamContents: [ :s | seq writeOn: s ].
+	
+	message := LDAPMessage newFrom: encoded readStream.
+	self assert: message id equals: 2.
+	self assert: message response resultCode equals: 0.
+	self assert: message response matchedDN equals: self class bindDN.
+]

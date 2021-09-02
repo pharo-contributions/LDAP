@@ -7,25 +7,32 @@ Class {
 	#category : #'LDAP-BER'
 }
 
-{ #category : #accessing }
-BERElement class >> elementClasses [
-	^ {
-		BERInteger. BEROctetString . BERSequence. BEREnumerated. BERBoolean. BERSet. BERNull.
+{ #category : #'instance creation' }
+BERElement class >> createContextElement: aTagValue at: anIndex [
+"Create a BER context element. Override for creating correct context elements."
+	LDAPException new messageText: 'invalid tag -- no context elements defined for that class'; signal.
+	^ nil
 
-		"this has to go here for now"
-		LDAPAddResult. LDAPBindResult. LDAPCompareResult. LDAPDelResult. LDAPExtendedResult.
-		LDAPModifyResult. LDAPModifyDNResult. LDAPSearchResultEntry. LDAPSearchResultCode. LDAPSearchResultReference 
-	}.
-	
 ]
 
-{ #category : #utilities }
-BERElement class >> identifyIncomingElement: firstByte [
-	| type |
-	"so why are we doing this in a comparision here, instead of asking the class wether it handles the element?"
-	type := self elementClasses detect: [ :each | each tagValue = firstByte asInteger ] ifNone: [nil].
-	^ type
-	
+{ #category : #testing }
+BERElement class >> isApplication [ 
+	^ BERDecoder isApplication: self tagValue
+]
+
+{ #category : #testing }
+BERElement class >> isContext [ 
+	^ BERDecoder isContext: self tagValue
+]
+
+{ #category : #testing }
+BERElement class >> isPrivate [ 
+	^ BERDecoder isPrivate: self tagValue
+]
+
+{ #category : #testing }
+BERElement class >> isUniversal [ 
+	^ BERDecoder isUniversal: self tagValue
 ]
 
 { #category : #utilities }
@@ -40,37 +47,6 @@ BERElement class >> lengthLength: anInteger [
 	
 	"number of bytes plus the length in one byte"
 	^ octets + 1
-]
-
-{ #category : #'instance creation' }
-BERElement class >> newFrom: aStream [
-	| firstByte element elementClass |
-	firstByte := aStream peek.
-	"Transcript show: '*** Next byte is: ', firstByte asString; cr."
-	elementClass := self identifyIncomingElement: firstByte.
-	elementClass ifNil: [
-		LDAPException new messageText: 'invalid tag -- make sure class is in identifyIncomingElements'; signal ].
-	element := elementClass new.
-	"we should read the tag here, instead of just the first byte"
-	element readFrom: aStream.
-	^ element
-
-]
-
-{ #category : #reading }
-BERElement class >> readLengthFrom: aStream [
-	| length octets firstOctet |
-	
-	firstOctet := aStream next asInteger.
-	
-	"short definite length"
-	firstOctet < 128 ifTrue: [ ^ firstOctet ].
-		
-	"long definite length"
-	octets := aStream next: (firstOctet bitAnd: 16r7F).
-	length := octets contents inject: 0 into: [:injectedValue :each | (injectedValue bitShift: 8) + (each asInteger)].
-		
-	^ length			
 ]
 
 { #category : #accessing }
@@ -96,8 +72,14 @@ BERElement class >> writeLength: aLength on: aStream [
 	aStream nextPutAll: octets asString.
 ]
 
+{ #category : #'instance creation' }
+BERElement >> createContextElement: aTagValue at: anIndex with: aDecoder [
+"Default implementation. No context class elements exist at this level"
+	^ nil
+]
+
 { #category : #encoding }
-BERElement >> decode: aStream length: anInteger [
+BERElement >> decode: aStream length: anInteger with: aDecoder [
 	self subclassResponsibility
 ]
 
@@ -112,16 +94,6 @@ BERElement >> printOn: aStream [
 	aStream nextPutAll: ' ('.
 	self value printOn: aStream.
 	aStream nextPutAll: ')'.
-
-]
-
-{ #category : #'instance creation' }
-BERElement >> readFrom: aStream [
-	| firstByte length |
-	firstByte := aStream next. "Maybe assert class type"
-	"Transcript show: '*** Next byte is: ', firstByte asString; cr."
-	length := self class readLengthFrom: aStream.
-	self decode: aStream length: length.
 
 ]
 
