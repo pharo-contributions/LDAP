@@ -109,7 +109,6 @@ LDAPTest >> test02_Search [
 		base: self class baseDN; 
 		scope: LDAPSearchScope wholeSubtree; 
 		derefAliases: LDAPSearchDerefAliases never.
-	search inspect.
 	req := conn request: search.
 	rr := req result.
 	self assert: (self checkSearchResults: rr expecting: { nil . 'cn=test1'. 'cn=test2'. 'cn=test3'. 'cn=test4'. 'cn=test5' } ).

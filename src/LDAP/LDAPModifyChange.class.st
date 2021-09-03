@@ -2,37 +2,37 @@
 Pseudo BER sequence for modification operations
 "
 Class {
-	#name : #LDAPModifyOp,
+	#name : #LDAPModifyChange,
 	#superclass : #BERSequence,
 	#category : #'LDAP-Elements'
 }
 
 { #category : #accessing }
-LDAPModifyOp >> attr [
+LDAPModifyChange >> attr [
 	^ elements second description
 ]
 
 { #category : #accessing }
-LDAPModifyOp >> attr: aString [
+LDAPModifyChange >> attr: aString [
 	elements second description: aString
 ]
 
 { #category : #initialization }
-LDAPModifyOp >> initialize [ 
+LDAPModifyChange >> initialize [ 
 	super initialize.
 	
-	self addElement: (BEREnumerated new).
+	self addElement: (LDAPModifyOperation new).
 	self addElement: (LDAPPartialAttribute new).
 
 ]
 
 { #category : #'instance creation' }
-LDAPModifyOp >> operation: anInteger [
+LDAPModifyChange >> operation: anInteger [
 	elements first value: anInteger 
 ]
 
 { #category : #printing }
-LDAPModifyOp >> operationName [ 
+LDAPModifyChange >> operationName [ 
 	| operation |
 	operation := elements first value.
 	operation = 0 ifTrue: [ ^ 'add' ].
@@ -42,7 +42,7 @@ LDAPModifyOp >> operationName [
 ]
 
 { #category : #printing }
-LDAPModifyOp >> printOn: aStream [
+LDAPModifyChange >> printOn: aStream [
 
 	aStream
 		nextPutAll: self class name;
@@ -56,11 +56,11 @@ LDAPModifyOp >> printOn: aStream [
 ]
 
 { #category : #accessing }
-LDAPModifyOp >> values [
+LDAPModifyChange >> values [
 	^ elements second values
 ]
 
 { #category : #accessing }
-LDAPModifyOp >> values: aCollection [
+LDAPModifyChange >> values: aCollection [
 	elements second values: aCollection
 ]
