@@ -32,6 +32,12 @@ BERInteger >> decode: aStream length: aLength with: aDecoder [
 
 ]
 
+{ #category : #inspecting }
+BERInteger >> inspectIntegerIn: aBuilder [
+	<inspectorPresentationOrder: 30 title: 'Integer'> 
+	^ self value asInteger inspectIntegerIn: aBuilder
+]
+
 { #category : #accessing }
 BERInteger >> length [
 "Compute the minimum size for the integer"
