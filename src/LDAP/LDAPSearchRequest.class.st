@@ -41,8 +41,8 @@ LDAPSearchRequest >> initialize [
 	
 	self
 		addElement: (BEROctetString new); "dn"
-		addElement: (BEREnumerated new); "scope (baseObject)"
-		addElement: (BEREnumerated new); "derefAliases (neverDerefAliases)"
+		addElement: (LDAPSearchScope new); "scope (baseObject)"
+		addElement: (LDAPSearchDerefAliases new); "derefAliases (neverDerefAliases)"
 		addElement: (BERInteger new value: 0); "sizelimit"
 		addElement: (BERInteger new value: 0); "timelimit"
 		addElement: (BERBoolean new); "typesOnly"

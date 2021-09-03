@@ -4,7 +4,7 @@ Class {
 	#classVars : [
 		'CodeNames'
 	],
-	#category : #'LDAP-Results'
+	#category : #'LDAP-Enumerated'
 }
 
 { #category : #constants }
