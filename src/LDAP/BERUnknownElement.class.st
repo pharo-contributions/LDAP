@@ -13,5 +13,5 @@ Class {
 { #category : #accessing }
 BERUnknownElement >> value [ 
 	"Do not UTF-8 decode me"
-	^ string ifNil: [ #[] ]
+	^ value ifNil: [ #[] ]
 ]

@@ -34,6 +34,6 @@ LDAPException class >> newWithCode: aResultCode [
 LDAPException >> initializeWithCode: aResultCode [
 	| message |
 	resultCode := aResultCode.
-	message := String streamContents: [ :s | s << 'LDAP: ' << (LDAPResult codeName: resultCode) ].
+	message := String streamContents: [ :s | s << 'LDAP: ' << (LDAPResultCode stringFor: resultCode) ].
 	self messageText: message.
 ]

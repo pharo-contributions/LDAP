@@ -3,10 +3,7 @@ BERInteger is a integer encoded in BER.
 "
 Class {
 	#name : #BERInteger,
-	#superclass : #BERElement,
-	#instVars : [
-		'value'
-	],
+	#superclass : #BERPrimitive,
 	#category : #'LDAP-BER'
 }
 

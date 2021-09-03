@@ -3,10 +3,7 @@ BEROctetString is a string encoded in BER.
 "
 Class {
 	#name : #BEROctetString,
-	#superclass : #BERElement,
-	#instVars : [
-		'string'
-	],
+	#superclass : #BERPrimitive,
 	#category : #'LDAP-BER'
 }
 
@@ -17,34 +14,34 @@ BEROctetString class >> tagValue [
 
 { #category : #encoding }
 BEROctetString >> decode: aStream length: aLength with: aDecoder [
-	string := (aStream next: aLength) asByteArray
+	value := (aStream next: aLength) asByteArray
 ]
 
 { #category : #inspecting }
 BEROctetString >> inspectionString [
 	<inspectorPresentationOrder: -10 title: 'Octet String'>
 	
-	^ string asString inspectionString 
+	^ value asString inspectionString 
 ]
 
 { #category : #accessing }
 BEROctetString >> length [ 
-	^ string size
+	^ value size
 ]
 
 { #category : #accessing }
 BEROctetString >> value [ 
-	^ string ifNil: [ String new ] ifNotNil: [ :s | s utf8Decoded ]
+	^ value ifNil: [ String new ] ifNotNil: [ :s | s utf8Decoded ]
 ]
 
 { #category : #accessing }
 BEROctetString >> value: anObject [
 	"Value is stored as an UTF-8 encoded byte array"
-	string := anObject asString utf8Encoded
+	value := anObject asString utf8Encoded
 ]
 
 { #category : #writing }
 BEROctetString >> writeBodyOn: aStream [
-	aStream nextPutAll: string asString.
+	aStream nextPutAll: value asString.
 
 ]
