@@ -74,8 +74,10 @@ BERElement class >> writeLength: aLength on: aStream [
 
 { #category : #'instance creation' }
 BERElement >> createContextElement: aTagValue at: anIndex with: aDecoder [
-"Default implementation. No context class elements exist at this level"
-	^ nil
+"Default implementation. No context class elements exist at this level."
+"Calls decoder for universal and application type elements."
+	^ aDecoder createElement: aTagValue
+
 ]
 
 { #category : #encoding }

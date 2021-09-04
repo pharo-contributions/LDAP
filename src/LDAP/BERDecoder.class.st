@@ -88,24 +88,22 @@ BERDecoder >> createApplicationElement: aTagValue [
 
 ]
 
-{ #category : #'private - creation' }
-BERDecoder >> createContextElement: aTagValue from: aBERElement at: anIndex [
+{ #category : #'instance creation' }
+BERDecoder >> createElement: aTagValue [
 "Create a BER element from a tag value"
-	| contextElement |
-	(self class isContext: aTagValue) ifFalse: [ ^ nil ]. 
-	aBERElement ifNil: [ ^ self createElementError: 'invalid tag -- no context' ]. 
-	contextElement := aBERElement createContextElement: aTagValue at: anIndex with: self.
-	^ contextElement ifNil: [ self createElementError: 'invalid context tag' ]
+	(self createUniversalElement: aTagValue) ifNotNil: [ :element | ^ element ].
+	(self createApplicationElement: aTagValue) ifNotNil: [ :element | ^ element ].
+	^ self createElementError: 'invalid tag -- could not create element'
 
 ]
 
 { #category : #'private - creation' }
 BERDecoder >> createElement: aTagValue in: aContextObject at: anIndex [
 "Create a BER element from a tag value"
-	(self createUniversalElement: aTagValue) ifNotNil: [ :element | ^ element ].
-	(self createApplicationElement: aTagValue) ifNotNil: [ :element | ^ element ].
-	(self createContextElement: aTagValue from: aContextObject at: anIndex) ifNotNil: [ :element | ^ element ].
-	^ self createElementError: 'invalid tag -- private elements not implemented'
+	aContextObject ifNil: [ ^ self createElement: aTagValue ].
+	
+	"Delegates to the BER element, it will call default implementation and goes to createElement: message."
+	^ aContextObject createContextElement: aTagValue at: anIndex with: self 
 
 ]
 
