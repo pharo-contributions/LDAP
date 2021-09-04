@@ -41,12 +41,12 @@ LDAPSearchRequest >> initialize [
 	
 	self
 		addElement: (BEROctetString new); "dn"
-		addElement: (BEREnumerated new); "scope"
-		addElement: (BEREnumerated new); "derefAliases"
+		addElement: (BEREnumerated new); "scope (baseObject)"
+		addElement: (BEREnumerated new); "derefAliases (neverDerefAliases)"
 		addElement: (BERInteger new value: 0); "sizelimit"
 		addElement: (BERInteger new value: 0); "timelimit"
 		addElement: (BERBoolean new); "typesOnly"
-		addElement: (LDAPFilterOr new); "filter. Absolute false filter (|)"
+		addElement: (LDAPFilterAnd new); "filter. Absolute true filter (&)"
 		addElement: (BERSequence new). "attrs"
 
 ]

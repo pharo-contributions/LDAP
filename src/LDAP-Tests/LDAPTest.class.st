@@ -69,7 +69,7 @@ LDAPTest >> checkSearchResults: aResult expecting: expectedRDNs [
 LDAPTest >> connect [
 	| req conn |
 	conn := LDAPConnection to: self class hostname port: self class port.
-	req := conn bindAs: self class bindDN credentials: self class password.
+	req := conn request: (LDAPBindRequest new username: self class bindDN; password: self class password).
 	req wait.
 	^ conn
 
@@ -95,17 +95,21 @@ LDAPTest >> test01_AddWithStringValues [
 			at: 'sn' put: name;
 			yourself.
 		
-		req := conn addEntry: (self class cn: name) attrs: attrs.
+		req := conn request: (LDAPAddRequest new dn: (self class cn: name); attrs: attrs).
 		req wait.
 	]
 ]
 
 { #category : #tests }
 LDAPTest >> test02_Search [
-	| conn req rr |
+	| conn search req rr |
 	conn := self connect.
 	
-	req := conn newSearch: (self class baseDN) scope: (LDAPConnection wholeSubtree) deref: (LDAPConnection derefNever) filter: nil attrs: nil wantAttrsOnly: false.
+	search := LDAPSearchRequest new 
+		base: self class baseDN; 
+		scope: LDAPSearchScope wholeSubtree; 
+		derefAliases: LDAPSearchDerefAliases never.
+	req := conn request: search.
 	rr := req result.
 	self assert: (self checkSearchResults: rr expecting: { nil . 'cn=test1'. 'cn=test2'. 'cn=test3'. 'cn=test4'. 'cn=test5' } ).
 	
@@ -114,10 +118,14 @@ LDAPTest >> test02_Search [
 
 { #category : #tests }
 LDAPTest >> test03_SearchWithNext [
-	| conn req rr r |
+	| conn req rr r search |
 	conn := self connect.
 	
-	req := conn newSearch: (self class baseDN) scope: (LDAPConnection wholeSubtree) deref: (LDAPConnection derefNever) filter: nil attrs: nil wantAttrsOnly: false.
+	search := LDAPSearchRequest new 
+		base: self class baseDN; 
+		scope: LDAPSearchScope wholeSubtree; 
+		derefAliases: LDAPSearchDerefAliases never.
+	req := conn request: search.
 	rr := OrderedCollection new.
 	[(r := req next) isNil ] whileFalse: [rr add: r ].
 	
@@ -126,27 +134,33 @@ LDAPTest >> test03_SearchWithNext [
 
 { #category : #tests }
 LDAPTest >> test04_SearchWithFilters [
-	| conn req rr |
+	| conn req rr search |
 	conn := self connect.
 	
-	req := conn newSearch: (self class baseDN) scope: (LDAPConnection wholeSubtree) deref: (LDAPConnection derefNever) filter: (LDAPFilter with: 'objectclass') attrs: nil wantAttrsOnly: false.
+	search := LDAPSearchRequest new 
+		base: self class baseDN; 
+		scope: LDAPSearchScope wholeSubtree; 
+		derefAliases: LDAPSearchDerefAliases never;
+		filter: (LDAPFilter with: 'objectclass').
+	req := conn request: search.
 	rr := req result.
 	self assert: (self checkSearchResults: rr expecting: { nil . 'cn=test1'. 'cn=test2'. 'cn=test3'. 'cn=test4'. 'cn=test5' }).
 
-	req := conn newSearch: (self class baseDN) scope: (LDAPConnection wholeSubtree) deref: (LDAPConnection derefNever) filter: (LDAPFilter with: 'cn' equalTo: 'test1') attrs: nil wantAttrsOnly: false.
+	search filter: (LDAPFilter with: 'cn' equalTo: 'test1').
+	req := conn request: search.
 	rr := req result.
 	self assert: (self checkSearchResults: rr expecting: { 'cn=test1'} ).
 
-	req := conn newSearch: (self class baseDN) scope: (LDAPConnection wholeSubtree) deref: (LDAPConnection derefNever) filter: (LDAPFilter not: (LDAPFilter with: 'cn' equalTo: 'test1'))  attrs: nil wantAttrsOnly: false.
+	search filter: (LDAPFilter not: (LDAPFilter with: 'cn' equalTo: 'test1')).
+	req := conn request: search.
 	rr := req result.
 	self assert: (self checkSearchResults: rr expecting: { nil. 'cn=test2'. 'cn=test3'. 'cn=test4'. 'cn=test5' }).
 
-	req := conn newSearch: (self class baseDN) scope: (LDAPConnection wholeSubtree) deref: (LDAPConnection derefNever) filter:
-	(LDAPFilter andOf: (OrderedCollection new
+	search filter: (LDAPFilter andOf: (OrderedCollection new
 						add: (LDAPFilter not: (LDAPFilter with: 'cn' equalTo: 'test1')); 
 						add: (LDAPFilter not: (LDAPFilter with: 'sn' equalTo: 'test2'));
-						yourself ))
-					  attrs: nil wantAttrsOnly: false.
+						yourself )).
+	req := conn request: search.
 	rr := req result.
 	self assert: (self checkSearchResults: rr expecting: { nil . 'cn=test3' .  'cn=test4'. 'cn=test5' }).
 	
@@ -191,8 +205,9 @@ LDAPTest >> test05_Delete [
 	| conn req |
 	conn := self connect.
 	
-	self class testCns do: [ :name|
-		req := conn delEntry: (self class cn: name).
+	self class testCns do: [ :name| | del |
+		del := LDAPDelRequest new dn: (self class cn: name).
+		req := conn request: del.
 		req wait.
 	].
 
@@ -201,9 +216,10 @@ LDAPTest >> test05_Delete [
 
 { #category : #tests }
 LDAPTest >> test06_DoubleBind [
-	| conn req |
+	| conn req bind |
 	conn := self connect.
-	req := conn bindAs: self class bindDN credentials: self class password.
+	bind := LDAPBindRequest new username: self class bindDN; password: self class password.
+	req := conn request: bind.
 	req wait.
 	conn disconnect.
 ]
@@ -213,28 +229,35 @@ LDAPTest >> test07_AddWithCollectionValues [
 	| conn req attrs |
 	conn := self connect.
 	
-	self class testCns do: [ :name|
+	self class testCns do: [ :name| | add |
 		attrs := Dictionary new
 			at: 'objectClass' put: (OrderedCollection new add: 'person'; yourself);
 			at: 'cn' put: (OrderedCollection new add: name; yourself);
 			at: 'sn' put: (OrderedCollection new add: name; yourself);
 			yourself.
 		
-		req := conn addEntry: (self class cn: name) attrs: attrs.
+		add := LDAPAddRequest new dn: (self class cn: name); attrs: attrs.
+		req := conn request: add.
 		req wait.
 	]
 ]
 
 { #category : #tests }
 LDAPTest >> test08_Compare [
-	| conn req |
+	| conn req compare |
 	conn := self connect.
 
-	req :=conn compare: (self class cn: 'test1') using: (LDAPFilterEquality new description: 'cn'; value: 'test1').
+	compare := LDAPCompareRequest new 
+		dn: (self class cn: 'test1'); 
+		comparing: (LDAPFilterEquality new description: 'cn'; value: 'test1').
+	req := conn request: compare.
 	req wait.
 	self assert: (req result).
 
-	req :=conn compare: (self class cn: 'test1') using: (LDAPFilterEquality new description: 'cn'; value: 'test2').
+	compare := LDAPCompareRequest new 
+		dn: (self class cn: 'test1'); 
+		comparing: (LDAPFilterEquality new description: 'cn'; value: 'test2').
+	req := conn request: compare.
 	req wait.
 	self deny: (req result).
 
@@ -243,10 +266,15 @@ LDAPTest >> test08_Compare [
 
 { #category : #tests }
 LDAPTest >> test09_Modify [
-	| conn req rr ops |
+	| conn req rr ops search mod |
 	conn := self connect.
 	
-	req := conn newSearch: (self class baseDN) scope: (LDAPConnection wholeSubtree) deref: (LDAPConnection derefNever) filter: (LDAPFilter with: 'cn' equalTo: 'test1') attrs: nil wantAttrsOnly: false.
+	search := LDAPSearchRequest new 
+		base: self class baseDN; 
+		scope: LDAPSearchScope wholeSubtree; 
+		derefAliases: LDAPSearchDerefAliases never;
+		filter: (LDAPFilter with: 'cn' equalTo: 'test1').
+	req := conn request: search.
 	req wait.
 	rr := req responses first.
 	
@@ -254,10 +282,11 @@ LDAPTest >> test09_Modify [
 			LDAPAttrModifier set: 'sn' to: { 'test5sn' . 'foo' . 'bar'}.
 			LDAPAttrModifier addTo: 'description' values: {'rchueo'} }.
 
-	req := conn modify: (rr matchedDN) with: ops.
+	mod := LDAPModifyRequest new dn: (rr matchedDN); ops: ops.
+	req := conn request: mod.
 	req wait.
 	
-	req :=conn compare: (self class cn: 'test1') using: (LDAPFilterEquality new description: 'sn'; value: 'test5sn').
+	req := conn request: (LDAPCompareRequest new dn: (self class cn: 'test1'); comparing: (LDAPFilterEquality new description: 'sn'; value: 'test5sn')).
 	req wait.
 	self assert: (req result).
 	
@@ -269,8 +298,9 @@ LDAPTest >> test10_Delete [
 	| conn req |
 	conn := self connect.
 	
-	self class testCns do: [ :name|
-		req := conn delEntry: (self class cn: name).
+	self class testCns do: [ :name| | del |
+		del := LDAPDelRequest new dn: (self class cn: name).
+		req := conn request: del.
 		req wait.
 	].
 
