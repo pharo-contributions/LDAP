@@ -1,44 +1,66 @@
 "
-Common superclass for modifying operations
+Pseudo BER sequence for modification operations
 "
 Class {
 	#name : #LDAPModifyOp,
 	#superclass : #BERSequence,
-	#instVars : [
-		'attr',
-		'values'
-	],
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Elements'
 }
 
-{ #category : #'private - instance creation' }
-LDAPModifyOp class >> affecting: anAttr values: someValues [
-	| obj |
-	obj := self basicNew initializeWithAttr: anAttr values: someValues.
-	^ obj
+{ #category : #accessing }
+LDAPModifyOp >> attr [
+	^ elements second description
 ]
 
 { #category : #accessing }
-LDAPModifyOp class >> tagValue [
-	^ self subclassResponsibility
-]
-
-{ #category : #conversion }
-LDAPModifyOp >> asBERElement [
-	| ber |
-	ber := BERSequence new.
-	ber addElement: (BEREnumerated new value: self class tagValue).
-	ber addElement: (LDAPEncoder attributeDescription: attr andValues: values).
-	^ ber
+LDAPModifyOp >> attr: aString [
+	elements second description: aString
 ]
 
 { #category : #initialization }
-LDAPModifyOp >> initializeWithAttr: anAttr values: someValues [
-	attr := anAttr.
-	values := someValues
+LDAPModifyOp >> initialize [ 
+	super initialize.
+	
+	self addElement: (BEREnumerated new).
+	self addElement: (LDAPPartialAttribute new).
+
+]
+
+{ #category : #'instance creation' }
+LDAPModifyOp >> operation: anInteger [
+	elements first value: anInteger 
+]
+
+{ #category : #printing }
+LDAPModifyOp >> operationName [ 
+	| operation |
+	operation := elements first value.
+	operation = 0 ifTrue: [ ^ 'add' ].
+	operation = 1 ifTrue: [ ^ 'delete' ].
+	operation = 2 ifTrue: [ ^ 'replace' ].
+	^ 'unknown'.
 ]
 
 { #category : #printing }
 LDAPModifyOp >> printOn: aStream [
-	aStream nextPutAll: self class name, '(', attr, ': ', values asArray, ')'. 
+
+	aStream
+		nextPutAll: self class name;
+		nextPutAll: ' ';
+		nextPutAll: self operationName;
+		nextPutAll: '(';
+		nextPutAll: self attr;
+		nextPutAll: ': '.
+	self values printElementsOn: aStream.
+	aStream	nextPutAll: ')'
+]
+
+{ #category : #accessing }
+LDAPModifyOp >> values [
+	^ elements second values
+]
+
+{ #category : #accessing }
+LDAPModifyOp >> values: aCollection [
+	elements second values: aCollection
 ]

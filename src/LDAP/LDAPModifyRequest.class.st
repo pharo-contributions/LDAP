@@ -35,7 +35,7 @@ LDAPModifyRequest >> initialize [
 LDAPModifyRequest >> ops: someModifyingOps [
 	| ops |
 	ops := BERSequence new.
-	someModifyingOps do: [ :each | ops addElement: each asBERElement ].
+	someModifyingOps do: [ :each | ops addElement: each ].
 	elements at: 2 put: ops.
 
 ]
