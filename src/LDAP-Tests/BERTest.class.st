@@ -155,16 +155,16 @@ BERTest >> testIntegerDecoding [
 		
 		stream reset.
 		ber := BERInteger newFrom: stream.
-		self assert: (ber class = BERInteger).
+		self assert: ber class equals: BERInteger.
 		
-		self assert: (ber value = value ) 
+		self assert: ber value equals: value. 
 	]
 
 ]
 
 { #category : #tests }
 BERTest >> testIntegerEncoding [
-	|ber stream tests output |
+	|ber stream tests output expected |
 	ber := BERInteger new.
 	stream := ReadWriteStream on: (String new).
 
@@ -174,7 +174,8 @@ BERTest >> testIntegerEncoding [
 		ber value: (test at: 1).	
 		ber writeOn: stream.
 		output :=  stream contents asString asHex.
-		self assert: (output = (self formatWithHex: (test at: 2))) ]
+		expected := self formatWithHex: (test at: 2).
+		self assert: output equals: expected ]
 	
 	
 ]
@@ -195,7 +196,7 @@ BERTest >> testModifyRequest [
 
 { #category : #tests }
 BERTest >> testOctetStringEncoding [
-	|ber stream tests|
+	|ber stream tests expected |
 	ber := BEROctetString new.
 	stream := ReadWriteStream on: (String new).
 
@@ -205,7 +206,8 @@ BERTest >> testOctetStringEncoding [
 		stream resetToStart.
 		ber value: (test at: 1).	
 		ber writeOn: stream.
-		self assert: (stream contents asString asHex = (self formatWithHex: (test at: 3))) ]
+		expected := self formatWithHex: (test at: 3).
+		self assert: stream contents asString asHex equals: expected ]
 	
 	
 ]
@@ -222,7 +224,7 @@ BERTest >> testSearchRequest [
 
 { #category : #tests }
 BERTest >> testSequenceEncoding [
-	|ber0 ber1 ber2 stream|
+	|ber0 ber1 ber2 stream expected |
 	ber0 := BERSequence new.
 	ber1 := BERInteger new value: 17.
 	ber2 := BERInteger new value: 170.
@@ -232,7 +234,8 @@ BERTest >> testSequenceEncoding [
 	stream := ReadWriteStream on: (String new).
 
 	ber0 writeOn: stream.
-	self assert: (stream contents asString asHex = (self formatWithHex: '3007020111020200AA'))
+	expected := self formatWithHex: '3007020111020200AA'.
+	self assert: stream contents asString asHex equals: expected
 
 
 ]
