@@ -33,17 +33,19 @@ See [How to load a git project](https://github.com/pharo-open-documentation/phar
 
 ### Establish a connection to the LDAP server
 ```Smalltalk
-| conn req |
+| conn bind req |
 conn := (LDAPConnection to: 'ldap.domain.org' port: 389).
-req := conn bindAs: 'cn=admin,dc=domain,dc=org' credentials: 'password'.
+bind := LDAPBindRequest new username: 'cn=admin,dc=domain,dc=org'; password: 'password'.
+req := conn request: bind.
 req wait.
 ```
 
 ### Establish a connection to the LDAP server with SSL
 ```Smalltalk
-| conn req |
+| conn bind req |
 [ conn := (LDAPSConnection to: 'sldap123.someuri.org' port: 686 ssl: true).
-	req := conn bindAs: 'uid=myuid,ou=people,o=someuri,c=org' credentials: '123'.
+	bind := LDAPBindRequest new username: 'uid=myuid,ou=people,o=someuri,c=org'; password: 'password'.
+	req := conn request: bind.
 	req wait.
 	conn isValid ] on: Error do: [ 1 halt ]
 ```
@@ -51,6 +53,7 @@ req wait.
 
 ### Create new entry
 ```Smalltalk
+| attrs add req |
 attrs := Dictionary new
     at: 'objectClass' put: (OrderedCollection new add: 'inetOrgPerson'; yourself);
     at: 'cn' put: 'Doe John';
@@ -58,33 +61,39 @@ attrs := Dictionary new
     at: 'mail' put: 'john.doe@domain.org';
     yourself.
 
-req := conn addEntry: 'jdoe' attrs: attrs.
+add := LDAPAddRequest new dn: 'cn=jdoe,cn=base'; attrs: attrs.
+req := conn request: add.
 req wait.
 ```
 
 ### Change the value of an attribute
 ```Smalltalk
+| ops mod req |
 ops := { LDAPAttrModifier set: 'sn' to: { 'Doe' } }.
-req := conn modify: 'uid=jdoe,ou=people,dc=domain,dc=org' with: ops.
+mod := LDAPModifyRequest new dn: 'uid=jdoe,ou=people,dc=domain,dc=org'; ops: ops.
+req := conn request: mod.
 req wait.
 ```
 
 ### Add an attribute
 ```Smalltalk
+| ops mod req |
 ops := { LDAPAttrModifier addTo: 'loginShell' values: { '/bin/bash' } }.
-req := conn modify: 'uid=jdoe,ou=people,dc=domain,dc=org' with: ops.
+mod := LDAPModifyRequest new dn: 'uid=jdoe,ou=people,dc=domain,dc=org'; ops: ops.
+req := conn request: mod.
 req wait.
 ```
 
 ### Read all entries
 ```Smalltalk
-req := conn 
-    newSearch: 'ou=people,dc=domain,dc=org' 
-    scope: (LDAPConnection wholeSubtree) 
-    deref: (LDAPConnection derefNever) 
-    filter: nil 
-    attrs: nil 
-    wantAttrsOnly: false.
+| req search resultEntries |
+search := LDAPSearchRequest new 
+	base: 'ou=people,dc=domain,dc=org'; 
+	scope: LDAPSearchScope wholeSubtree; 
+	derefAliases: LDAPSearchDerefAliases never.
+req := conn request: search.
+req wait.
+resultEntries := req result. "Returns a collection of LDAPSearchResultEntry instances"
 ```
 
 ### Select entries with filters
@@ -99,11 +108,23 @@ req := conn
     attrs: {'sn'}
     wantAttrsOnly: false.
 req wait.
+| req search resultEntries |
+search := LDAPSearchRequest new 
+	base: 'ou=people,dc=domain,dc=org'; 
+	scope: LDAPSearchScope wholeSubtree; 
+	derefAliases: LDAPSearchDerefAliases never;
+	filter: ((LDAPFilter with: 'cn' equalTo: 'Jos') not &
+			(LDAPFilter with: 'sn' equalTo: 'Doe')).
+req := conn request: search.
+req wait.
+resultEntries := req result.
 ```
 
 ### Delete an entry
 ```Smalltalk
-req := connection delEntry: 'uid=doe,ou=people,dc=domain,dc=org'.
+| req del |
+del := LDAPDelRequest new dn: 'uid=doe,ou=people,dc=domain,dc=org'.
+req := conn request: del.
 req wait.
 ```
 
