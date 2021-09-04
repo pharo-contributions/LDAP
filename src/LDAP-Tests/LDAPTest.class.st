@@ -249,14 +249,14 @@ LDAPTest >> test08_Compare [
 
 	compare := LDAPCompareRequest new 
 		dn: (self class cn: 'test1'); 
-		comparing: (LDAPFilterEquality new description: 'cn'; value: 'test1').
+		comparing: (LDAPFilter with: 'cn' equalTo: 'test1').
 	req := conn request: compare.
 	req wait.
 	self assert: (req result).
 
 	compare := LDAPCompareRequest new 
 		dn: (self class cn: 'test1'); 
-		comparing: (LDAPFilterEquality new description: 'cn'; value: 'test2').
+		comparing: (LDAPFilter with: 'cn' equalTo: 'test2').
 	req := conn request: compare.
 	req wait.
 	self deny: (req result).
@@ -286,7 +286,7 @@ LDAPTest >> test09_Modify [
 	req := conn request: mod.
 	req wait.
 	
-	req := conn request: (LDAPCompareRequest new dn: (self class cn: 'test1'); comparing: (LDAPFilterEquality new description: 'sn'; value: 'test5sn')).
+	req := conn request: (LDAPCompareRequest new dn: (self class cn: 'test1'); comparing: (LDAPFilter with: 'sn' equalTo: 'test5sn')).
 	req wait.
 	self assert: (req result).
 	
