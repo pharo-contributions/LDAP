@@ -110,7 +110,7 @@ LDAPConnection >> compare: aDN using: anEqualityFilter [
 
 { #category : #accessing }
 LDAPConnection >> delEntry: aDN [
-	^ LDAPDelRequest new initializeWith: worker dn: aDN
+	^	LDAPRequest new initializeWith: worker request: (LDAPDelRequest new dn: aDN)
 ]
 
 { #category : #connecting }

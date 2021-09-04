@@ -3,14 +3,16 @@ LDAPDelRequest is the process to delete an entry in the LDAP directory.
 "
 Class {
 	#name : #LDAPDelRequest,
-	#superclass : #LDAPRequest,
+	#superclass : #BEROctetString,
 	#category : #'LDAP-Core'
 }
 
-{ #category : #initialization }
-LDAPDelRequest >> initializeWith: anLDAPWorker dn: aDN [
-	self initializeWith: anLDAPWorker.
-	anLDAPWorker send:
-		(LDAPEncoder delRequest: messageId dn: aDN).
+{ #category : #accessing }
+LDAPDelRequest class >> tagValue [
+	^ 16r4A "Application 10"
+]
 
+{ #category : #'as yet unclassified' }
+LDAPDelRequest >> dn: aDn [
+	self value: aDn
 ]

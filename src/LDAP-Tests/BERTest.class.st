@@ -129,11 +129,13 @@ BERTest >> testBooleanEncoding [
 
 { #category : #tests }
 BERTest >> testDelRequest [
-	| encoded |
-	encoded := LDAPEncoder delRequest: 1 dn: 'cn=test2,dc=linalco,dc=test'.
+	| request encoded expected |
+	request := LDAPDelRequest new dn: 'cn=test2,dc=linalco,dc=test'.
+	encoded := LDAPEncoder id: 1 request: request.
 	encoded := encoded asString asHex.
 
-	self assert: (encoded = (self formatWithHex: '30200201014A1B636E3D74657374322C64633D6C696E616C636F2C64633D74657374'))
+	expected := self formatWithHex: '30200201014A1B636E3D74657374322C64633D6C696E616C636F2C64633D74657374'.
+	self assert: encoded equals: expected
 
 ]
 

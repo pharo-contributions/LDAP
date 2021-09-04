@@ -87,22 +87,6 @@ LDAPEncoder class >> compareRequest: aMessageId dn: aDN comparing: anEqualityFil
 ]
 
 { #category : #'utilities - requests' }
-LDAPEncoder class >> delRequest: aMessageId dn: aDN [
-	| stream mesg req |
-	stream := ReadWriteStream on: (String new).
-
-	mesg := BERSequence new.
-	mesg addElement: (BERInteger new value: aMessageId).
-
-	req := BEROctetString new value: aDN.
-	
-	mesg addElement: (req tagSetApplication) withTag: 10.
-	mesg writeOn: stream.
-		
-	^ stream contents
-]
-
-{ #category : #'utilities - requests' }
 LDAPEncoder class >> id: aMessageId request: aRequest [
 	| stream mesg |
 	stream := ReadWriteStream on: (String new).
