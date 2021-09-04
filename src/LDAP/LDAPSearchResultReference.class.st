@@ -18,11 +18,6 @@ LDAPSearchResultReference >> isReference [
 ]
 
 { #category : #accessing }
-LDAPSearchResultReference >> matchedDN [
-	^ nil
-]
-
-{ #category : #accessing }
 LDAPSearchResultReference >> url [
 	^ elements first value
 ]

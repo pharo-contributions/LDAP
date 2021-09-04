@@ -21,8 +21,3 @@ LDAPAbstractResult >> checkForExceptions [
 LDAPAbstractResult >> isEndMarker [
 	^ self subclassResponsibility 
 ]
-
-{ #category : #accessing }
-LDAPAbstractResult >> matchedDN [
-	^ self subclassResponsibility
-]

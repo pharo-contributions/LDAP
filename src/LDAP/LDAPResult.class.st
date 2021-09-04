@@ -14,11 +14,10 @@ LDAPResult class >> tagValue [
 
 { #category : #'error handling' }
 LDAPResult >> checkForExceptions [
-	| code ex |
-	code := self resultCode.	
-	(#( 0 5 6 ) includes: code) ifTrue: [ ^ self ].
+	| ex |
+	self success ifTrue: [ ^ self ].
 
-	ex := LDAPException newWithCode: code.
+	ex := LDAPException newWithCode: self resultCode.
 	ex signal: (self errorMessage ifEmpty:[ex messageText ]).
 ]
 
@@ -45,4 +44,9 @@ LDAPResult >> referral [
 { #category : #accessing }
 LDAPResult >> resultCode [
 	^ elements first value
+]
+
+{ #category : #testing }
+LDAPResult >> success [ 
+	^ self resultCode isZero 
 ]

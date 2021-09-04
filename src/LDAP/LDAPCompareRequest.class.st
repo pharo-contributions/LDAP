@@ -33,3 +33,11 @@ LDAPCompareRequest >> initialize [
 	self addElement: (LDAPFilterEquality new). "AttributeValueAssertion"
 
 ]
+
+{ #category : #testing }
+LDAPCompareRequest >> processResult: aCollection [
+	| result code |
+	result := aCollection last.
+	^ result processResult ifNil: [ result checkForExceptions ]
+
+]

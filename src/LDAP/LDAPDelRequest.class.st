@@ -4,6 +4,8 @@ LDAPDelRequest is the process to delete an entry in the LDAP directory.
 Class {
 	#name : #LDAPDelRequest,
 	#superclass : #BEROctetString,
+	#traits : 'TLDAPReturnResult',
+	#classTraits : 'TLDAPReturnResult classTrait',
 	#category : #'LDAP-Requests'
 }
 
@@ -12,7 +14,7 @@ LDAPDelRequest class >> tagValue [
 	^ 16r4A "Application 10"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPDelRequest >> dn: aDn [
 	self value: aDn
 ]

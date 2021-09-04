@@ -13,6 +13,15 @@ LDAPCompareResult class >> tagValue [
 	
 ]
 
+{ #category : #'error handling' }
+LDAPCompareResult >> checkForExceptions [
+	| code |
+	code := self resultCode.	
+	(#( 0 5 6 ) includes: code) ifTrue: [ ^ self ].
+
+	^ super checkForExceptions
+]
+
 { #category : #testing }
 LDAPCompareResult >> processResult [
 	self resultCode = 5 ifTrue: [ ^ false ].

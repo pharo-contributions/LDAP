@@ -4,6 +4,8 @@ A request to modify
 Class {
 	#name : #LDAPModifyRequest,
 	#superclass : #BERSequence,
+	#traits : 'TLDAPReturnResult',
+	#classTraits : 'TLDAPReturnResult classTrait',
 	#category : #'LDAP-Requests'
 }
 

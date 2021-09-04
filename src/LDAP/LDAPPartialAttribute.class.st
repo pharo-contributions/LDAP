@@ -12,7 +12,7 @@ From RFC4511:
 Class {
 	#name : #LDAPPartialAttribute,
 	#superclass : #BERSequence,
-	#category : #'LDAP-Requests'
+	#category : #'LDAP-Elements'
 }
 
 { #category : #adding }

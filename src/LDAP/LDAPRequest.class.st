@@ -7,10 +7,13 @@ Class {
 	#instVars : [
 		'worker',
 		'messageId',
-		'waitingSemaphore',
 		'isDone',
 		'abandoned',
-		'response'
+		'doneSemaphore',
+		'iterator',
+		'query',
+		'responses',
+		'newResponseSemaphore'
 	],
 	#category : #'LDAP-Core'
 }
@@ -31,7 +34,7 @@ LDAPRequest >> abandon [
 LDAPRequest >> checkForExceptions [
 	"Check to see if a response caused an exception and if so, raise it"
 	self isDone ifFalse:[^self error: 'LDAP timeout'].
-	response checkForExceptions.
+	responses do: #checkForExceptions.
 ]
 
 { #category : #defaults }
@@ -50,10 +53,15 @@ LDAPRequest >> initializeWith: anLDAPWorker request: aRequest [
 	| message |
 	worker := anLDAPWorker.
 	messageId := worker nextMessageId.
-	waitingSemaphore := Semaphore new.
-	response := nil.
+	doneSemaphore := Semaphore new.
+	query := aRequest.
+	responses := OrderedCollection new.
 	abandoned := nil.
 	isDone := false.
+	
+	"partial search results"
+	newResponseSemaphore := Semaphore new.
+	iterator := 0.
 
 	worker addTarget: self for: messageId.
 	message := LDAPMessage new id: messageId; operation: aRequest.
@@ -67,22 +75,45 @@ LDAPRequest >> isDone [
 ]
 
 { #category : #accessing }
-LDAPRequest >> processResponse: aMessage [
-	isDone := true. 
-	response := aMessage.
-	waitingSemaphore signal.
+LDAPRequest >> next [
+	^ self nextTimeout: self defaultTimeout.
+
+
 ]
 
 { #category : #accessing }
-LDAPRequest >> response [
+LDAPRequest >> nextTimeout: seconds [
+	isDone ifFalse:[
+		"As long as the request isn't done, synchronously wait for more results"
+		newResponseSemaphore waitTimeoutSeconds: seconds.
+		(responses size = iterator and:[isDone not]) ifTrue:[^self error: 'LDAP timeout'].
+	].
+	^ responses size > iterator
+		ifTrue:[ responses at: (iterator := iterator + 1)]
+		ifFalse:[ nil ]
+]
+
+{ #category : #accessing }
+LDAPRequest >> processResponse: aMessage [
+	responses addLast: aMessage. 
+	aMessage isEndMarker ifTrue:[
+		isDone := true. 
+		doneSemaphore signal.
+	].
+	newResponseSemaphore signal.
+
+]
+
+{ #category : #accessing }
+LDAPRequest >> responses [ 
 	self wait.
-	^ response
+	^ responses
 ]
 
 { #category : #accessing }
 LDAPRequest >> result [
 	self wait.
-	^ response ifNotNil: [ response processResult ]
+	^ query processResult: responses
 ]
 
 { #category : #accessing }
@@ -93,13 +124,13 @@ LDAPRequest >> wait [
 
 { #category : #accessing }
 LDAPRequest >> waitTimeoutMSecs: msecs [
-	response ifNil: [ waitingSemaphore waitTimeoutMSecs: msecs ].
+	responses ifEmpty: [ doneSemaphore waitTimeoutMSecs: msecs ].
 	self checkForExceptions.
 ]
 
 { #category : #accessing }
 LDAPRequest >> waitTimeoutSeconds: seconds [
-	response ifNil: [ waitingSemaphore waitTimeoutSeconds: seconds ].
+	responses ifEmpty: [ doneSemaphore waitTimeoutSeconds: seconds ].
 	self checkForExceptions.
 ]
 

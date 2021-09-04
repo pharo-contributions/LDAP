@@ -19,8 +19,3 @@ LDAPSearchPartialResult >> checkForExceptions [
 LDAPSearchPartialResult >> isEndMarker [
 	^ false
 ]
-
-{ #category : #accessing }
-LDAPSearchPartialResult >> matchedDN [
-	^ self subclassResponsibility
-]

@@ -4,6 +4,8 @@ Request to modify a distinguished name
 Class {
 	#name : #LDAPModifyDNRequest,
 	#superclass : #BERSequence,
+	#traits : 'TLDAPReturnResult',
+	#classTraits : 'TLDAPReturnResult classTrait',
 	#category : #'LDAP-Requests'
 }
 
