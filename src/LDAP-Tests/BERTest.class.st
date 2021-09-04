@@ -69,6 +69,20 @@ BERTest class >> testAll [
 ]
 
 { #category : #tools }
+BERTest >> debugHex: aString [
+	| str encodedString |
+	
+	encodedString := WriteStream on: (String new).
+	str := aString readStream.
+	[ str atEnd ] whileFalse: [  
+		| int |
+		int := Integer readHexByteFrom: str.
+		encodedString  nextPut: int asCharacter.		
+	].
+	^encodedString contents
+]
+
+{ #category : #tools }
 BERTest >> formatWithHex: aString [
 	| encodedString pos |
 	
@@ -87,11 +101,14 @@ BERTest >> formatWithHex: aString [
 
 { #category : #tests }
 BERTest >> testAddRequest [
-	| request encoded expected attrs |
-	attrs := Dictionary new.
-	attrs at: 'objectClass' put: (OrderedCollection new addLast: ('person' utf8Encoded asString); yourself).
-	attrs at: 'cn' put: (OrderedCollection new addLast: ('test2' utf8Encoded asString); yourself).
-	attrs at: 'sn' put: (OrderedCollection new addLast: ('test2' utf8Encoded asString); yourself).
+	| request encoded hex expected attrs |
+	"using a Dictionary could generate different encodings depending on the order of iteration."
+	"we'll rely on the implementation calling associationsDo: to work with this Array."
+	attrs := { 
+		'objectClass' -> (OrderedCollection new addLast: 'person'; yourself).
+		'cn' -> (OrderedCollection new addLast: 'test2'; yourself).
+		'sn' -> (OrderedCollection new addLast: 'test2'; yourself).
+	}.
 
 	request := LDAPAddRequest new dn: 'cn=test2,dc=linalco,dc=test'; attrs: attrs.
 	encoded := LDAPEncoder id: 1 request: request.
