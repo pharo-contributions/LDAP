@@ -3,7 +3,7 @@ A reference from a search result
 "
 Class {
 	#name : #LDAPSearchResultReference,
-	#superclass : #LDAPMessage,
+	#superclass : #BERSequence,
 	#instVars : [
 		'url'
 	],

@@ -3,7 +3,7 @@ LDAPSearchRequest is the process to search entries from the LDAP directory.
 "
 Class {
 	#name : #LDAPSearchRequest,
-	#superclass : #LDAPRequest,
+	#superclass : #BERSequence,
 	#instVars : [
 		'partialResults',
 		'iterator',

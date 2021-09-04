@@ -4,7 +4,7 @@ LDAPAddRequest is the process to add a new entry in the LDAP directory.
 "
 Class {
 	#name : #LDAPAddRequest,
-	#superclass : #LDAPRequest,
+	#superclass : #BERSequence,
 	#category : #'LDAP-Core'
 }
 

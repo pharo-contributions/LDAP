@@ -3,7 +3,7 @@ Common superclass for modifying operations
 "
 Class {
 	#name : #LDAPModifyOp,
-	#superclass : #LDAPRequest,
+	#superclass : #BERSequence,
 	#instVars : [
 		'attr',
 		'values'

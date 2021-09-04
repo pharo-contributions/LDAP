@@ -3,7 +3,7 @@ Result of an LDAP message.
 "
 Class {
 	#name : #LDAPResult,
-	#superclass : #LDAPMessage,
+	#superclass : #BERSequence,
 	#instVars : [
 		'resultCode',
 		'errorMessage',

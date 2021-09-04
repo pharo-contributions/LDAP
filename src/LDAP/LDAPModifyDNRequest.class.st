@@ -3,7 +3,7 @@ Request to modify a distinguished name
 "
 Class {
 	#name : #LDAPModifyDNRequest,
-	#superclass : #LDAPRequest,
+	#superclass : #BERSequence,
 	#category : #'LDAP-Core'
 }
 

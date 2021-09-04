@@ -3,7 +3,7 @@ A request to modify
 "
 Class {
 	#name : #LDAPModifyRequest,
-	#superclass : #LDAPRequest,
+	#superclass : #BERSequence,
 	#category : #'LDAP-Core'
 }
 

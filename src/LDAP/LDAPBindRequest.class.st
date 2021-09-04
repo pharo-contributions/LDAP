@@ -3,7 +3,7 @@ LDAPBindRequest is the connection process to the LDAP directory.
 "
 Class {
 	#name : #LDAPBindRequest,
-	#superclass : #LDAPRequest,
+	#superclass : #BERSequence,
 	#category : #'LDAP-Core'
 }
 

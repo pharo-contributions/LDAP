@@ -81,7 +81,7 @@ LDAPWorker >> dispatchMessage: aMessage [
 	which we don't have implemented, so there's no real need yet"
 	
 	who := target at: #request.
-	who processResponse: aMessage.
+	who processResponse: aMessage response.
 	
 	who wantsMoreResponses
 		ifFalse: [ self delTargetFor: id ]

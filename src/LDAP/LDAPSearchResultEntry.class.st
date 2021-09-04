@@ -3,7 +3,7 @@ An entry from a search result
 "
 Class {
 	#name : #LDAPSearchResultEntry,
-	#superclass : #LDAPMessage,
+	#superclass : #BERSequence,
 	#instVars : [
 		'dn',
 		'attrs'
