@@ -16,7 +16,8 @@ LDAPAddRequest class >> tagValue [
 { #category : #accessing }
 LDAPAddRequest >> attrs: aDictionary [
 	| ber |
-	ber := LDAPEncoder attrsAsBERElement: aDictionary.
+	ber := BERSequence new.
+	aDictionary associationsDo: [ :a | ber addElement: (LDAPPartialAttribute new description: a key; values: a value) ].
 	elements at: 2 put: ber.
 ]
 
