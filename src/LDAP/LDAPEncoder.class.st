@@ -8,22 +8,6 @@ Class {
 }
 
 { #category : #'utilities - requests' }
-LDAPEncoder class >> abandonRequest: aMessageId abandonId: abandonId [
-	| stream mesg req |
-	stream := ReadWriteStream on: (String new).
-
-	mesg := BERSequence new.
-	mesg addElement: (BERInteger new value: aMessageId).
-
-	req := BERInteger new value: abandonId.
-	
-	mesg addElement: (req tagSetApplication) withTag: 16.
-	mesg writeOn: stream.
-		
-	^ stream contents
-]
-
-{ #category : #'utilities - requests' }
 LDAPEncoder class >> addRequest: aMessageId dn: aDN attrs: someAttrs [
 	| stream mesg req |
 	stream := ReadWriteStream on: (String new).

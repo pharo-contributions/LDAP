@@ -18,10 +18,12 @@ Class {
 { #category : #accessing }
 LDAPRequest >> abandon [
 	"RFC says we MUST NOT send abandon requests for the same operation multiple times"
-	isAbandoned ifFalse: [
-		LDAPAbandonRequest new initializeWith: worker abandonId: messageId.
-		worker delTargetFor: messageId.
-		isAbandoned := true ]
+	abandoned ifNotNil: [ ^ abandoned ].
+
+	abandoned := LDAPRequest new initializeWith: worker request: (LDAPAbandonRequest new abandonId: messageId).
+	worker delTargetFor: messageId.
+	
+	^ abandoned
 	
 ]
 
