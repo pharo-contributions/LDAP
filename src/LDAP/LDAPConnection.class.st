@@ -141,7 +141,8 @@ LDAPConnection >> modify: aDN with: someLDAPAttrModifiers [
 
 { #category : #accessing }
 LDAPConnection >> modifyDN: aDN toRDN: aRDN moveUnderDN: aUnderDN wantToClearAttrs: aWantsToClearAttrs [
-	^ LDAPModifyDNRequest new initializeWith: worker modifyDN: aDN toRDN: aRDN underDN: aUnderDN wantToClearAttrs: aWantsToClearAttrs
+	^ LDAPRequest new initializeWith: worker
+		request: (LDAPModifyDNRequest new dn: aDN; newRdn: aRDN; underDn: aUnderDN; wantToClearAttrs: aWantsToClearAttrs)
 ]
 
 { #category : #accessing }

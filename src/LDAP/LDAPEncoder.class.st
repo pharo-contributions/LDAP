@@ -41,28 +41,6 @@ LDAPEncoder class >> id: aMessageId request: aRequest [
 	^ stream contents
 ]
 
-{ #category : #'utilities - requests' }
-LDAPEncoder class >> modifyDNRequest: aMessageId dn: aDN toRDN: aRDN underDN: aUnderDN wantToClearAttrs: aWantsToClearAttrs [ 
-	| stream mesg req |
-	stream := ReadWriteStream on: (String new).
-
-	mesg := BERSequence new.
-	mesg addElement: (BERInteger new value: aMessageId).
-
-	req := BERSequence new.
-	req 
-		addElement: (BEROctetString new value: aDN);
-		addElement: (BEROctetString new value: aRDN);
-		addElement: (BERBoolean new value: aWantsToClearAttrs).
-	aUnderDN ifNotNil: [
-		req addElement: (BEROctetString new value: aUnderDN) withTag: 0 ].
-	
-	mesg addElement: (req tagSetApplication) withTag: 12.
-	mesg writeOn: stream.
-		
-	^ stream contents
-]
-
 { #category : #'instance creation' }
 LDAPEncoder class >> newFrom: aStream [
 	| firstByte element elementClass |
