@@ -58,11 +58,21 @@ LDAPTest >> checkSearchResults: aResult expecting: expectedRDNs [
 		ifTrue: [ ^ false ].
 	
 	^ expectedRDNs allSatisfy: [:eachExpected | | qualified |
-		qualified := eachExpected
-			ifNil: [ self class baseDN ]
-			ifNotNil: [ eachExpected, ',', self class baseDN ].
+		qualified := self expectingDN: eachExpected.
 		aResult anySatisfy: [ :eachResult | eachResult matchedDN = qualified ]
 	]
+]
+
+{ #category : #utilities }
+LDAPTest >> checkSearchResults: aResult expectingAttr: attrDesc withValue: attrValue [
+	^ aResult anySatisfy: [ :eachResult | 
+		| attributes |
+		attributes := eachResult attrsAsDictionary.
+		attributes at: attrDesc 
+			ifPresent: [ :set | set includes: attrValue ] 
+			ifAbsent: [ false ]
+	]
+
 ]
 
 { #category : #connecting }
@@ -74,6 +84,13 @@ LDAPTest >> connect [
 	^ conn
 
 
+]
+
+{ #category : #utilities }
+LDAPTest >> expectingDN: aRDN [
+	^ aRDN
+			ifNil: [ self class baseDN ]
+			ifNotNil: [ aRDN, ',', self class baseDN ]
 ]
 
 { #category : #tests }
@@ -325,4 +342,21 @@ LDAPTest >> testMessage [
 	self assert: message id equals: 2.
 	self assert: message response resultCode equals: 0.
 	self assert: message response matchedDN equals: self class bindDN.
+]
+
+{ #category : #tests }
+LDAPTest >> testNamingContexts [
+	| conn req rr search |
+	conn := self connect.
+	
+	search := LDAPSearchRequest new 
+		base: ''; 
+		scope: LDAPSearchScope baseObject; 
+		derefAliases: LDAPSearchDerefAliases never;
+		attrs: { 'namingContexts' }.
+	req := conn request: search.
+	rr := req result.
+	self assert: (self checkSearchResults: rr  expectingAttr: 'namingContexts' withValue: self class baseDN).
+
+	conn disconnect.	
 ]

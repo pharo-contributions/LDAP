@@ -13,36 +13,23 @@ LDAPSearchResultEntry class >> tagValue [
 ]
 
 { #category : #accessing }
-LDAPSearchResultEntry >> attrAt: aKey [
-	"answer only the first value"
-	| partialAttributeList selected |
-	partialAttributeList := elements second value.
-	selected := partialAttributeList detect: [ :pa | aKey = pa value first value ] ifNone: [ ^ nil ].
-	^ selected value second value first value
-
+LDAPSearchResultEntry >> attributes [
+"Return the attributes as a collection of BER elements (most probably LDAP partial attributes)"
+	^ elements second value asArray
 ]
 
 { #category : #accessing }
-LDAPSearchResultEntry >> attrs [
+LDAPSearchResultEntry >> attrsAsDictionary [
 	"I return a Dictionary with an entry per attr. Eeach attr is an collection, as there may be multiple values per attr."
-	| partialAttributeList  |
-	partialAttributeList := elements second value.
-	^ partialAttributeList collect: [ :partialAttribute | 
+	| partialAttributeList associations |
+	partialAttributeList := self attributes.
+	associations := partialAttributeList collect: [ :partialAttribute | 
 		| type set |
 		type := partialAttribute value first value.
 		set := partialAttribute value second value.
 		type -> (set collect: #value)
-	] asDictionary
-
-]
-
-{ #category : #accessing }
-LDAPSearchResultEntry >> attrsAt: aKey [
-	"answer all values of the specified attribut"
-	| partialAttributeList selected |
-	partialAttributeList := elements second value.
-	selected := partialAttributeList detect: [ :pa | aKey = pa value first value ] ifNone: [ ^ nil ].
-	^ selected value second value collect: #value
+	].
+	^ associations asDictionary
 
 ]
 
