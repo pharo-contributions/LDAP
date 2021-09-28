@@ -41,9 +41,10 @@ req wait.
 ```
 
 ### Establish a connection to the LDAP server with SSL
+Use a `LDAPSConnection` instance for the connection.
 ```Smalltalk
 | conn bind req |
-[ conn := (LDAPSConnection to: 'sldap123.someuri.org' port: 686 ssl: true).
+[ conn := (LDAPSConnection to: 'sldap123.someuri.org' port: 686).
 	bind := LDAPBindRequest new username: 'uid=myuid,ou=people,o=someuri,c=org'; password: 'password'.
 	req := conn request: bind.
 	req wait.
