@@ -18,7 +18,12 @@ Class {
 
 { #category : #'instance creation' }
 LDAPWorker class >> newTo: aHostname port: aPort [
-	^ self basicNew initialize: aHostname port: aPort
+	^ self new initialize: aHostname port: aPort
+]
+
+{ #category : #'instance creation' }
+LDAPWorker class >> socketClass [
+	^ SocketStream
 ]
 
 { #category : #accessing }
@@ -38,12 +43,17 @@ LDAPWorker >> addTarget: aRequest for: aMessageId [
 
 { #category : #connecting }
 LDAPWorker >> connect [
-	[ sockStream := SocketStream openConnectionToHostNamed: hostname port: port ]
+	[ sockStream := self class socketClass openConnectionToHostNamed: hostname port: port ]
 		on: Exception do: [:ex | sockStream := nil. self error: ex messageText].
+
+	sockStream ifNil: [ ^ self ].
+	
 	sockStream 
 		binary;
 		autoFlush: false;
-		noTimeout
+		timeout: 30.
+		
+	self postConnect.
 
 ]
 
@@ -106,6 +116,11 @@ LDAPWorker >> nextMessageId [
 	"here we should check wether we're past the message id limit, and if so reconnect and bind"
 	nextMessageId := nextMessageId + 1.
 	^ nextMessageId
+]
+
+{ #category : #connecting }
+LDAPWorker >> postConnect [ 
+"Nothing in base class"
 ]
 
 { #category : #accessing }

@@ -42,8 +42,13 @@ LDAPConnection class >> to: aHostname [
 { #category : #'instance creation' }
 LDAPConnection class >> to: aHostname port: aPort [
 	| obj |
-	obj := self basicNew initializeWithHost: aHostname port: aPort.
+	obj := self new initializeWithHost: aHostname port: aPort.
 	^ obj
+]
+
+{ #category : #accessing }
+LDAPConnection class >> workerClass [
+	^ LDAPWorker
 ]
 
 { #category : #connecting }
@@ -55,7 +60,7 @@ LDAPConnection >> disconnect [
 
 { #category : #initialization }
 LDAPConnection >> initializeWithHost: aHostname port: aPort [
-	worker := LDAPWorker newTo: aHostname port: aPort.
+	worker := self class workerClass newTo: aHostname port: aPort.
 	worker connect.
 	workerThread := worker start.
 

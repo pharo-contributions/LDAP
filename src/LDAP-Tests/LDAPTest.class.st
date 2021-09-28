@@ -360,3 +360,17 @@ LDAPTest >> testNamingContexts [
 
 	conn disconnect.	
 ]
+
+{ #category : #connecting }
+LDAPTest >> testSSLConnection [
+	| req conn |
+	"This should be in LDAP-SSL-Tests package"
+	LDAPSConnection ifNil: [ ^ self ].
+	
+	conn := LDAPSConnection to: self class hostname port: 636.
+	req := conn request: (LDAPBindRequest new username: self class bindDN; password: self class password).
+	req wait.
+	self assert: (req result).
+
+
+]
