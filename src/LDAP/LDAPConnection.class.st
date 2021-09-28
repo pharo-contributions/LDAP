@@ -46,32 +46,6 @@ LDAPConnection class >> to: aHostname port: aPort [
 	^ obj
 ]
 
-{ #category : #accessing }
-LDAPConnection >> addEntry: aDN attrs: someAttrs [
-	^ self request: (LDAPAddRequest new dn: aDN; attrs: someAttrs).
-]
-
-{ #category : #binding }
-LDAPConnection >> bindAs: aUsername credentials: aPassword [
-	^ self bindAs: aUsername credentials: aPassword method: nil
-
-]
-
-{ #category : #binding }
-LDAPConnection >> bindAs: aUsername credentials: aPassword method: anAuthMethod [
-	^ self request: (LDAPBindRequest new username: aUsername; password: aPassword)
-]
-
-{ #category : #accessing }
-LDAPConnection >> compare: aDN using: anEqualityFilter [
-	^ self request: (LDAPCompareRequest new dn: aDN; comparing: anEqualityFilter)
-]
-
-{ #category : #accessing }
-LDAPConnection >> delEntry: aDN [
-	^	self request: (LDAPDelRequest new dn: aDN)
-]
-
 { #category : #connecting }
 LDAPConnection >> disconnect [
 	self unbind.
@@ -91,37 +65,6 @@ LDAPConnection >> initializeWithHost: aHostname port: aPort [
 LDAPConnection >> isValid [
 	"Answers whether the connection looks still valid"
 	^worker running
-]
-
-{ #category : #accessing }
-LDAPConnection >> modify: aDN with: someLDAPAttrModifiers [
-	^ self request: (LDAPModifyRequest new dn: aDN; ops: someLDAPAttrModifiers)
-]
-
-{ #category : #accessing }
-LDAPConnection >> modifyDN: aDN toRDN: aRDN moveUnderDN: aUnderDN wantToClearAttrs: aWantsToClearAttrs [
-	^ self request: (LDAPModifyDNRequest new dn: aDN; newRdn: aRDN; underDn: aUnderDN; wantToClearAttrs: aWantsToClearAttrs)
-]
-
-{ #category : #accessing }
-LDAPConnection >> modifyDN: aDN toRDN: aRDN wantToClearAttrs: aWantsToClearAttrs [
-	^ self modifyDN: aDN toRDN: aRDN moveUnderDN: nil wantToClearAttrs: aWantsToClearAttrs
-]
-
-{ #category : #searching }
-LDAPConnection >> newSearch: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
-	| nonNilFilter nonNilAttrs |
-
-	nonNilFilter := aFilter ifNil: [ nonNilFilter := LDAPFilter with: 'objectclass' ].
-	nonNilAttrs := someAttrs ifNil: [ nonNilAttrs := OrderedCollection new ].
-	
-	^ self request: (LDAPSearchRequest new
-			base: aBase;
-			scope: aSearchScope;
-			derefAliases: aDerefBehaviour;
-			filter: nonNilFilter;
-			attrs: nonNilAttrs;
-			wantAttrsOnly: wantsAttrsOnly)
 ]
 
 { #category : #'command execution' }
