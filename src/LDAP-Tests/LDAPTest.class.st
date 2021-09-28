@@ -1,14 +1,12 @@
 "
-Do not be surprised if any of the tests fails, their state is rather crude, mostly due to the heavy volatility of the API.
-
-This test expects a single entry in the tree:
+This test expects at least this entry in the directory:
 ```language=ldif
-		dn: dc=linalco, dc=test
-		dc: linalco
-		objectClass: dcObject
-		objectClass: organization
-		o: linalco
+		dn: dc=example, dc=com
+		dc: example
+		objectClass: domain
 ```
+
+The user `cn=admin,dc=example,dc=com` should have write access to the directory using password `secret`
 
 "
 Class {
@@ -19,7 +17,7 @@ Class {
 
 { #category : #'accessing - defaults' }
 LDAPTest class >> baseDN [
-	^ 'dc=linalco,dc=test'
+	^ 'dc=example,dc=com'
 ]
 
 { #category : #'accessing - defaults' }
