@@ -26,8 +26,8 @@ LDAPSearchRequest >> base: aDn [
 ]
 
 { #category : #accessing }
-LDAPSearchRequest >> derefAliases: anEnumeratedValue [
-	elements third value: anEnumeratedValue
+LDAPSearchRequest >> derefAliases: anAliasingPolicy [
+	elements at: 3 put: anAliasingPolicy
 ]
 
 { #category : #accessing }
@@ -42,7 +42,7 @@ LDAPSearchRequest >> initialize [
 	self
 		addElement: (BEROctetString new); "dn"
 		addElement: (LDAPBaseObjectScope new); "scope"
-		addElement: (LDAPSearchDerefAliases new); "derefAliases (neverDerefAliases)"
+		addElement: (LDAPNeverDeferAliases new); "derefAliases"
 		addElement: (BERInteger new value: 0); "sizelimit"
 		addElement: (BERInteger new value: 0); "timelimit"
 		addElement: (BERBoolean new); "typesOnly"

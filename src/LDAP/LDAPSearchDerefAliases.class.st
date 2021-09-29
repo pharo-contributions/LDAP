@@ -10,32 +10,3 @@ Class {
 	#superclass : #BEREnumerated,
 	#category : #'LDAP-Enumerated'
 }
-
-{ #category : #constants }
-LDAPSearchDerefAliases class >> always [   
-	^ 3
-]
-
-{ #category : #constants }
-LDAPSearchDerefAliases class >> findingBase [  
-	^ 2
-]
-
-{ #category : #constants }
-LDAPSearchDerefAliases class >> inSearching [ 
-	^ 1
-]
-
-{ #category : #constants }
-LDAPSearchDerefAliases class >> never [
-	^ 0
-]
-
-{ #category : #printing }
-LDAPSearchDerefAliases >> printOn: aStream [
-	self value = 0 ifTrue: [ ^ aStream nextPutAll: 'neverDerefAliases (0)' ].
-	self value = 1 ifTrue: [ ^ aStream nextPutAll: 'derefInSearching (1)' ].
-	self value = 2 ifTrue: [ ^ aStream nextPutAll: 'derefFindingBaseObj (2)' ].
-	self value = 3 ifTrue: [ ^ aStream nextPutAll: 'derefAlways (3)' ].
-	^ super printOn: aStream	
-]

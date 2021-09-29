@@ -239,7 +239,7 @@ BERTest >> testSearchRequest [
 	request := LDAPSearchRequest new 
 		base: 'dc=linalco, dc=test'; 
 		scope: LDAPWholeSubtreeScope new; 
-		derefAliases: LDAPSearchDerefAliases never; 
+		derefAliases: LDAPNeverDeferAliases new; 
 		filter: (LDAPFilter with: 'objectclass' ).
 	encoded := (LDAPMessage new id: 1; operation: request) encoded.
 	hex := encoded asString asHex.

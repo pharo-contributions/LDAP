@@ -37,6 +37,6 @@ ADExistsRequest >> initialize [
 { #category : #initialization }
 ADExistsRequest >> reset [
 	self scope: LDAPWholeSubtreeScope new.
-	self derefAliases: LDAPSearchDerefAliases never.
+	self derefAliases: LDAPNeverDeferAliases new.
 	self filter: (LDAPFilter with: 'objectclass').
 ]
