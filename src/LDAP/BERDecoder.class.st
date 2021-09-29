@@ -79,22 +79,29 @@ BERDecoder >> application: anObject [
 
 { #category : #'private - creation' }
 BERDecoder >> createApplicationElement: aTagValue [
-"Create a BER application element from a tag value."
-	| element |
-	(self class isApplication: aTagValue) ifFalse: [ ^ nil ]. 
-	application ifNil: [ ^ self createElementError: 'invalid application tag -- no application set' ].
-	element := application createApplicationElement: aTagValue.
-	^ element ifNil: [ self createElementError: 'invalid application tag' ]
 
+	"Create a BER application element from a tag value."
+
+	| element |
+	(self class isApplication: aTagValue) ifFalse: [ ^ nil ].
+	application ifNil: [ 
+		^ self
+			  createElementError: 'invalid application tag -- no application set'
+			  withTag: aTagValue ].
+	element := application createApplicationElement: aTagValue.
+	^ element ifNil: [ 
+		  self createElementError: 'invalid application tag' withTag: aTagValue ]
 ]
 
 { #category : #'instance creation' }
 BERDecoder >> createElement: aTagValue [
-"Create a BER element from a tag value"
+	"Create a BER element from a tag value"
+
 	(self createUniversalElement: aTagValue) ifNotNil: [ :element | ^ element ].
 	(self createApplicationElement: aTagValue) ifNotNil: [ :element | ^ element ].
-	^ self createElementError: 'invalid tag -- could not create element'
-
+	^ self
+		  createElementError: 'invalid tag -- could not create element'
+		  withTag: aTagValue
 ]
 
 { #category : #'private - creation' }
@@ -108,21 +115,24 @@ BERDecoder >> createElement: aTagValue in: aContextObject at: anIndex [
 ]
 
 { #category : #'error handling' }
-BERDecoder >> createElementError: aString [
+BERDecoder >> createElementError: aString withTag: anInteger [
 "Create a BER unknown element and signal error."
 	LDAPException new messageText: aString; signal.
-	^ BERUnknownElement new
+	^ BERUnknownElement new tag: anInteger
 
 ]
 
 { #category : #'private - creation' }
 BERDecoder >> createUniversalElement: aTagValue [
-"Create a BER universal element from a tag value"
-	| elementClass |
-	(self class isUniversal: aTagValue) ifFalse: [ ^ nil ]. 
-	elementClass := self class universalClass: aTagValue.
-	^ elementClass ifNil: [ self createElementError: 'invalid universal tag' ] ifNotNil: [ :c | c new ]
 
+	"Create a BER universal element from a tag value"
+
+	| elementClass |
+	(self class isUniversal: aTagValue) ifFalse: [ ^ nil ].
+	elementClass := self class universalClass: aTagValue.
+	^ elementClass
+		  ifNil: [ self createElementError: 'invalid universal tag' withTag: aTagValue ]
+		  ifNotNil: [ :c | c new ]
 ]
 
 { #category : #reading }

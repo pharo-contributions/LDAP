@@ -7,8 +7,27 @@ ASN.1 specification makes that with the length, I can get skipped and the messag
 Class {
 	#name : #BERUnknownElement,
 	#superclass : #BEROctetString,
+	#instVars : [
+		'tag'
+	],
 	#category : #'LDAP-BER'
 }
+
+{ #category : #testing }
+BERUnknownElement >> isConstruct [ 
+	^ BERDecoder isConstructed: tag
+]
+
+{ #category : #accessing }
+BERUnknownElement >> tag: anInteger [
+
+	tag := anInteger
+]
+
+{ #category : #accessing }
+BERUnknownElement >> tagValue [
+	^ tag
+]
 
 { #category : #accessing }
 BERUnknownElement >> value [ 

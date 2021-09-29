@@ -85,6 +85,16 @@ BERElement >> decode: aStream length: anInteger with: aDecoder [
 	self subclassResponsibility
 ]
 
+{ #category : #testing }
+BERElement >> isConstruct [
+	^ false
+]
+
+{ #category : #testing }
+BERElement >> isPrimitive [
+	^ self isConstruct not
+]
+
 { #category : #accessing }
 BERElement >> length [
 	^ self subclassResponsibility

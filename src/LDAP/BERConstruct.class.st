@@ -48,6 +48,11 @@ BERConstruct >> inspectionItems: aBuilder [
 	^ elements inspectionItems: aBuilder
 ]
 
+{ #category : #testing }
+BERConstruct >> isConstruct [ 
+	^ true
+]
+
 { #category : #accessing }
 BERConstruct >> length [
 	^ elements inject: 0 into: [ :sum :each | sum + each totalLength ]

@@ -1,3 +1,6 @@
+"
+An enumerated element that provides a basic indication of whether the operation was processed successfully.
+"
 Class {
 	#name : #LDAPResultCode,
 	#superclass : #BEREnumerated,
