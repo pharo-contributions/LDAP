@@ -20,8 +20,8 @@ LDAPPartialAttribute class >> fromSequence: aBERSequence [
 "Convert a BERSequence to a LDAPPartialAttribute"
 	| pa |
 	pa := self new.
-	pa value at: 1 put: aBERSequence value first.
-	pa value at: 2 put: aBERSequence value second.
+	pa elements at: 1 put: aBERSequence elements first.
+	pa elements at: 2 put: aBERSequence elements second.
 	^ pa
 ]
 
@@ -52,7 +52,7 @@ LDAPPartialAttribute >> initialize [
 { #category : #accessing }
 LDAPPartialAttribute >> values [
 	| berStrings |
-	berStrings := elements second value.
+	berStrings := elements second elements.
 	^ berStrings collect: #value
 
 ]

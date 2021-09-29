@@ -13,11 +13,6 @@ Class {
 	#category : #'LDAP-BER'
 }
 
-{ #category : #testing }
-BERUnknownElement >> isConstruct [ 
-	^ BERDecoder isConstructed: tag
-]
-
 { #category : #accessing }
 BERUnknownElement >> tag: anInteger [
 

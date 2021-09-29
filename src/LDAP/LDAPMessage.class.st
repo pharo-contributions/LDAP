@@ -33,7 +33,7 @@ LDAPMessage class >> newFrom: aStream [
 
 { #category : #accessing }
 LDAPMessage >> controls [
-	^ (elements size > 2) ifTrue: [ elements third value ] ifFalse: [ #() ]
+	^ (elements size > 2) ifTrue: [ elements third elements ] ifFalse: [ #() ]
 ]
 
 { #category : #accessing }
@@ -99,11 +99,6 @@ LDAPMessage >> operation: anObject [
 
 { #category : #accessing }
 LDAPMessage >> response [
-	^ elements value second
-]
-
-{ #category : #accessing }
-LDAPMessage >> sequence: anObject [
-	elements removeAll.
-	elements addAll: anObject value.
+"Alias for the second element in the sequence"
+	^ self operation
 ]

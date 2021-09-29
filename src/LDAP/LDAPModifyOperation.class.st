@@ -11,20 +11,3 @@ Class {
 	#superclass : #BEREnumerated,
 	#category : #'LDAP-Enumerated'
 }
-
-{ #category : #accessing }
-LDAPModifyOperation >> name [
-	^ nil
-]
-
-{ #category : #printing }
-LDAPModifyOperation >> printOn: aStream [
-	| name |
-	name := self name ifNil: [ ^ super printOn: aStream ].
-	aStream
-		nextPutAll: name;
-		nextPutAll: ' (';
-		nextPutAll: self value asString;
-		nextPutAll: ')'.
-
-]

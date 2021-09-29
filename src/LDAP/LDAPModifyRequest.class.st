@@ -35,7 +35,7 @@ LDAPModifyRequest >> initialize [
 
 { #category : #accessing }
 LDAPModifyRequest >> ops [
-	^ elements second value
+	^ elements second elements
 
 ]
 

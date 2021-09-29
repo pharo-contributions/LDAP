@@ -35,6 +35,11 @@ BERConstruct >> decode: aStream length: aLength with: aDecoder [
 		].
 ]
 
+{ #category : #accessing }
+BERConstruct >> elements [
+	^ elements
+]
+
 { #category : #initialization }
 BERConstruct >> initialize [
 	super initialize.
@@ -48,11 +53,6 @@ BERConstruct >> inspectionItems: aBuilder [
 	^ elements inspectionItems: aBuilder
 ]
 
-{ #category : #testing }
-BERConstruct >> isConstruct [ 
-	^ true
-]
-
 { #category : #accessing }
 BERConstruct >> length [
 	^ elements inject: 0 into: [ :sum :each | sum + each totalLength ]
@@ -60,13 +60,9 @@ BERConstruct >> length [
 
 { #category : #printing }
 BERConstruct >> printOn: aStream [
-	aStream << 'a ' << self class name << ' '.
+	super printOn: aStream.
+	aStream space.
 	elements printElementsOn: aStream.
-]
-
-{ #category : #accessing }
-BERConstruct >> value [
-	^ elements
 ]
 
 { #category : #writing }

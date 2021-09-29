@@ -38,7 +38,7 @@ LDAPAddRequest >> at: aDescription put: someValues [
 
 { #category : #accessing }
 LDAPAddRequest >> attrs [
-	^ elements second value
+	^ elements second elements
 ]
 
 { #category : #accessing }

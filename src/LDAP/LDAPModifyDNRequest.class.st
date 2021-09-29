@@ -30,22 +30,17 @@ LDAPModifyDNRequest >> initialize [
 ]
 
 { #category : #accessing }
-LDAPModifyDNRequest >> newDn: aDn [
-	elements second value: aDn
-]
-
-{ #category : #accessing }
 LDAPModifyDNRequest >> newRdn: aRdn [
 	elements second value: aRdn
 ]
 
 { #category : #accessing }
 LDAPModifyDNRequest >> underDn: aDn [
-	elements size < 4 ifTrue: [ elements addElement: (LDAPContextSpecificString new tagValue: 0)].
+	elements size < 4 ifTrue: [ elements addElement: (LDAPOptionalDN new)].
 	elements fourth value: aDn
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LDAPModifyDNRequest >> wantToClearAttrs: aBoolean [
 	elements third value: aBoolean
 ]

@@ -15,7 +15,7 @@ LDAPSearchResultEntry class >> tagValue [
 { #category : #accessing }
 LDAPSearchResultEntry >> attributes [
 "Return the attributes as a collection of BER elements (most probably LDAP partial attributes)"
-	^ elements second value asArray
+	^ elements second elements asArray
 ]
 
 { #category : #accessing }
@@ -25,8 +25,8 @@ LDAPSearchResultEntry >> attrsAsDictionary [
 	partialAttributeList := self attributes.
 	associations := partialAttributeList collect: [ :partialAttribute | 
 		| type set |
-		type := partialAttribute value first value.
-		set := partialAttribute value second value.
+		type := partialAttribute elements first value.
+		set := partialAttribute elements second elements.
 		type -> (set collect: #value)
 	].
 	^ associations asDictionary

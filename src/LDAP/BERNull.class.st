@@ -22,16 +22,6 @@ BERNull >> length [
 	^ 0
 ]
 
-{ #category : #printing }
-BERNull >> printOn: aStream [
-	aStream << self class name.
-]
-
-{ #category : #accessing }
-BERNull >> value [
-	^ nil
-]
-
 { #category : #writing }
 BERNull >> writeBodyOn: aStream [
 "Nothing to do"
