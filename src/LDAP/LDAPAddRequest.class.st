@@ -15,12 +15,37 @@ LDAPAddRequest class >> tagValue [
 	^ 16r68 "Application 8"
 ]
 
+{ #category : #adding }
+LDAPAddRequest >> addAttribute: aPartialAttribute [
+	elements second addElement: aPartialAttribute
+]
+
+{ #category : #accessing }
+LDAPAddRequest >> at: aDescription ifPresent: aPresentBlock ifAbsent: anAbsentBlock [
+	^ self attrs
+		detect: [ :pa | pa description = aDescription ] 
+		ifFound: [ :pa | aPresentBlock cull: pa ] 
+		ifNone: [ anAbsentBlock value ].
+]
+
+{ #category : #accessing }
+LDAPAddRequest >> at: aDescription put: someValues [
+
+	self at: aDescription 
+		ifPresent: [ :pa | pa values: someValues ]
+		ifAbsent: [ self addAttribute: (LDAPPartialAttribute new description: aDescription; values: someValues) ].
+]
+
+{ #category : #accessing }
+LDAPAddRequest >> attrs [
+	^ elements second value
+]
+
 { #category : #accessing }
 LDAPAddRequest >> attrs: aDictionary [
-	| ber |
-	ber := BERSequence new.
-	aDictionary associationsDo: [ :a | ber addElement: (LDAPPartialAttribute new description: a key; values: a value) ].
-	elements at: 2 put: ber.
+	self removeAll.
+	aDictionary associationsDo: [ :a | self at: a key put: a value ].
+
 ]
 
 { #category : #accessing }
@@ -35,4 +60,9 @@ LDAPAddRequest >> initialize [
 	self addElement: (BEROctetString new).
 	self addElement: (BERSequence new).
 
+]
+
+{ #category : #removing }
+LDAPAddRequest >> removeAll [ 
+	elements at: 2 put: BERSequence new.
 ]

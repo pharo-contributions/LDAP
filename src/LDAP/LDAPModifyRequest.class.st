@@ -34,6 +34,12 @@ LDAPModifyRequest >> initialize [
 ]
 
 { #category : #accessing }
+LDAPModifyRequest >> ops [
+	^ elements second value
+
+]
+
+{ #category : #accessing }
 LDAPModifyRequest >> ops: someModifyingOps [
 	| ops |
 	ops := BERSequence new.

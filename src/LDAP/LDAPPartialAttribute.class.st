@@ -15,6 +15,16 @@ Class {
 	#category : #'LDAP-Elements'
 }
 
+{ #category : #'instance creation' }
+LDAPPartialAttribute class >> fromSequence: aBERSequence [ 
+"Convert a BERSequence to a LDAPPartialAttribute"
+	| pa |
+	pa := self new.
+	pa value at: 1 put: aBERSequence value first.
+	pa value at: 2 put: aBERSequence value second.
+	^ pa
+]
+
 { #category : #adding }
 LDAPPartialAttribute >> addValue: aString [
 	elements second addElement: (BEROctetString new value: aString).
