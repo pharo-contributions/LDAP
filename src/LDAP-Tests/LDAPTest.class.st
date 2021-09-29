@@ -122,7 +122,7 @@ LDAPTest >> test02_Search [
 	
 	search := LDAPSearchRequest new 
 		base: self class baseDN; 
-		scope: LDAPSearchScope wholeSubtree; 
+		scope: LDAPWholeSubtreeScope new; 
 		derefAliases: LDAPSearchDerefAliases never.
 	req := conn request: search.
 	rr := req result.
@@ -138,7 +138,7 @@ LDAPTest >> test03_SearchWithNext [
 	
 	search := LDAPSearchRequest new 
 		base: self class baseDN; 
-		scope: LDAPSearchScope wholeSubtree; 
+		scope: LDAPWholeSubtreeScope new; 
 		derefAliases: LDAPSearchDerefAliases never.
 	req := conn request: search.
 	rr := OrderedCollection new.
@@ -154,7 +154,7 @@ LDAPTest >> test04_SearchWithFilters [
 	
 	search := LDAPSearchRequest new 
 		base: self class baseDN; 
-		scope: LDAPSearchScope wholeSubtree; 
+		scope: LDAPWholeSubtreeScope new; 
 		derefAliases: LDAPSearchDerefAliases never;
 		filter: (LDAPFilter with: 'objectclass').
 	req := conn request: search.
@@ -189,7 +189,7 @@ LDAPTest >> test04bis_SearchWithFilters [
 	
 	search := LDAPSearchRequest new 
 		base: self class baseDN; 
-		scope: LDAPSearchScope wholeSubtree; 
+		scope: LDAPWholeSubtreeScope new; 
 		derefAliases: LDAPSearchDerefAliases never;
 		filter: (LDAPFilter with: 'objectclass').
 	req := conn request: search.
@@ -286,7 +286,7 @@ LDAPTest >> test09_Modify [
 	
 	search := LDAPSearchRequest new 
 		base: self class baseDN; 
-		scope: LDAPSearchScope wholeSubtree; 
+		scope: LDAPWholeSubtreeScope new; 
 		derefAliases: LDAPSearchDerefAliases never;
 		filter: (LDAPFilter with: 'cn' equalTo: 'test1').
 	req := conn request: search.
@@ -349,7 +349,7 @@ LDAPTest >> testNamingContexts [
 	
 	search := LDAPSearchRequest new 
 		base: ''; 
-		scope: LDAPSearchScope baseObject; 
+		scope: LDAPBaseObjectScope new; 
 		derefAliases: LDAPSearchDerefAliases never;
 		attrs: { 'namingContexts' }.
 	req := conn request: search.

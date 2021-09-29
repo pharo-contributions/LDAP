@@ -41,7 +41,7 @@ LDAPSearchRequest >> initialize [
 	
 	self
 		addElement: (BEROctetString new); "dn"
-		addElement: (LDAPSearchScope new); "scope (baseObject)"
+		addElement: (LDAPBaseObjectScope new); "scope"
 		addElement: (LDAPSearchDerefAliases new); "derefAliases (neverDerefAliases)"
 		addElement: (BERInteger new value: 0); "sizelimit"
 		addElement: (BERInteger new value: 0); "timelimit"
@@ -61,7 +61,7 @@ LDAPSearchRequest >> processResult: aCollection [
 
 { #category : #accessing }
 LDAPSearchRequest >> scope: aScope [
-	elements second value: aScope
+	elements at: 2 put: aScope
 ]
 
 { #category : #accessing }

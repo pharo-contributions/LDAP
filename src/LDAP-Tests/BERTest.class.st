@@ -238,7 +238,7 @@ BERTest >> testSearchRequest [
 	| request encoded hex expected |
 	request := LDAPSearchRequest new 
 		base: 'dc=linalco, dc=test'; 
-		scope: LDAPSearchScope wholeSubtree; 
+		scope: LDAPWholeSubtreeScope new; 
 		derefAliases: LDAPSearchDerefAliases never; 
 		filter: (LDAPFilter with: 'objectclass' ).
 	encoded := (LDAPMessage new id: 1; operation: request) encoded.
