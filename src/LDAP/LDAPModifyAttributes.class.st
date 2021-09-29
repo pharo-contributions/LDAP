@@ -1,24 +1,24 @@
 "
-Pseudo BER sequence for modification operations
+Pseudo BER sequence for attributes modification operations
 "
 Class {
-	#name : #LDAPModifyChange,
+	#name : #LDAPModifyAttributes,
 	#superclass : #BERSequence,
 	#category : #'LDAP-Elements'
 }
 
 { #category : #accessing }
-LDAPModifyChange >> attr [
+LDAPModifyAttributes >> attr [
 	^ elements second description
 ]
 
 { #category : #accessing }
-LDAPModifyChange >> attr: aString [
+LDAPModifyAttributes >> attr: aString [
 	elements second description: aString
 ]
 
 { #category : #initialization }
-LDAPModifyChange >> initialize [ 
+LDAPModifyAttributes >> initialize [ 
 	super initialize.
 	
 	self addElement: (LDAPModifyOperation new).
@@ -27,22 +27,17 @@ LDAPModifyChange >> initialize [
 ]
 
 { #category : #'instance creation' }
-LDAPModifyChange >> operation: anInteger [
-	elements first value: anInteger 
+LDAPModifyAttributes >> operation: anEnumeratedElement [
+	elements at: 1 put: anEnumeratedElement
 ]
 
 { #category : #printing }
-LDAPModifyChange >> operationName [ 
-	| operation |
-	operation := elements first value.
-	operation = 0 ifTrue: [ ^ 'add' ].
-	operation = 1 ifTrue: [ ^ 'delete' ].
-	operation = 2 ifTrue: [ ^ 'replace' ].
-	^ 'unknown'.
+LDAPModifyAttributes >> operationName [ 
+	^ elements first name ifNil: [ 'unknown' ]
 ]
 
 { #category : #printing }
-LDAPModifyChange >> printOn: aStream [
+LDAPModifyAttributes >> printOn: aStream [
 
 	aStream
 		nextPutAll: self class name;
@@ -56,11 +51,11 @@ LDAPModifyChange >> printOn: aStream [
 ]
 
 { #category : #accessing }
-LDAPModifyChange >> values [
+LDAPModifyAttributes >> values [
 	^ elements second values
 ]
 
 { #category : #accessing }
-LDAPModifyChange >> values: aCollection [
+LDAPModifyAttributes >> values: aCollection [
 	elements second values: aCollection
 ]
