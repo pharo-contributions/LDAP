@@ -9,10 +9,22 @@ Class {
 	#category : #'LDAP-ActiveDirectory-Requests'
 }
 
+{ #category : #converting }
+ADSetPasswordRequest class >> encodedPassword: aString [
+	^ String
+		streamContents: [ :writeStream | 
+			UTF16TextConverter new
+				useLittleEndian: true;
+				nextPut: $" toStream: writeStream;
+				nextPutAll: aString toStream: writeStream;
+				nextPut: $" toStream: writeStream ]
+]
+
 { #category : #accessing }
 ADSetPasswordRequest >> password: aString [
-	| op |
-	op := LDAPAttrModifier set: 'unicodePwd' to: {(aString asActiveDirectoryUnicodePassword)}.
+	| op encoded |
+	encoded := self class encodedPassword: aString.
+	op := LDAPAttrModifier set: 'unicodePwd' to: {encoded}.
 	self ops: {op}.
 
 ]
