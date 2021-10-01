@@ -51,6 +51,15 @@ LDAPConnection class >> workerClass [
 	^ LDAPWorker
 ]
 
+{ #category : #'command execution' }
+LDAPConnection >> abandon: aMessage [
+	| id |
+	id := aMessage id.
+	worker delTargetFor: id.
+	^ self request: (LDAPAbandonRequest new abandonId: id).
+
+]
+
 { #category : #connecting }
 LDAPConnection >> disconnect [
 	self unbind.
@@ -73,8 +82,16 @@ LDAPConnection >> isValid [
 ]
 
 { #category : #'command execution' }
-LDAPConnection >> request: aLDAPCommand [
-	^ LDAPRequest new initializeWith: worker request: aLDAPCommand
+LDAPConnection >> request: aRequest [
+	| command message messageId |
+	messageId := worker nextMessageId.
+	message := LDAPMessage new id: messageId; operation: aRequest.
+	command := LDAPRequest new initializeWith: self message: message.
+
+	worker addTarget: command for: messageId.
+	worker send: message encoded.
+
+	^ command
 ]
 
 { #category : #binding }

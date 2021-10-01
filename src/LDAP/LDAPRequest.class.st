@@ -1,17 +1,16 @@
 "
-LDAPRequest is an operation request that the LDAP server must execute.
+LDAPCommand contains a request that the LDAP server must execute.
 "
 Class {
 	#name : #LDAPRequest,
 	#superclass : #Object,
 	#instVars : [
-		'worker',
-		'messageId',
+		'connection',
+		'message',
 		'isDone',
 		'abandoned',
 		'doneSemaphore',
 		'iterator',
-		'query',
 		'responses',
 		'newResponseSemaphore'
 	],
@@ -23,9 +22,7 @@ LDAPRequest >> abandon [
 	"RFC says we MUST NOT send abandon requests for the same operation multiple times"
 	abandoned ifNotNil: [ ^ abandoned ].
 
-	abandoned := LDAPRequest new initializeWith: worker request: (LDAPAbandonRequest new abandonId: messageId).
-	worker delTargetFor: messageId.
-	
+	abandoned := connection abandon: message.
 	^ abandoned
 	
 ]
@@ -49,12 +46,11 @@ LDAPRequest >> hasResult [
 ]
 
 { #category : #initialization }
-LDAPRequest >> initializeWith: anLDAPWorker request: aRequest [
-	| message |
-	worker := anLDAPWorker.
-	messageId := worker nextMessageId.
+LDAPRequest >> initializeWith: aConnection message: aMessage [
+	connection := aConnection.
+	message := aMessage.
+
 	doneSemaphore := Semaphore new.
-	query := aRequest.
 	responses := OrderedCollection new.
 	abandoned := nil.
 	isDone := false.
@@ -62,11 +58,6 @@ LDAPRequest >> initializeWith: anLDAPWorker request: aRequest [
 	"partial search results"
 	newResponseSemaphore := Semaphore new.
 	iterator := 0.
-
-	worker addTarget: self for: messageId.
-	message := LDAPMessage new id: messageId; operation: aRequest.
-	worker send: message encoded.
-
 ]
 
 { #category : #testing }
@@ -94,13 +85,14 @@ LDAPRequest >> nextTimeout: seconds [
 ]
 
 { #category : #accessing }
-LDAPRequest >> processResponse: aMessage [
-	responses addLast: aMessage. 
-	aMessage isEndMarker ifTrue:[
-		isDone := true. 
-		doneSemaphore signal.
-	].
+LDAPRequest >> processResponse: aResponse [
+	responses addLast: aResponse. 
 	newResponseSemaphore signal.
+
+	aResponse isEndMarker ifFalse: [ ^ self ].
+	
+	isDone := true. 
+	doneSemaphore signal.
 
 ]
 
@@ -112,8 +104,7 @@ LDAPRequest >> responses [
 
 { #category : #accessing }
 LDAPRequest >> result [
-	self wait.
-	^ query processResult: responses
+	^ message operation processResult: self responses
 ]
 
 { #category : #accessing }
