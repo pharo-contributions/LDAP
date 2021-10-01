@@ -10,34 +10,29 @@ Class {
 	#category : #'LDAP-BER'
 }
 
-{ #category : #'instance creation' }
-BERConstruct class >> new [
-	^ self basicNew initialize
+{ #category : #adding }
+BERConstruct >> addAll: aCollection [
+	elements addAllLast: aCollection.
 ]
 
 { #category : #accessing }
 BERConstruct >> addElement: anElement [
-	self addElement: anElement withTag: nil
-]
-
-{ #category : #accessing }
-BERConstruct >> addElement: anElement withTag: aContextTag [
-	| taggedElement |
-	taggedElement := Association new;
-		key: aContextTag value: anElement.
-	elements addLast: taggedElement
+	elements addLast: anElement
 ]
 
 { #category : #encoding }
-BERConstruct >> decode: aStream [
-	| elementLen part |
-	
-	elementLen := self length.
+BERConstruct >> decode: aStream length: aLength with: aDecoder [
+	| index elementLen part |
+	elements removeAll.
+	index := 1.
+	elementLen := aLength.
 	[elementLen > 0]
 		whileTrue: [
-			part := self class newFrom: aStream.
+			part := aDecoder elementFrom: aStream in: self at: index.
 			elementLen := elementLen - part totalLength.
-			self addElement: part ]
+			self addElement: part.
+			index := index + 1.
+		].
 ]
 
 { #category : #accessing }
@@ -51,16 +46,26 @@ BERConstruct >> initialize [
 	elements := OrderedCollection new
 ]
 
+{ #category : #inspecting }
+BERConstruct >> inspectionItems: aBuilder [ 
+	<inspectorPresentationOrder: 0 title: 'Construct'> 
+	^ BERElementTreePresenter new roots: elements; owner: aBuilder; yourself
+]
+
+{ #category : #accessing }
+BERConstruct >> length [
+	^ elements inject: 0 into: [ :sum :each | sum + each totalLength ]
+]
+
+{ #category : #printing }
+BERConstruct >> printOn: aStream [
+	super printOn: aStream.
+	aStream space.
+	elements printElementsOn: aStream.
+]
+
 { #category : #writing }
 BERConstruct >> writeBodyOn: aStream [
-	| data dataStream |
-	data := Array new.
-	dataStream := WriteStream on: data.
-	
-	elements do: [:taggedElement |
-		taggedElement value writeOn: dataStream withTag: (taggedElement key) ].
-	
-	"shouldnt we move this somewhere else?"
-	self writeLength: (dataStream contents size) on: aStream.
-	aStream nextPutAll: (dataStream contents)
+	elements do: [ :element | element writeOn: aStream  ].
+
 ]

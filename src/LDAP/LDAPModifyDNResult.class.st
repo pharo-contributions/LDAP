@@ -4,7 +4,7 @@ Modiy DN result
 Class {
 	#name : #LDAPModifyDNResult,
 	#superclass : #LDAPResult,
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Results'
 }
 
 { #category : #accessing }

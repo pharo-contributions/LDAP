@@ -12,8 +12,3 @@ BERSet class >> tagValue [
 	"SET + Constructed"
 	^ (17 + 32)
 ]
-
-{ #category : #encoding }
-BERSet >> decode: aStream [
-	^ super decode: aStream
-]

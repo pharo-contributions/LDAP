@@ -12,8 +12,18 @@ BEREnumerated class >> tagValue [
 	^ 10
 ]
 
-{ #category : #encoding }
-BEREnumerated >> decode: aStream [
-	super decode: aStream.
+{ #category : #accessing }
+BEREnumerated >> name [
+	^ nil
+]
+
+{ #category : #printing }
+BEREnumerated >> printOn: aStream [
+	| name |
+	name := self name ifNil: [ ^ super printOn: aStream ].
+	aStream nextPutAll: name.
+	aStream nextPutAll: ' ('.
+	self value printOn: aStream.
+	aStream nextPutAll: ')'.
 
 ]

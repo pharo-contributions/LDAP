@@ -9,5 +9,5 @@ Class {
 
 { #category : #accessing }
 LDAPFilterLessOrEqual class >> tagValue [
-	^ 6
+	^ 16rA6 "Context 6"
 ]

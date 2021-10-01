@@ -4,7 +4,7 @@ An extended result
 Class {
 	#name : #LDAPExtendedResult,
 	#superclass : #LDAPResult,
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Results'
 }
 
 { #category : #accessing }

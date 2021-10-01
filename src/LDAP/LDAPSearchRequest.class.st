@@ -3,68 +3,78 @@ LDAPSearchRequest is the process to search entries from the LDAP directory.
 "
 Class {
 	#name : #LDAPSearchRequest,
-	#superclass : #LDAPRequest,
-	#instVars : [
-		'partialResults',
-		'iterator',
-		'gotNewResultSemaphore',
-		'searchResult',
-		'resultCount'
-	],
-	#category : #'LDAP-Core'
+	#superclass : #BERSequence,
+	#category : #'LDAP-Requests'
 }
 
-{ #category : #'error handling' }
-LDAPSearchRequest >> checkForExceptions [
-	"Check to see if a response caused an exception and if so, raise it"
-	self isDone ifFalse:[^self error: 'LDAP timeout'].
-	searchResult resultCode = 32 ifFalse:[
-		"Do not raise object not found since it is implicit in the response"
-		searchResult checkForExceptions.
-	].
+{ #category : #accessing }
+LDAPSearchRequest class >> tagValue [
+	^ 16r63 "Application 3"
+]
+
+{ #category : #accessing }
+LDAPSearchRequest >> attrs: someAttrs [
+	| ber |
+	ber := BERSequence new.
+	someAttrs do: [ :each | ber addElement: (BEROctetString new value: each) ].
+	elements at: 8 put: ber.
+]
+
+{ #category : #accessing }
+LDAPSearchRequest >> base: aDn [
+	elements first value: aDn
+]
+
+{ #category : #accessing }
+LDAPSearchRequest >> derefAliases: anAliasingPolicy [
+	elements at: 3 put: anAliasingPolicy
+]
+
+{ #category : #accessing }
+LDAPSearchRequest >> filter: aFilter [
+	elements at: 7 put: aFilter 
 ]
 
 { #category : #initialization }
-LDAPSearchRequest >> initializeWith: anLDAPWorker base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly [
-	| encoded |
-	partialResults := OrderedCollection new.
-	iterator :=  0.
-	resultCount := 0.
-	gotNewResultSemaphore := Semaphore new.
-	self initializeWith: anLDAPWorker.
-	encoded := LDAPEncoder searchRequest: messageId  base: aBase scope: aSearchScope deref: aDerefBehaviour filter: aFilter attrs: someAttrs wantAttrsOnly: wantsAttrsOnly.
-	anLDAPWorker send: encoded.
+LDAPSearchRequest >> initialize [ 
+	super initialize.
+	
+	self
+		addElement: (BEROctetString new); "dn"
+		addElement: (LDAPBaseObjectScope new); "scope"
+		addElement: (LDAPNeverDeferAliases new); "derefAliases"
+		addElement: (BERInteger new value: 0); "sizelimit"
+		addElement: (BERInteger new value: 0); "timelimit"
+		addElement: (BERBoolean new); "typesOnly"
+		addElement: (LDAPFilterAnd new); "filter. Absolute true filter (&)"
+		addElement: (BERSequence new). "attrs"
+
+]
+
+{ #category : #testing }
+LDAPSearchRequest >> processResult: aCollection [
+"Return search entries"
+	aCollection do: #checkForExceptions.
+	^ aCollection select: [ :r | r isKindOf: LDAPSearchResultEntry ]
 
 ]
 
 { #category : #accessing }
-LDAPSearchRequest >> next [
-	^self nextTimeout: self defaultTimeout.
+LDAPSearchRequest >> scope: aScope [
+	elements at: 2 put: aScope
 ]
 
 { #category : #accessing }
-LDAPSearchRequest >> nextTimeout: seconds [
-	isDone ifFalse:[
-		"As long as the request isn't done, synchronously wait for more results"
-		gotNewResultSemaphore waitTimeoutSeconds: seconds.
-		(resultCount = iterator and:[isDone not]) ifTrue:[^self error: 'LDAP timeout'].
-	].
-	resultCount > iterator
-		ifTrue:[^partialResults at: (iterator := iterator + 1)]
-		ifFalse:[^nil]
+LDAPSearchRequest >> sizeLimit: anInteger [
+	elements fourth value: anInteger
 ]
 
 { #category : #accessing }
-LDAPSearchRequest >> processResponse: aSearchResultEntry [
-	aSearchResultEntry class isEndMarker ifTrue:[
-		searchResult := aSearchResultEntry.
-		isDone := true. 
-		result := partialResults. 
-		waitingSemaphore signal.
-	] ifFalse:[
-		partialResults addLast: aSearchResultEntry.
-		resultCount := resultCount + 1.
-	].
-	gotNewResultSemaphore signal.
+LDAPSearchRequest >> timeLimit: anInteger [
+	elements fifth value: anInteger
+]
 
+{ #category : #accessing }
+LDAPSearchRequest >> wantAttrsOnly: aBoolean [
+	elements sixth value: aBoolean
 ]

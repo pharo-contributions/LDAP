@@ -3,26 +3,13 @@ A reference from a search result
 "
 Class {
 	#name : #LDAPSearchResultReference,
-	#superclass : #LDAPMessage,
-	#instVars : [
-		'url'
-	],
-	#category : #'LDAP-Core'
+	#superclass : #LDAPSearchPartialResult,
+	#category : #'LDAP-Results'
 }
-
-{ #category : #testing }
-LDAPSearchResultReference class >> isEndMarker [
-	^ false
-]
 
 { #category : #accessing }
 LDAPSearchResultReference class >> tagValue [
 	^ 16r73
-]
-
-{ #category : #encoding }
-LDAPSearchResultReference >> decode: aStream [
-	url := (BERElement newFrom: aStream) value asString
 ]
 
 { #category : #testing }
@@ -32,5 +19,11 @@ LDAPSearchResultReference >> isReference [
 
 { #category : #accessing }
 LDAPSearchResultReference >> url [
-	^ url
+	^ elements first value
+]
+
+{ #category : #accessing }
+LDAPSearchResultReference >> urls [
+	^ elements collect: #value
+
 ]

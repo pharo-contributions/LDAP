@@ -9,5 +9,5 @@ Class {
 
 { #category : #accessing }
 LDAPFilterApprox class >> tagValue [
-	^ 8
+	^ 16rA8 "Context 8"
 ]

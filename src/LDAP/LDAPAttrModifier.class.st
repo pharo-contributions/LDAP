@@ -9,20 +9,33 @@ Class {
 
 { #category : #operations }
 LDAPAttrModifier class >> addTo: anAttr values: someValues [
-	^ LDAPModifyAddOp affecting: anAttr values: someValues
+	^ LDAPModifyAttributes new 
+		operation: LDAPAddAttributesOperation new; 
+		attr: anAttr; 
+		values: someValues; 
+		yourself
 ]
 
 { #category : #operations }
 LDAPAttrModifier class >> del: anAttr [
-	^ LDAPModifyDelOp affecting: anAttr values: {}
+	^ self delFrom: anAttr values: #()
 ]
 
 { #category : #operations }
 LDAPAttrModifier class >> delFrom: anAttr values: someValues [
-	^ LDAPModifyDelOp affecting: anAttr values: someValues
+	^ LDAPModifyAttributes new 
+		operation: LDAPDeleteAttributesOperation new;
+		attr: anAttr;
+		values: someValues;
+		yourself 
 ]
 
 { #category : #operations }
 LDAPAttrModifier class >> set: anAttr to: someValues [
-	^ LDAPModifyReplaceOp affecting: anAttr values: someValues
+	^ LDAPModifyAttributes new
+		operation: LDAPReplaceAttributesOperation new;
+		attr: anAttr;
+		values: someValues;
+		yourself 
+
 ]

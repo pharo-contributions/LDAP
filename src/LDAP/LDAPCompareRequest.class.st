@@ -3,34 +3,41 @@ A request to compare
 "
 Class {
 	#name : #LDAPCompareRequest,
-	#superclass : #LDAPRequest,
+	#superclass : #BERSequence,
 	#instVars : [
 		'searchResult'
 	],
-	#category : #'LDAP-Core'
+	#category : #'LDAP-Requests'
 }
 
-{ #category : #'error handling' }
-LDAPCompareRequest >> checkForExceptions [
-	"Check to see if a response caused an exception and if so, raise it"
-	self isDone ifFalse:[^self error: 'LDAP timeout'].
-	searchResult checkForExceptions.
-]
-
-{ #category : #initialization }
-LDAPCompareRequest >> initializeWith: anLDAPWorker dn: aDN comparing: anEqualityFilter [
-	self initializeWith: anLDAPWorker.
-	anLDAPWorker send:
-		(LDAPEncoder compareRequest: messageId dn: aDN comparing: anEqualityFilter).
-
+{ #category : #accessing }
+LDAPCompareRequest class >> tagValue [
+	^ 16r6E "Application 14"
 ]
 
 { #category : #accessing }
-LDAPCompareRequest >> processResponse: aMessage [
-	isDone := true.
-	searchResult := aMessage.
-	aMessage resultCode = 5 ifTrue: [ result := false ].
-	aMessage resultCode = 6 ifTrue: [ result := true ].
-	"we save nil for execptions"
-	waitingSemaphore signal.
+LDAPCompareRequest >> comparing: aFilter [
+	elements at: 2 put: aFilter
+]
+
+{ #category : #accessing }
+LDAPCompareRequest >> dn: aString [
+	elements first value: aString
+]
+
+{ #category : #initialization }
+LDAPCompareRequest >> initialize [ 
+	super initialize.
+	
+	self addElement: (BEROctetString new). "entry"
+	self addElement: (LDAPFilterEquality new). "AttributeValueAssertion"
+
+]
+
+{ #category : #testing }
+LDAPCompareRequest >> processResult: aCollection [
+	| result code |
+	result := aCollection last.
+	^ result processResult ifNil: [ result checkForExceptions ]
+
 ]

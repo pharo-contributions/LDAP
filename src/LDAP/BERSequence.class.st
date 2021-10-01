@@ -12,8 +12,3 @@ BERSequence class >> tagValue [
 	"SEQUENCE + Constructed"
 	^ (16 + 32)
 ]
-
-{ #category : #encoding }
-BERSequence >> decode: aStream [
-	^ super decode: aStream
-]

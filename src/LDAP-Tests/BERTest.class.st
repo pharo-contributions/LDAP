@@ -69,6 +69,20 @@ BERTest class >> testAll [
 ]
 
 { #category : #tools }
+BERTest >> debugHex: aString [
+	| str encodedString |
+	
+	encodedString := WriteStream on: (String new).
+	str := aString readStream.
+	[ str atEnd ] whileFalse: [  
+		| int |
+		int := Integer readHexByteFrom: str.
+		encodedString  nextPut: int asCharacter.		
+	].
+	^encodedString contents
+]
+
+{ #category : #tools }
 BERTest >> formatWithHex: aString [
 	| encodedString pos |
 	
@@ -87,27 +101,31 @@ BERTest >> formatWithHex: aString [
 
 { #category : #tests }
 BERTest >> testAddRequest [
-	| encoded attrs |
-	attrs := Dictionary new.
-	attrs at: 'objectClass' put: (OrderedCollection new addLast: ('person' utf8Encoded asString); yourself).
-	attrs at: 'cn' put: (OrderedCollection new addLast: ('test2' utf8Encoded asString); yourself).
-	attrs at: 'sn' put: (OrderedCollection new addLast: ('test2' utf8Encoded asString); yourself).
+	| request encoded hex expected attrs |
+	"using a Dictionary could generate different encodings depending on the order of iteration."
+	"we'll rely on the implementation calling associationsDo: to work with this Array."
+	attrs := { 
+		'objectClass' -> (OrderedCollection new addLast: 'person'; yourself).
+		'cn' -> (OrderedCollection new addLast: 'test2'; yourself).
+		'sn' -> (OrderedCollection new addLast: 'test2'; yourself).
+	}.
 
-	encoded := LDAPEncoder addRequest: 1 dn: 'cn=test2,dc=linalco,dc=test' attrs: attrs.
-	encoded := encoded asString asHex.
-
-	self assert: (encoded = (self formatWithHex: '305B0201016856041B636E3D74657374322C64633D6C696E616C636F2C64633D746573743037300D0402636E3107040574657374323017040B6F626A656374436C61737331080406706572736F6E300D0402736E310704057465737432'))
-
+	request := LDAPAddRequest new dn: 'cn=test2,dc=linalco,dc=test'; attrs: attrs.
+	encoded := (LDAPMessage new id: 1; operation: request) encoded.
+	hex := encoded asString asHex.
+	expected := self formatWithHex: '305B0201016856041B636E3D74657374322C64633D6C696E616C636F2C64633D7465737430373017040B6F626A656374436C61737331080406706572736F6E300D0402636E310704057465737432300D0402736E310704057465737432'.
+	self assert: hex equals: expected
 ]
 
 { #category : #tests }
 BERTest >> testBindRequest [
-	| encoded |
-	encoded := LDAPEncoder bindRequest: 1 username: 'cn=admin,dc=linalco,dc=test' credentials: 'secret' method: nil.
+	| request encoded expected |
+	request := LDAPBindRequest new username: 'cn=admin,dc=linalco,dc=test'; password: 'secret'.
+	encoded := (LDAPMessage new id: 1; operation: request) encoded.
 	encoded := encoded asString asHex.
 
-	self assert: (encoded = (self formatWithHex: ('302D0201016028020103041B636E3D61646D696E2C64633D6C696E616C636F2C64633D746573748006736563726574')))
-
+	expected := self formatWithHex: '302D0201016028020103041B636E3D61646D696E2C64633D6C696E616C636F2C64633D746573748006736563726574'.
+	self assert: encoded equals: expected
 ]
 
 { #category : #tests }
@@ -129,42 +147,43 @@ BERTest >> testBooleanEncoding [
 
 { #category : #tests }
 BERTest >> testDelRequest [
-	| encoded |
-	encoded := LDAPEncoder delRequest: 1 dn: 'cn=test2,dc=linalco,dc=test'.
+	| request encoded expected |
+	request := LDAPDelRequest new dn: 'cn=test2,dc=linalco,dc=test'.
+	encoded := (LDAPMessage new id: 1; operation: request) encoded.
 	encoded := encoded asString asHex.
 
-	self assert: (encoded = (self formatWithHex: '30200201014A1B636E3D74657374322C64633D6C696E616C636F2C64633D74657374'))
+	expected := self formatWithHex: '30200201014A1B636E3D74657374322C64633D6C696E616C636F2C64633D74657374'.
+	self assert: encoded equals: expected
 
 ]
 
 { #category : #tests }
 BERTest >> testIntegerDecoding [
-	|ber stream tests value valueStream byte |
+	|ber encoded tests value valueStream stream |
 	stream := ReadWriteStream on: (String new).
 
 	tests :=  self class getIntegerTestSet.
 	tests do: [:test | 
 		valueStream := ReadStream on: (test at: 2).
+		encoded := ByteString streamContents: [ :s |
+			[valueStream atEnd] whileFalse: [ | byte |
+				byte := (valueStream next digitValue * 16).
+				byte := byte + valueStream next digitValue.
+				s nextPut: (byte asCharacter) ].
+		].
+		stream := encoded readStream.
+		ber := BERDecoder new elementFrom: stream.
+		self assert: ber class equals: BERInteger.
+		
 		value := test at: 1.
-		stream resetToStart.
-		
-		[valueStream atEnd] whileFalse: [
-			byte := (valueStream next digitValue * 16).
-			byte := byte + valueStream next digitValue.
-			stream nextPut: (byte asCharacter) ].
-		
-		stream reset.
-		ber := BERInteger newFrom: stream.
-		self assert: (ber class = BERInteger).
-		
-		self assert: (ber value = value ) 
+		self assert: ber value equals: value. 
 	]
 
 ]
 
 { #category : #tests }
 BERTest >> testIntegerEncoding [
-	|ber stream tests output |
+	|ber stream tests output expected |
 	ber := BERInteger new.
 	stream := ReadWriteStream on: (String new).
 
@@ -174,28 +193,31 @@ BERTest >> testIntegerEncoding [
 		ber value: (test at: 1).	
 		ber writeOn: stream.
 		output :=  stream contents asString asHex.
-		self assert: (output = (self formatWithHex: (test at: 2))) ]
+		expected := self formatWithHex: (test at: 2).
+		self assert: output equals: expected ]
 	
 	
 ]
 
 { #category : #tests }
 BERTest >> testModifyRequest [
-	| encoded ops |
+	| request encoded expected ops |
 	ops :=  { 
 			LDAPAttrModifier set: 'sn' to: { 'test5sn' . 'foo' . 'bar'}.
 			LDAPAttrModifier addTo: 'description' values: {'rchueo'} }.
 									
-	encoded := LDAPEncoder modifyRequest: 1 dn: 'cn=test5,dc=linalco,dc=test' ops: ops.
+	request := LDAPModifyRequest new dn: 'cn=test5,dc=linalco,dc=test'; ops: ops.
+	encoded := (LDAPMessage new id: 1; operation: request) encoded.
 	encoded := encoded asString asHex.
 
-	self assert: (encoded = (self formatWithHex: '3062020101665D041B636E3D74657374352C64633D6C696E616C636F2C64633D74657374303E301E0A010230190402736E311304077465737435736E0403666F6F0403626172301C0A01003017040B6465736372697074696F6E3108040672636875656F'))
+	expected := self formatWithHex: '3062020101665D041B636E3D74657374352C64633D6C696E616C636F2C64633D74657374303E301E0A010230190402736E311304077465737435736E0403666F6F0403626172301C0A01003017040B6465736372697074696F6E3108040672636875656F'.
+	self assert: encoded equals: expected
 
 ]
 
 { #category : #tests }
 BERTest >> testOctetStringEncoding [
-	|ber stream tests|
+	|ber stream tests expected |
 	ber := BEROctetString new.
 	stream := ReadWriteStream on: (String new).
 
@@ -205,24 +227,31 @@ BERTest >> testOctetStringEncoding [
 		stream resetToStart.
 		ber value: (test at: 1).	
 		ber writeOn: stream.
-		self assert: (stream contents asString asHex = (self formatWithHex: (test at: 3))) ]
+		expected := self formatWithHex: (test at: 3).
+		self assert: stream contents asString asHex equals: expected ]
 	
 	
 ]
 
 { #category : #tests }
 BERTest >> testSearchRequest [
-	| encoded |
-	encoded := LDAPEncoder searchRequest: 1 base: 'dc=linalco, dc=test' scope: (LDAPConnection wholeSubtree) deref: (LDAPConnection derefNever) filter: (LDAPFilter with: 'objectclass' ) attrs: (OrderedCollection new) wantAttrsOnly: false.
-	encoded := encoded asString asHex.
+	| request encoded hex expected |
+	request := LDAPSearchRequest new 
+		base: 'dc=linalco, dc=test'; 
+		scope: LDAPWholeSubtreeScope new; 
+		derefAliases: LDAPNeverDeferAliases new; 
+		filter: (LDAPFilter with: 'objectclass' ).
+	encoded := (LDAPMessage new id: 1; operation: request) encoded.
+	hex := encoded asString asHex.
 
-	self assert: (encoded = (self formatWithHex: '30380201016333041364633D6C696E616C636F2C2064633D746573740A01020A0100020100020100010100870B6F626A656374636C6173733000'))
+	expected := self formatWithHex: '30380201016333041364633D6C696E616C636F2C2064633D746573740A01020A0100020100020100010100870B6F626A656374636C6173733000'.
+	self assert: hex equals: expected
 
 ]
 
 { #category : #tests }
 BERTest >> testSequenceEncoding [
-	|ber0 ber1 ber2 stream|
+	|ber0 ber1 ber2 stream expected |
 	ber0 := BERSequence new.
 	ber1 := BERInteger new value: 17.
 	ber2 := BERInteger new value: 170.
@@ -232,7 +261,8 @@ BERTest >> testSequenceEncoding [
 	stream := ReadWriteStream on: (String new).
 
 	ber0 writeOn: stream.
-	self assert: (stream contents asString asHex = (self formatWithHex: '3007020111020200AA'))
+	expected := self formatWithHex: '3007020111020200AA'.
+	self assert: stream contents asString asHex equals: expected
 
 
 ]
