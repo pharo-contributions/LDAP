@@ -1,8 +1,6 @@
 
 # LDAP Support for Pharo
 
-Port to Pharo 9.0. Migrated from the original repository at http://smalltalkhub.com/PharoExtras/LDAP/
-
 LDAP (Lightweight Directory Access Protocol) is a network protocol for remote directories. LDAP is mainly used for authentication of users into the mails servers, enterprise applications or biometric systems.
 
 This implementation allows Pharo to communicate with such LDAP directories. It is fully written in Pharo and does not require access to native libraries.
@@ -33,28 +31,28 @@ See [How to load a git project](https://github.com/pharo-open-documentation/phar
 
 ### Establish a connection to the LDAP server
 ```Smalltalk
-| conn bind req |
-conn := (LDAPConnection to: 'ldap.domain.org' port: 389).
+| connection bind command |
+connection := (LDAPConnection to: 'ldap.domain.org' port: 389).
 bind := LDAPBindRequest new username: 'cn=admin,dc=domain,dc=org'; password: 'password'.
-req := conn request: bind.
-req wait.
+command := connection request: bind.
+command wait.
 ```
 
 ### Establish a connection to the LDAP server with SSL
 Use a `LDAPSConnection` instance for the connection.
 ```Smalltalk
-| conn bind req |
-[ conn := (LDAPSConnection to: 'sldap123.someuri.org' port: 686).
+| connection bind command |
+[ connection := (LDAPSConnection to: 'sldap123.someuri.org' port: 686).
 	bind := LDAPBindRequest new username: 'uid=myuid,ou=people,o=someuri,c=org'; password: 'password'.
-	req := conn request: bind.
-	req wait.
-	conn isValid ] on: Error do: [ 1 halt ]
+	command := connection request: bind.
+	command wait.
+	connection isValid ] on: Error do: [ 1 halt ]
 ```
 
 
 ### Create new entry
 ```Smalltalk
-| attrs add req |
+| attrs add command |
 attrs := Dictionary new
     at: 'objectClass' put: (OrderedCollection new add: 'inetOrgPerson'; yourself);
     at: 'cn' put: 'Doe John';
@@ -63,73 +61,66 @@ attrs := Dictionary new
     yourself.
 
 add := LDAPAddRequest new dn: 'cn=jdoe,cn=base'; attrs: attrs.
-req := conn request: add.
-req wait.
+command := connection request: add.
+command wait.
 ```
 
 ### Change the value of an attribute
 ```Smalltalk
-| ops mod req |
+| ops mod command |
 ops := { LDAPAttrModifier set: 'sn' to: { 'Doe' } }.
 mod := LDAPModifyRequest new dn: 'uid=jdoe,ou=people,dc=domain,dc=org'; ops: ops.
-req := conn request: mod.
-req wait.
+command := connection request: mod.
+command wait.
 ```
 
 ### Add an attribute
 ```Smalltalk
-| ops mod req |
+| ops mod command |
 ops := { LDAPAttrModifier addTo: 'loginShell' values: { '/bin/bash' } }.
 mod := LDAPModifyRequest new dn: 'uid=jdoe,ou=people,dc=domain,dc=org'; ops: ops.
-req := conn request: mod.
-req wait.
+command := connection request: mod.
+command wait.
 ```
 
 ### Read all entries
 ```Smalltalk
-| req search resultEntries |
+| command search resultEntries |
 search := LDAPSearchRequest new 
 	base: 'ou=people,dc=domain,dc=org'; 
-	scope: LDAPSearchScope wholeSubtree; 
-	derefAliases: LDAPSearchDerefAliases never.
-req := conn request: search.
-req wait.
-resultEntries := req result. "Returns a collection of LDAPSearchResultEntry instances"
+	scope: LDAPWholeSubtreeScope new; 
+	derefAliases: LDAPNeverDeferAliases new.
+command := connection request: search.
+resultEntries := command result. "Wait and return a collection of LDAPSearchResultEntry instances"
 ```
 
 ### Select entries with filters
 ```Smalltalk
-req := conn
-    newSearch: 'ou=people,dc=domain,dc=org'
-    scope: LDAPConnection wholeSubtree
-    deref: LDAPConnection derefNever
-    filter: (LDAPFilter andOf: (OrderedCollection new 
-            add: (LDAPFilter with: 'sn' equalTo: 'Doe'); 
-            yourself))
-    attrs: {'sn'}
-    wantAttrsOnly: false.
-req wait.
-| req search resultEntries |
+| command search resultEntries |
 search := LDAPSearchRequest new 
 	base: 'ou=people,dc=domain,dc=org'; 
-	scope: LDAPSearchScope wholeSubtree; 
-	derefAliases: LDAPSearchDerefAliases never;
+	scope: LDAPWholeSubtreeScope new;
 	filter: ((LDAPFilter with: 'cn' equalTo: 'Jos') not &
 			(LDAPFilter with: 'sn' equalTo: 'Doe')).
-req := conn request: search.
-req wait.
-resultEntries := req result.
+command := connection request: search.
+resultEntries := command result.
 ```
 
 ### Delete an entry
 ```Smalltalk
-| req del |
+| command del |
 del := LDAPDelRequest new dn: 'uid=doe,ou=people,dc=domain,dc=org'.
-req := conn request: del.
-req wait.
+command := connection request: del.
+command wait.
 ```
 
 ### Disconnect the client
 ```Smalltalk
-conn disconnect
+connection disconnect
 ```
+
+## History
+- Migrated from the original repository at http://smalltalkhub.com/PharoExtras/LDAP/
+- Port to Pharo 9.0
+- New object model
+
