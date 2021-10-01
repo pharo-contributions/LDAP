@@ -86,7 +86,7 @@ LDAPConnection >> request: aRequest [
 	| command message messageId |
 	messageId := worker nextMessageId.
 	message := LDAPMessage new id: messageId; operation: aRequest.
-	command := LDAPRequest new initializeWith: self message: message.
+	command := LDAPCommand new initializeWith: self message: message.
 
 	worker addTarget: command for: messageId.
 	worker send: message encoded.

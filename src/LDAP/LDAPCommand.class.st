@@ -1,8 +1,10 @@
 "
-LDAPCommand contains a request that the LDAP server must execute.
+LDAPCommand is an asynchronous command.
+
+It contains a request that the LDAP server must execute.
 "
 Class {
-	#name : #LDAPRequest,
+	#name : #LDAPCommand,
 	#superclass : #Object,
 	#instVars : [
 		'connection',
@@ -18,7 +20,7 @@ Class {
 }
 
 { #category : #accessing }
-LDAPRequest >> abandon [
+LDAPCommand >> abandon [
 	"RFC says we MUST NOT send abandon requests for the same operation multiple times"
 	abandoned ifNotNil: [ ^ abandoned ].
 
@@ -28,25 +30,25 @@ LDAPRequest >> abandon [
 ]
 
 { #category : #'error handing' }
-LDAPRequest >> checkForExceptions [
+LDAPCommand >> checkForExceptions [
 	"Check to see if a response caused an exception and if so, raise it"
 	self isDone ifFalse:[^self error: 'LDAP timeout'].
 	responses do: #checkForExceptions.
 ]
 
 { #category : #defaults }
-LDAPRequest >> defaultTimeout [
+LDAPCommand >> defaultTimeout [
 	"Answer the default timout for LDAP queries"
 	^30 "seconds"
 ]
 
 { #category : #testing }
-LDAPRequest >> hasResult [
+LDAPCommand >> hasResult [
 	^ isDone
 ]
 
 { #category : #initialization }
-LDAPRequest >> initializeWith: aConnection message: aMessage [
+LDAPCommand >> initializeWith: aConnection message: aMessage [
 	connection := aConnection.
 	message := aMessage.
 
@@ -61,19 +63,19 @@ LDAPRequest >> initializeWith: aConnection message: aMessage [
 ]
 
 { #category : #testing }
-LDAPRequest >> isDone [
+LDAPCommand >> isDone [
 	^ isDone
 ]
 
 { #category : #accessing }
-LDAPRequest >> next [
+LDAPCommand >> next [
 	^ self nextTimeout: self defaultTimeout.
 
 
 ]
 
 { #category : #accessing }
-LDAPRequest >> nextTimeout: seconds [
+LDAPCommand >> nextTimeout: seconds [
 	isDone ifFalse:[
 		"As long as the request isn't done, synchronously wait for more results"
 		newResponseSemaphore waitTimeoutSeconds: seconds.
@@ -85,7 +87,7 @@ LDAPRequest >> nextTimeout: seconds [
 ]
 
 { #category : #accessing }
-LDAPRequest >> processResponse: aResponse [
+LDAPCommand >> processResponse: aResponse [
 	responses addLast: aResponse. 
 	newResponseSemaphore signal.
 
@@ -97,36 +99,36 @@ LDAPRequest >> processResponse: aResponse [
 ]
 
 { #category : #accessing }
-LDAPRequest >> responses [ 
+LDAPCommand >> responses [ 
 	self wait.
 	^ responses
 ]
 
 { #category : #accessing }
-LDAPRequest >> result [
+LDAPCommand >> result [
 	^ message operation processResult: self responses
 ]
 
 { #category : #accessing }
-LDAPRequest >> wait [
+LDAPCommand >> wait [
 	^self waitTimeoutSeconds: self defaultTimeout
 
 ]
 
 { #category : #accessing }
-LDAPRequest >> waitTimeoutMSecs: msecs [
+LDAPCommand >> waitTimeoutMSecs: msecs [
 	responses ifEmpty: [ doneSemaphore waitTimeoutMSecs: msecs ].
 	self checkForExceptions.
 ]
 
 { #category : #accessing }
-LDAPRequest >> waitTimeoutSeconds: seconds [
+LDAPCommand >> waitTimeoutSeconds: seconds [
 	responses ifEmpty: [ doneSemaphore waitTimeoutSeconds: seconds ].
 	self checkForExceptions.
 ]
 
 { #category : #accessing }
-LDAPRequest >> wantsMoreResponses [
+LDAPCommand >> wantsMoreResponses [
 	"you most likely not want to implement this in a subclass, but processResponse:"
 	^ self isDone not
 ]
